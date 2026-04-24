@@ -21,10 +21,10 @@
      SECTION: DESIGN TOKENS
      Edit colour palette, typography, and spacing here.
      ═══════════════════════════════════════════ -->
-<style id="tokens">
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+<style id="main-styles">
+/* ── Design tokens + root vars ── */
 :root {
+
   /* ── Typography ── */
   --font-display: 'Outfit', sans-serif;
   --font-ui: 'Plus Jakarta Sans', sans-serif;
@@ -151,20 +151,8 @@
 
   /* ── Warning ── */
   --warn-bg: #2A0808; --warn-border: #93000A; --warn-text: #FFDAD6; --warn-label: #FFB4AB;
-}
-</style>
 
-<!-- ═══════════════════════════════════════════
-     SECTION: POLISH PASS  (gated overrides)
-     Layered overrides toggled via <body> classes:
-       .pol-spacing    → spacing rhythm
-       .pol-type       → typography rhythm
-       .pol-motion     → motion + micro-interactions
-       .pol-empty      → warm empty states
-     All four ON by default. Tweaks panel toggles them.
-     ═══════════════════════════════════════════ -->
-<style id="polish">
-:root {
+
   /* ── Motion tokens (M3 expressive subset) ── */
   --motion-fast: 150ms;
   --motion-std:  240ms;
@@ -173,8 +161,13 @@
   --ease-emph:   cubic-bezier(0.2, 0, 0, 1);
   --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
   --ease-out:    cubic-bezier(0, 0, 0.2, 1);
+
 }
 
+/* ── Global reset + base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Motion + polish ── */
 /* ─── 1. SPACING POLISH ────────────────────────────── */
 body.pol-spacing .home-greeting        { margin: 4px 16px 24px; padding: 18px 18px; }
 body.pol-spacing .wc-wrap              { margin: 0 16px 28px; }
@@ -648,15 +641,8 @@ body.pol-empty .pol-empty-inline .cta:active { transform: scale(0.96); }
   transition: background var(--motion-fast) var(--ease-std);
 }
 .pol-tweaks .footer button:hover { background: #2A382C; }
-</style>
 
-<!-- ═══════════════════════════════════════════
-     SECTION: MATERIAL SYMBOLS ICON STYLES
-     Icons rendered via Material Symbols variable font.
-     .icon-filled  → FILL=1 (active nav state)
-     .icon-outlined → FILL=0 (default)
-     ═══════════════════════════════════════════ -->
-<style id="icon-styles">
+/* ── Icon styles ── */
 .ms {
   font-family: 'Material Symbols Outlined', sans-serif;
   font-weight: normal;
@@ -684,13 +670,8 @@ body.pol-empty .pol-empty-inline .cta:active { transform: scale(0.96); }
 .ms.sz-20 { font-size: 20px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
 .ms.sz-20.filled { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
 .ms.sz-40 { font-size: 40px; font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 40; }
-</style>
 
-<!-- ═══════════════════════════════════════════
-     SECTION: PHONE SHELL STYLES
-     iPhone 16 frame: 390×844pt logical, 418px outer.
-     ═══════════════════════════════════════════ -->
-<style id="shell-styles">
+/* ── Shell ── */
 body {
   background: #111411;
   display: flex;
@@ -784,21 +765,8 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   z-index: 10;
   pointer-events: none;
 }
-</style>
 
-<!-- ═══════════════════════════════════════════
-     SECTION: APP COMPONENT STYLES  (M3-compliant)
-     Follows Material Design 3 patterns:
-     - M3 Navigation bar with pill indicator
-     - M3 Filled + Tonal buttons (pill-shaped, 40dp)
-     - M3 Filled cards (surface-container, shape-lg)
-     - M3 Filter chips (outlined/filled)
-     - M3 Search bar (filled, 56dp, no border)
-     - M3 Type scale
-     - M3 State layers (hover/press)
-     ═══════════════════════════════════════════ -->
-<style id="component-styles">
-
+/* ── Components ── */
 /* ── App shell — fills the fixed-height screen exactly ── */
 .app {
   font-family: var(--font-ui);
@@ -1432,6 +1400,70 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   flex-shrink: 0;
 }
 .sort-chip.active .sort-chip-clear { display: inline-flex; }
+
+/* ── Floating filter-clear pill — top-pinned, slides down below status bar ──
+   Appears below the .sb area (Dynamic Island ends ~46px, sb content ~76px)
+   when the sticky header is hidden + any filter/sort is active.
+   Tapping the label re-opens the relevant sheet; × clears all.
+   Same pattern as Uber Eats / Google Maps filter reminder bar. ── */
+#filter-float-pill {
+  position: absolute;
+  top: 80px; /* below status bar content (sb padding 54px + ~22px content) */
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  display: flex; align-items: center; gap: 0;
+  padding: 0;
+  height: 34px;
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-primary);
+  border-radius: var(--shape-full);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+  color: var(--md-primary);
+  white-space: nowrap;
+  z-index: 11;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s cubic-bezier(0.4,0,0.2,1), transform 0.22s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+  overflow: hidden; /* clip children to pill shape */
+}
+#filter-float-pill.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+/* Tappable label area — opens relevant sheet */
+#filter-float-pill-tap {
+  display: flex; align-items: center; gap: 6px;
+  padding: 0 10px 0 12px;
+  height: 100%;
+  cursor: pointer;
+  background: none; border: none;
+  color: var(--md-primary);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+  flex-shrink: 1; min-width: 0;
+}
+#filter-float-pill-lbl {
+  max-width: 190px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Divider between label and clear button */
+#filter-float-pill-div {
+  width: 1px; height: 18px;
+  background: var(--md-primary);
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+/* Clear button */
+#filter-float-pill-clear {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 100%;
+  background: none; color: var(--md-primary);
+  border: none; cursor: pointer; padding: 0;
+  flex-shrink: 0;
+}
 
 /* ── Sort action sheet — compact, no scroll ── */
 #sort-sheet {
@@ -3055,7 +3087,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .stat-l { font-size: 11px; color: var(--md-on-surface-variant); margin-top: 3px; line-height: 1.3; font-weight: 500; }
 
 /* ── Carousels ── */
-.car-slot { padding: 20px 16px 8px; }
+.car-slot { padding: 20px 16px 8px; position: relative; }
 /* Alternating carousel backgrounds — harmonised from theme palette */
 #cs1 { border-radius: var(--shape-lg); margin: 8px 8px 4px; padding: 16px 8px 8px; }
 #cs2 { border-radius: var(--shape-lg); margin: 4px 8px; padding: 16px 8px 8px; }
@@ -3110,6 +3142,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   padding: 8px 0 10px;
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s;
+  margin-top: 4px;
 }
 .ins-chips-wrap.scrolled { border-bottom-color: var(--md-outline-variant); }
 .ins-chips {
@@ -3259,10 +3292,10 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .learn-hero-decor-2 { bottom: -40px; left: -30px; width: 120px; height: 120px; opacity: 0.35; }
 
 /* ── Sticky chip strip (chip markup already styled via .ins-chips / .ins-chip) ── */
-.ins-chips-wrap { margin-top: 4px; }
+
 
 /* ── Section header — richer ── */
-.car-slot { position: relative; }
+
 .car-hdr-rich {
   display: flex; align-items: center; gap: 10px;
   margin-bottom: 2px;
@@ -3408,6 +3441,21 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 /* Kill the old .car-title / default emoji header where .car-hdr-rich is used */
 .car-hdr-rich + .car-sub-title { margin-top: 4px; }
 
+/* ── Utility classes extracted from inline styles ── */
+.ms-34 { font-size:34px; line-height:1; display:inline-block; vertical-align:middle; flex-shrink:0; }
+.ms-42 { font-size:42px; line-height:1; display:inline-block; vertical-align:middle; flex-shrink:0; }
+.ms-40 { font-size:40px; line-height:1; display:inline-block; vertical-align:middle; flex-shrink:0; }
+.ms-28 { font-size:28px; line-height:1; display:inline-block; vertical-align:middle; flex-shrink:0; }
+.ms-28-block { font-size:28px; display:block; margin-bottom:6px; }
+.flex-1 { flex:1; }
+.row-10 { display:flex; align-items:center; gap:10px; }
+.txt-var { color:var(--md-on-surface-variant); }
+.mh-110 { min-height:110px; }
+.mh-110-constrained { min-height:110px; min-width:180px; max-width:200px; }
+.card-title-sm { font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--md-on-surface); line-height:1.3; margin-bottom:4px; }
+.card-sub-xs { font-size:11px; color:var(--md-on-surface-variant); line-height:1.4; }
+.card-meta { font-size:10px; color:var(--md-on-surface-variant); opacity:0.6; margin-top:6px; }
+
 </style>
 </head>
 <body>
@@ -3480,40 +3528,40 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
               </div>
             </div>
             <div class="home-cats" id="home-cats"><div class="home-cat-chip" onclick="goSearchCat(&#39;burgers&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍔</span></span>
       <span class="home-cat-label">Burgers</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;chicken&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍗</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍗</span></span>
       <span class="home-cat-label">Chicken</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;pizza&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍕</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍕</span></span>
       <span class="home-cat-label">Pizza</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;wraps&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🫓</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🫓</span></span>
       <span class="home-cat-label">Wraps</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;sides&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍟</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍟</span></span>
       <span class="home-cat-label">Sides</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;fish&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🐟</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🐟</span></span>
       <span class="home-cat-label">Fish &amp; Chips</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;sushi&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍣</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍣</span></span>
       <span class="home-cat-label">Sushi</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;subs&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥖</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥖</span></span>
       <span class="home-cat-label">Subs</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;drinks&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥤</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥤</span></span>
       <span class="home-cat-label">Drinks</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;smoothies&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥤</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥤</span></span>
       <span class="home-cat-label">Smoothies</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;juices&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍊</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍊</span></span>
       <span class="home-cat-label">Juices</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;pies&#39;)">
-      <span class="home-cat-emoji"><span style="font-size:40px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥧</span></span>
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥧</span></span>
       <span class="home-cat-label">Pies</span>
     </div></div>
           </div>
@@ -3527,63 +3575,63 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
               </div>
               <span class="home-see-all" onclick="goSearchLowCal()">See all →</span>
             </div>
-            <div class="home-scroll" id="home-hacks"><div class="ho-card score-a" onclick="openDetail(604,false)" style="min-height:110px">
+            <div class="home-scroll" id="home-hacks"><div class="ho-card score-a mh-110" onclick="openDetail(604,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍣</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍣</span></span>
       <div class="ho-name">Shrimp Cocktail</div>
       <div class="ho-chain">Smart Sushi</div>
       <div class="ho-kj">201<span>cal / 842kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(93,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(93,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍗</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍗</span></span>
       <div class="ho-name">Original Fillet</div>
       <div class="ho-chain">KFC</div>
       <div class="ho-kj">200<span>cal / 835kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(125,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(125,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍖</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍖</span></span>
       <div class="ho-name">BBQ Ribs</div>
       <div class="ho-chain">Nando's</div>
       <div class="ho-kj">284<span>cal / 1190kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(453,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(453,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍗</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍗</span></span>
       <div class="ho-name">Spicy Chicken Strips 3 pack</div>
       <div class="ho-chain">Wendy's</div>
       <div class="ho-kj">200<span>cal / 838kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(25,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(25,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🫓</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🫓</span></span>
       <div class="ho-name">Chicken Crave Pita</div>
       <div class="ho-chain">Pita Pit</div>
       <div class="ho-kj">329<span>cal / 1376kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(204,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(204,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍗</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍗</span></span>
       <div class="ho-name">Seasoned Tenders (5 pack)</div>
       <div class="ho-chain">Pizza Hut</div>
       <div class="ho-kj">327<span>cal / 1368kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(317,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(317,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥖</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🥖</span></span>
       <div class="ho-name">Chicken Strips Sub</div>
       <div class="ho-chain">Subway</div>
       <div class="ho-kj">337<span>cal / 1410kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(383,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(383,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍣</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍣</span></span>
       <div class="ho-name">Sashimi Salmon</div>
       <div class="ho-chain">St. Pierre's</div>
       <div class="ho-kj">284<span>cal / 1190kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(239,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(239,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍔</span></span>
       <div class="ho-name">Cheeseburger</div>
       <div class="ho-chain">Burger King</div>
       <div class="ho-kj">330<span>cal / 1380kJ</span></div>
-    </div><div class="ho-card score-a" onclick="openDetail(74,false)" style="min-height:110px">
+    </div><div class="ho-card score-a mh-110" onclick="openDetail(74,false)">
       <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍳</span></span>
+      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍳</span></span>
       <div class="ho-name">Bacon &amp; Egg McMuffin</div>
       <div class="ho-chain">McDonald's</div>
       <div class="ho-kj">356<span>cal / 1490kJ</span></div>
@@ -3612,67 +3660,67 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
               <span class="home-see-all" onclick="nav(&#39;restaurants&#39;)">See all →</span>
             </div>
             <div class="home-scroll" id="home-rests"><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Pita Pit">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🫓</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🫓</span></span>
       <div class="home-rest-name">Pita Pit</div>
       <span class="home-rest-score" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="St. Pierre&#39;s">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍣</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍣</span></span>
       <div class="home-rest-name">St. Pierre's</div>
       <span class="home-rest-score" style="background:#0A2800;color:#A8F075;border-color:#1C4A0A">B</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Subway">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥖</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🥖</span></span>
       <div class="home-rest-name">Subway</div>
       <span class="home-rest-score" style="background:#0A2800;color:#A8F075;border-color:#1C4A0A">B</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Nando&#39;s">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🌶️</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🌶️</span></span>
       <div class="home-rest-name">Nando's</div>
       <span class="home-rest-score" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Pizza Hut">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍕</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍕</span></span>
       <div class="home-rest-name">Pizza Hut</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Hell Pizza">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">😈</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">😈</span></span>
       <div class="home-rest-name">Hell Pizza</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="McDonald&#39;s">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍔</span></span>
       <div class="home-rest-name">McDonald's</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="KFC">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍗</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍗</span></span>
       <div class="home-rest-name">KFC</div>
       <span class="home-rest-score" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Better Burger">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🌿</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🌿</span></span>
       <div class="home-rest-name">Better Burger</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Domino&#39;s">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍕</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍕</span></span>
       <div class="home-rest-name">Domino's</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Burger King">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍔</span></span>
       <div class="home-rest-name">Burger King</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Burger Fuel">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🔥</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🔥</span></span>
       <div class="home-rest-name">Burger Fuel</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Fish &amp; Chips">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🐟</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🐟</span></span>
       <div class="home-rest-name">Fish &amp; Chips</div>
       <span class="home-rest-score" style="background:#2A0808;color:#FFB4AB;border-color:#93000A">D</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Wendy&#39;s">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍔</span></span>
       <div class="home-rest-name">Wendy's</div>
       <span class="home-rest-score" style="background:#2A0808;color:#FFB4AB;border-color:#93000A">D</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Smart Sushi">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍣</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🍣</span></span>
       <div class="home-rest-name">Smart Sushi</div>
       <span class="home-rest-score" style="background:#0A2800;color:#A8F075;border-color:#1C4A0A">B</span>
     </div><div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="Jesters">
-      <span class="home-rest-emoji"><span style="font-size:34px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥧</span></span>
+      <span class="home-rest-emoji"><span class="ms-34" aria-hidden="true">🥧</span></span>
       <div class="home-rest-name">Jesters</div>
       <span class="home-rest-score" style="background:#261800;color:#FFB95A;border-color:#4A3200">C</span>
     </div></div>
@@ -3688,35 +3736,35 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
               <span class="home-see-all" onclick="nav(&#39;insights&#39;)">Learn more →</span>
             </div>
             <div class="home-scroll" id="home-tips">
-      <div class="ho-card" style="min-height:110px;min-width:180px;max-width:200px">
-        <span style="font-size:28px;display:block;margin-bottom:6px"><span style="font-size:28px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🧂</span></span>
-        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--md-on-surface);line-height:1.3;margin-bottom:4px">Salt's sneaking in aye.</div>
-        <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.4">Most of us are smashing nearly double the daily limit without even touching the shaker. Keep an eye on that sodium pill.</div>
-        <div style="font-size:10px;color:var(--md-on-surface-variant);opacity:0.6;margin-top:6px">Heart Foundation NZ</div>
+      <div class="ho-card mh-110-constrained">
+        <span class="ms-28-block"><span class="ms-28" aria-hidden="true">🧂</span></span>
+        <div class="card-title-sm">Salt's sneaking in aye.</div>
+        <div class="card-sub-xs">Most of us are smashing nearly double the daily limit without even touching the shaker. Keep an eye on that sodium pill.</div>
+        <div class="card-meta">Heart Foundation NZ</div>
       </div>
-      <div class="ho-card" style="min-height:110px;min-width:180px;max-width:200px">
-        <span style="font-size:28px;display:block;margin-bottom:6px"><span style="font-size:28px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">💪</span></span>
-        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--md-on-surface);line-height:1.3;margin-bottom:4px">Protein's your best mate.</div>
-        <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.4">Get 20g+ in your kai and you'll actually feel full after. No more sad desk hunger at 3pm aye.</div>
-        <div style="font-size:10px;color:var(--md-on-surface-variant);opacity:0.6;margin-top:6px">NZ Nutrition Foundation</div>
+      <div class="ho-card mh-110-constrained">
+        <span class="ms-28-block"><span class="ms-28" aria-hidden="true">💪</span></span>
+        <div class="card-title-sm">Protein's your best mate.</div>
+        <div class="card-sub-xs">Get 20g+ in your kai and you'll actually feel full after. No more sad desk hunger at 3pm aye.</div>
+        <div class="card-meta">NZ Nutrition Foundation</div>
       </div>
-      <div class="ho-card" style="min-height:110px;min-width:180px;max-width:200px">
-        <span style="font-size:28px;display:block;margin-bottom:6px"><span style="font-size:28px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🫀</span></span>
-        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--md-on-surface);line-height:1.3;margin-bottom:4px">Sat fat's the sneaky one — not all fat.</div>
-        <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.4">24g is your daily limit. Anything fried, creamy or cheesy is gonna stack it up quick.</div>
-        <div style="font-size:10px;color:var(--md-on-surface-variant);opacity:0.6;margin-top:6px">Health Navigator NZ</div>
+      <div class="ho-card mh-110-constrained">
+        <span class="ms-28-block"><span class="ms-28" aria-hidden="true">🫀</span></span>
+        <div class="card-title-sm">Sat fat's the sneaky one — not all fat.</div>
+        <div class="card-sub-xs">24g is your daily limit. Anything fried, creamy or cheesy is gonna stack it up quick.</div>
+        <div class="card-meta">Health Navigator NZ</div>
       </div>
-      <div class="ho-card" style="min-height:110px;min-width:180px;max-width:200px">
-        <span style="font-size:28px;display:block;margin-bottom:6px"><span style="font-size:28px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">⚡</span></span>
-        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--md-on-surface);line-height:1.3;margin-bottom:4px">Kjs add up mean.</div>
-        <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.4">One feed can chew through half your daily 8,700kJ just like that. Worth a cheeky check before you order aye.</div>
-        <div style="font-size:10px;color:var(--md-on-surface-variant);opacity:0.6;margin-top:6px">FSANZ</div>
+      <div class="ho-card mh-110-constrained">
+        <span class="ms-28-block"><span class="ms-28" aria-hidden="true">⚡</span></span>
+        <div class="card-title-sm">Kjs add up mean.</div>
+        <div class="card-sub-xs">One feed can chew through half your daily 8,700kJ just like that. Worth a cheeky check before you order aye.</div>
+        <div class="card-meta">FSANZ</div>
       </div>
-      <div class="ho-card" style="min-height:110px;min-width:180px;max-width:200px">
-        <span style="font-size:28px;display:block;margin-bottom:6px"><span style="font-size:28px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥦</span></span>
-        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--md-on-surface);line-height:1.3;margin-bottom:4px">Fibre — the unsung hero.</div>
-        <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.4">Keeps you full and your guts happy. Most of us aren't getting enough. Wraps, pitas and sides with a bit of mahi in them are your best bet.</div>
-        <div style="font-size:10px;color:var(--md-on-surface-variant);opacity:0.6;margin-top:6px">Heart Foundation NZ</div>
+      <div class="ho-card mh-110-constrained">
+        <span class="ms-28-block"><span class="ms-28" aria-hidden="true">🥦</span></span>
+        <div class="card-title-sm">Fibre — the unsung hero.</div>
+        <div class="card-sub-xs">Keeps you full and your guts happy. Most of us aren't getting enough. Wraps, pitas and sides with a bit of mahi in them are your best bet.</div>
+        <div class="card-meta">Heart Foundation NZ</div>
       </div></div>
           </div>
 
@@ -3741,7 +3789,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
         <div class="search-sticky-hdr" id="search-sticky-hdr">
           <div style="padding:16px 16px 0">
             <div class="search-box">
-              <span class="ms sz-20" style="color:var(--md-on-surface-variant)">search</span>
+              <span class="ms sz-20 txt-var">search</span>
               <input id="si" type="text" placeholder="Search burgers, pies, pizza…" oninput="doSearch()">
               <button class="search-clear-btn hidden" id="search-clear-btn" onclick="clearSearch()" aria-label="Clear search"><span class="ms sz-20">close</span></button>
             </div>
@@ -3806,108 +3854,108 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
         <div class="topbar"><div class="page-title">Restaurants</div><div class="page-sub">Restaurants and fast food across NZ</div></div>
         <div class="search-wrap" style="padding-top:0">
           <div class="search-box">
-            <span class="ms sz-20" style="color:var(--md-on-surface-variant)">search</span>
+            <span class="ms sz-20 txt-var">search</span>
             <input id="rsi" type="text" placeholder="Search restaurants…" oninput="renderRests()">
           </div>
         </div>
         <div class="sec-hdr"><span id="rct">14 restaurants</span><a onclick="toggleRS()" id="rsa"><span class="ms sz-20">swap_vert</span> Best first</a></div>
         <div id="rl"><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Pita Pit">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🫓</span></div>
-      <div style="flex:1"><div class="rest-name">Pita Pit</div><div class="rest-meta">14 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🫓</span></div>
+      <div class="flex-1"><div class="rest-name">Pita Pit</div><div class="rest-meta">14 items</div></div>
+      <div class="row-10">
         <div style="background:#002020;color:#80DEEA;border:1px solid #00474F;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;A&#39;)" title="What does score A mean?">A</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Nando&#39;s">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🌶️</span></div>
-      <div style="flex:1"><div class="rest-name">Nando's</div><div class="rest-meta">33 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🌶️</span></div>
+      <div class="flex-1"><div class="rest-name">Nando's</div><div class="rest-meta">33 items</div></div>
+      <div class="row-10">
         <div style="background:#002020;color:#80DEEA;border:1px solid #00474F;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;A&#39;)" title="What does score A mean?">A</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="KFC">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍗</span></div>
-      <div style="flex:1"><div class="rest-name">KFC</div><div class="rest-meta">44 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍗</span></div>
+      <div class="flex-1"><div class="rest-name">KFC</div><div class="rest-meta">44 items</div></div>
+      <div class="row-10">
         <div style="background:#002020;color:#80DEEA;border:1px solid #00474F;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;A&#39;)" title="What does score A mean?">A</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="St. Pierre&#39;s">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍣</span></div>
-      <div style="flex:1"><div class="rest-name">St. Pierre's</div><div class="rest-meta">63 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍣</span></div>
+      <div class="flex-1"><div class="rest-name">St. Pierre's</div><div class="rest-meta">63 items</div></div>
+      <div class="row-10">
         <div style="background:#0A2800;color:#A8F075;border:1px solid #1C4A0A;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;B&#39;)" title="What does score B mean?">B</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Subway">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🥖</span></div>
-      <div style="flex:1"><div class="rest-name">Subway</div><div class="rest-meta">35 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🥖</span></div>
+      <div class="flex-1"><div class="rest-name">Subway</div><div class="rest-meta">35 items</div></div>
+      <div class="row-10">
         <div style="background:#0A2800;color:#A8F075;border:1px solid #1C4A0A;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;B&#39;)" title="What does score B mean?">B</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Pizza Hut">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍕</span></div>
-      <div style="flex:1"><div class="rest-name">Pizza Hut</div><div class="rest-meta">50 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍕</span></div>
+      <div class="flex-1"><div class="rest-name">Pizza Hut</div><div class="rest-meta">50 items</div></div>
+      <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Hell Pizza">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">😈</span></div>
-      <div style="flex:1"><div class="rest-name">Hell Pizza</div><div class="rest-meta">24 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">😈</span></div>
+      <div class="flex-1"><div class="rest-name">Hell Pizza</div><div class="rest-meta">24 items</div></div>
+      <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="McDonald&#39;s">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></div>
-      <div style="flex:1"><div class="rest-name">McDonald's</div><div class="rest-meta">44 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍔</span></div>
+      <div class="flex-1"><div class="rest-name">McDonald's</div><div class="rest-meta">44 items</div></div>
+      <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Better Burger">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🌿</span></div>
-      <div style="flex:1"><div class="rest-name">Better Burger</div><div class="rest-meta">1 item</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🌿</span></div>
+      <div class="flex-1"><div class="rest-name">Better Burger</div><div class="rest-meta">1 item</div></div>
+      <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Domino&#39;s">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍕</span></div>
-      <div style="flex:1"><div class="rest-name">Domino's</div><div class="rest-meta">1 item</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍕</span></div>
+      <div class="flex-1"><div class="rest-name">Domino's</div><div class="rest-meta">1 item</div></div>
+      <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Burger King">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></div>
-      <div style="flex:1"><div class="rest-name">Burger King</div><div class="rest-meta">85 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍔</span></div>
+      <div class="flex-1"><div class="rest-name">Burger King</div><div class="rest-meta">85 items</div></div>
+      <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Burger Fuel">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🔥</span></div>
-      <div style="flex:1"><div class="rest-name">Burger Fuel</div><div class="rest-meta">15 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🔥</span></div>
+      <div class="flex-1"><div class="rest-name">Burger Fuel</div><div class="rest-meta">15 items</div></div>
+      <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Fish &amp; Chips">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🐟</span></div>
-      <div style="flex:1"><div class="rest-name">Fish &amp; Chips</div><div class="rest-meta">2 items</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🐟</span></div>
+      <div class="flex-1"><div class="rest-name">Fish &amp; Chips</div><div class="rest-meta">2 items</div></div>
+      <div class="row-10">
         <div style="background:#2A0808;color:#FFB4AB;border:1px solid #93000A;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;D&#39;)" title="What does score D mean?">D</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Wendy&#39;s">
-      <div class="rest-ico"><span style="font-size:42px;line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">🍔</span></div>
-      <div style="flex:1"><div class="rest-name">Wendy's</div><div class="rest-meta">1 item</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍔</span></div>
+      <div class="flex-1"><div class="rest-name">Wendy's</div><div class="rest-meta">1 item</div></div>
+      <div class="row-10">
         <div style="background:#2A0808;color:#FFB4AB;border:1px solid #93000A;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;D&#39;)" title="What does score D mean?">D</div>
-        <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
+        <span class="ms sz-20 txt-var">chevron_right</span>
       </div>
     </div></div>
         </div><!-- /page-scroll -->
@@ -3941,7 +3989,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
         <div class="search-sticky-hdr" id="rmenu-sticky-hdr">
           <div style="padding:14px 16px 0">
             <div class="search-box">
-              <span class="ms sz-20" style="color:var(--md-on-surface-variant)">search</span>
+              <span class="ms sz-20 txt-var">search</span>
               <input id="msi" type="text" placeholder="Search this menu…" oninput="renderMenu()">
               <button class="search-clear-btn hidden" id="menu-clear-btn" onclick="clearMenuSearch()" aria-label="Clear search"><span class="ms sz-20">close</span></button>
             </div>
@@ -3993,7 +4041,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
           <button class="rmenu-appbar-back" id="det-back" onclick="detBack()">
             <span class="ms">arrow_back</span>
           </button>
-          <div style="flex:1"></div>
+          <div class="flex-1"></div>
           <button class="det-appbar-action" onclick="openShareSheet()" title="Share">
             <span class="ms">ios_share</span>
           </button>
@@ -4951,6 +4999,18 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
          the 94dp footer (80dp nav bar + 14dp hi indicator).
          Pointer events only on the inner card.
          ═══════════════════════════════════════════ -->
+
+    <!-- Floating filter-clear pill — search page only, appears when scrolled with active filters -->
+    <div id="filter-float-pill">
+      <button id="filter-float-pill-tap" onclick="openActiveFilterSheet()" aria-label="Edit filters">
+        <span class="ms" style="font-size:15px">tune</span>
+        <span id="filter-float-pill-lbl"></span>
+      </button>
+      <div id="filter-float-pill-div"></div>
+      <button id="filter-float-pill-clear" onclick="clearFilters()" title="Clear all filters" aria-label="Clear all filters">
+        <span class="ms" style="font-size:16px;line-height:1">close</span>
+      </button>
+    </div>
 
     <!-- M3 Snackbar — global action feedback, appears above nav bar -->
     <div class="snackbar" id="snackbar">
@@ -7148,6 +7208,23 @@ const rests = [
 const kc  = kj => Math.round(kj / 4.184);
 const SC  = s  => ({A:{t:'#80DEEA',b:'#002020',br:'#00474F'},B:{t:'#A8F075',b:'#0A2800',br:'#1C4A0A'},C:{t:'#FFB95A',b:'#261800',br:'#4A3200'},D:{t:'#FFB4AB',b:'#2A0808',br:'#93000A'}}[s] || {t:'#FFB4AB',b:'#2A0808',br:'#93000A'});
 const SCL = s  => ({A:'sA',B:'sB',C:'sC',D:'sD'}[s] || 'sD');
+/* ── effectiveScore(f): runtime score adjustment for high added sugar.
+   Items with natural_sugar:true or fibre > 5g/1000kJ excluded (fruit/fibre sugar).
+   Bumps score 1 level for added sugar > 12g/1000kJ, 2 levels for > 25g/1000kJ. ── */
+function effectiveScore(f) {
+  if (!f || !f.score) return f ? f.score : 'C';
+  const kj = f.kj || 0;
+  if (kj <= 0) return f.score;
+  const sugarPk = f.sugar / kj * 1000;
+  const fibrePk = f.fibre ? (f.fibre / kj * 1000) : 0;
+  if (f.natural_sugar || fibrePk > 5) return f.score;
+  const G = ['A','B','C','D'];
+  let i = G.indexOf(f.score);
+  if (i < 0) return f.score;
+  if (sugarPk > 25) i = Math.min(i + 2, 3);
+  else if (sugarPk > 12) i = Math.min(i + 1, 3);
+  return G[i];
+}
 const BC  = s  => ({A:'#5A8F35',B:'#7EC850',C:'#C8A84B',D:'#B8292A'}[s]);
 const BW  = s  => ({A:'90%',B:'70%',C:'45%',D:'18%'}[s]);
 
@@ -7183,6 +7260,10 @@ function nav(p) {
     const scr = document.getElementById('search-scroll');
     if (scr) scr.scrollTo({ top: 0, behavior: 'instant' });
     updateFilterUI();
+  } else {
+    /* Hide floating pill when leaving search page */
+    const pill = document.getElementById('filter-float-pill');
+    if (pill) pill.classList.remove('visible');
   }
 }
 
@@ -7208,6 +7289,7 @@ function nav(p) {
     }
     hdr.classList.toggle('scrolled', y > 0 && !hdr.classList.contains('hidden'));
     lastY = y;
+    if (typeof syncFilterPill === 'function') syncFilterPill();
   }, true);
 })();
 
@@ -7285,7 +7367,7 @@ function makeCard(f, fromRest) {
     : `<span class="ms">add</span>`;
   const cmpLabel = inC ? 'Added' : 'Compare';
   const df = fromRest ? `openDetail(${f.id},true)` : `openDetail(${f.id},false)`;
-  const sc = f.score.toLowerCase();
+  const esc = effectiveScore(f); const sc = esc.toLowerCase();
   /* Size toggle HTML — only for items with multiple sizes */
   const sizeToggle = f.sizes
     ? (() => {
@@ -7330,7 +7412,7 @@ function makeCard(f, fromRest) {
         <div class="fc-chain">${f.chain}${f.pcs ? ' · ' + f.pcs : ''}${f.size ? ' · ' + f.size : ''}</div>
         <div class="fc-name">${f.name}</div>
       </div>
-      <div class="fc-score score-${sc}" onclick="event.stopPropagation();openScoreSheet('${f.score}',${f.id})" style="cursor:pointer" title="What does score ${f.score} mean?">${f.score}</div>
+      <div class="fc-score score-${sc}" onclick="event.stopPropagation();openScoreSheet('${esc}',${f.id})" style="cursor:pointer" title="What does score ${esc} mean?">${esc}</div>
     </div>
 
     <!-- Zone 2: Stats — calories + macros (id enables live size swap) -->
@@ -7537,7 +7619,7 @@ function doSearch() {
   if (srFilters.sort === 'lo') fx.sort((a, b) => a.kj - b.kj);
   else if (srFilters.sort === 'hi') fx.sort((a, b) => b.kj - a.kj);
   else if (srFilters.sort === 'protein') fx.sort((a, b) => b.protein - a.protein);
-  else if (srFilters.sort === 'grade') fx.sort((a, b) => (GRADE_ORDER[a.score]??9) - (GRADE_ORDER[b.score]??9) || a.kj - b.kj);
+  else if (srFilters.sort === 'grade') fx.sort((a, b) => (GRADE_ORDER[effectiveScore(a)]??9) - (GRADE_ORDER[effectiveScore(b)]??9) || a.kj - b.kj);
   else fx.sort((a, b) => {
     const ca = CAT_ORDER_S.indexOf(a.cat) === -1 ? 99 : CAT_ORDER_S.indexOf(a.cat);
     const cb = CAT_ORDER_S.indexOf(b.cat) === -1 ? 99 : CAT_ORDER_S.indexOf(b.cat);
@@ -7666,6 +7748,38 @@ function updateFilterUI() {
   if (rmBtn) rmBtn.classList.toggle('active', rmCount > 0);
   /* Sync sheet chips to current context */
   syncFilterSheetToCtx();
+  /* Sync floating clear pill */
+  syncFilterPill();
+}
+
+const NUT_LABELS = { protein:'High protein', sugar:'Low sugar', fat:'Low fat', balanced:'Balanced', sodium:'Low sodium' };
+function syncFilterPill() {
+  const pill = document.getElementById('filter-float-pill');
+  const lbl  = document.getElementById('filter-float-pill-lbl');
+  if (!pill || !lbl) return;
+  /* Only active on search page */
+  const pg = document.getElementById('pg-search');
+  if (!pg || !pg.classList.contains('active')) { pill.classList.remove('visible'); return; }
+  /* Only show when the sticky header has slid away */
+  const hdr = document.getElementById('search-sticky-hdr');
+  const headerHidden = hdr && hdr.classList.contains('hidden');
+  /* Any filter or sort active? */
+  const hasSort = srFilters.sort !== 'def';
+  const hasNut  = ['protein','sugar','fat','balanced','sodium'].some(k => srFilters[k]);
+  if (!headerHidden || (!hasSort && !hasNut)) { pill.classList.remove('visible'); return; }
+  /* Build summary label */
+  const parts = [];
+  if (hasSort) parts.push(SORT_LABELS[srFilters.sort]);
+  ['protein','sugar','fat','balanced','sodium'].forEach(k => { if (srFilters[k]) parts.push(NUT_LABELS[k]); });
+  lbl.textContent = parts.length <= 2 ? parts.join(' · ') : parts.slice(0,2).join(' · ') + ' +' + (parts.length - 2);
+  pill.classList.add('visible');
+}
+
+/* Opens sort sheet if only sort active, filter sheet if nutrition filters active */
+function openActiveFilterSheet() {
+  const hasNut = ['protein','sugar','fat','balanced','sodium'].some(k => srFilters[k]);
+  if (hasNut) openFilterSheet();
+  else openSortSheet();
 }
 
 function openSortSheet() {
@@ -7899,9 +8013,9 @@ function renderHome() {
 
   const hacksEl = document.getElementById('home-hacks');
   if (hacksEl) hacksEl.innerHTML = hacks.map(x => {
-    const s = SC(x.score), sc = x.score.toLowerCase();
+    const exh = effectiveScore(x); const s = SC(exh), sc = exh.toLowerCase();
     return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false)" style="min-height:110px">
-      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${x.score}</span>
+      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exh}</span>
       <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
       <div class="ho-name">${x.name}</div>
       <div class="ho-chain">${x.chain}</div>
@@ -7921,9 +8035,9 @@ function renderHome() {
     .slice(0, 10);
   const proteinEl = document.getElementById('home-protein');
   if (proteinEl) proteinEl.innerHTML = proteinItems.map(x => {
-    const s = SC(x.score), sc = x.score.toLowerCase();
+    const exp = effectiveScore(x); const s = SC(exp), sc = exp.toLowerCase();
     return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false)" style="min-height:110px">
-      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${x.score}</span>
+      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exp}</span>
       <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
       <div class="ho-name">${x.name}</div>
       <div class="ho-chain">${x.chain}</div>
@@ -8158,7 +8272,7 @@ function openDetail(id, fromRest, overridePrevPage) {
   const activePg = document.querySelector('.page.active');
   prevPage = overridePrevPage || (activePg ? activePg.id.replace('pg-', '') : 'search');
   const f = curFood;
-  const cal = kc(f.kj), s = SC(f.score), sc = f.score.toLowerCase();
+  const esc = effectiveScore(f); const cal = kc(f.kj), s = SC(esc), sc = esc.toLowerCase();
 
   /* ── Topbar back button ── */
   document.getElementById('det-back').innerHTML = '<span class="ms">arrow_back</span>';
@@ -8187,9 +8301,9 @@ function openDetail(id, fromRest, overridePrevPage) {
   const heroScore = document.getElementById('det-sring-hero');
   if (heroScore) {
     heroScore.style.background = s.b; heroScore.style.color = s.t; heroScore.style.borderColor = s.br;
-    heroScore.textContent = f.score; heroScore.className = 'det-hero-score';
-    heroScore.title = 'Tap to learn about score ' + f.score;
-    heroScore.onclick = () => openScoreSheet(f.score, f.name);
+    heroScore.textContent = esc; heroScore.className = 'det-hero-score';
+    heroScore.title = 'Tap to learn about score ' + esc;
+    heroScore.onclick = () => openScoreSheet(esc, f.name);
   }
 
   document.getElementById('det-emoji').innerHTML = emojiImg(f.emoji, EMO.lg);
@@ -8203,6 +8317,12 @@ function openDetail(id, fromRest, overridePrevPage) {
   if (f.sodium > 1200) nutWarnings['na'] = { icon: 'water_drop', label: 'High sodium', detail: 'This item has over ' + f.sodium + 'mg of sodium — more than half the daily limit of 2,300mg. High sodium intake raises blood pressure over time.' };
   if (f.sat_fat > 10)  nutWarnings['sf'] = { icon: 'favorite',   label: 'High sat. fat', detail: 'This item has ' + f.sat_fat + 'g of saturated fat. The daily limit is 20–24g. Too much sat. fat can raise LDL cholesterol over time.' };
   if (f.kj > 3000)     nutWarnings['e']  = { icon: 'local_fire_department', label: 'High energy', detail: 'At ' + kc(f.kj) + ' cal (' + f.kj + ' kJ) this is over a third of the average daily intake (8,700 kJ / ~2,080 cal) in a single serve.' };
+  /* High added sugar — excludes natural_sugar items and high-fibre items (fibre > 5g/1000kJ) */
+  const _suPk = f.kj > 0 ? (f.sugar / f.kj * 1000) : 0;
+  const _fiPk = f.kj > 0 && f.fibre ? (f.fibre / f.kj * 1000) : 0;
+  if (!f.natural_sugar && _fiPk <= 5 && _suPk > 12) {
+    nutWarnings['su'] = { icon: 'cookie', label: 'High added sugar', detail: 'At ' + f.sugar + 'g total sugar (' + Math.round(_suPk) + 'g per 1,000 kJ), this item is high in added sugar. Regular intake is linked to weight gain and increased risk of type 2 diabetes.' };
+  }
   curNutWarnings = nutWarnings;
 
   /* ── Zone 6: Female daily % (default) + Male daily % tabs ── */
@@ -8440,9 +8560,9 @@ function renderHealthierOptions(f) {
     : 'Same score, meaningfully fewer calories';
 
   const cards = picks.map(x => {
-    const s = SC(x.score), sc = x.score.toLowerCase();
+    const exs = effectiveScore(x); const s = SC(exs), sc = exs.toLowerCase();
     return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},${dFR ? 'true' : 'false'})">
-      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${x.score}</span>
+      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exs}</span>
       <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
       <div class="ho-name">${x.name}</div>
       <div class="ho-chain">${x.chain}</div>
@@ -9202,7 +9322,7 @@ function renderCmp() {
   const so = {A:0,B:1,C:2,D:3};
 
   const headerCards = items.map(f => {
-    const s = SC(f.score), sc = f.score.toLowerCase(), cal = kc(f.kj);
+    const es = effectiveScore(f); const s = SC(es), sc = es.toLowerCase(), cal = kc(f.kj);
     return `<div class="cmp-crd">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${s.t};border-radius:var(--shape-md) var(--shape-md) 0 0"></div>
       <button style="position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;
@@ -9214,7 +9334,7 @@ function renderCmp() {
         <div style="font-size:24px;margin-bottom:4px">${emojiImg(f.emoji,EMO.sm)}</div>
         <div style="display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;
              border-radius:var(--shape-sm);background:${s.b};color:${s.t};border:1px solid ${s.br};
-             margin-bottom:6px;cursor:pointer" onclick="openScoreSheet('${f.score}',${f.id})">${f.score}</div>
+             margin-bottom:6px;cursor:pointer" onclick="openScoreSheet('${es}',${f.id})">${es}</div>
         <div style="font-size:12px;font-weight:600;color:var(--md-on-surface);line-height:1.3;margin-bottom:2px">${f.name}</div>
         <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
         <div style="margin-top:6px"><span style="font-size:18px;font-weight:700;color:var(--md-primary);font-family:var(--font-display)">${cal}</span><span style="font-size:11px;color:var(--md-on-surface-variant)"> cal</span></div>
@@ -9223,11 +9343,11 @@ function renderCmp() {
   }).join('');
 
   /* Insight cards */
-  const best = [...items].sort((a,b) => so[a.score]-so[b.score] || a.kj-b.kj)[0];
+  const best = [...items].sort((a,b) => so[effectiveScore(a)]-so[effectiveScore(b)] || a.kj-b.kj)[0];
   const ins = [];
   ins.push({t:'g', ico:'military_tech', l:'Best pick',
     b:`<b style="color:var(--md-primary)">${best.name}</b> is the healthiest — `
-     +`<b style="color:var(--md-primary)">${kc(best.kj)} cal</b>, ${best.protein}g protein (score ${best.score}).`});
+     +`<b style="color:var(--md-primary)">${kc(best.kj)} cal</b>, ${best.protein}g protein (score ${effectiveScore(best)}).`});
   const mx=Math.max(...items.map(f=>f.kj)), mn=Math.min(...items.map(f=>f.kj)), gap=mx-mn;
   if (gap>=400) ins.push({t:'a', ico:'bolt', l:'Energy gap',
     b:`There's a <b style="color:var(--md-secondary)">${kc(gap)} cal (${gap} kJ)</b> difference between the lowest and highest options.`});
