@@ -1292,9 +1292,9 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
    Active state borrows primary-container tint when filters are applied. ── */
 .pills .pill-filter {
   flex-shrink: 0;
-  background: transparent;
-  border: 1px solid var(--md-outline);
-  color: var(--md-on-surface-variant);
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-primary);
+  color: var(--md-primary);
   width: 40px;
   padding: 0;
   display: inline-flex; align-items: center; justify-content: center;
@@ -1303,10 +1303,11 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   border-radius: var(--shape-full);
   height: 34px;
   transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
 }
 .pills .pill-filter:hover {
-  background: rgba(126,200,80,0.08);
-  color: var(--md-on-surface);
+  background: var(--md-surface-container-high);
+  opacity: 0.85;
 }
 .pills .pill-filter.active {
   background: var(--md-surface-container-high);
@@ -1465,9 +1466,10 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   flex-shrink: 0;
 }
 
-/* Native browser: position pill just below the OS status bar */
+/* Native browser: fixed to viewport top — browser already accounts for status bar */
 body.native #filter-float-pill {
-  top: env(safe-area-inset-top, 80px);
+  position: fixed;
+  top: 0;
 }
 
 /* ── Sort action sheet — compact, no scroll ── */
@@ -7176,6 +7178,91 @@ const foods = [
   {id:966, name:"Cinnamon Scrolls - 4pk", chain:"Domino's", cat:"sides", emoji:"🍰", kj:2750, protein:13.3, fat:25.0, carbs:92.4, sugar:24.7, sodium:1050, sat_fat:5.2, fibre:2.0, score:"B"},
   {id:967, name:"Kapiti Salted Caramel Ice Cream", chain:"Domino's", cat:"sides", emoji:"🍰", kj:594, protein:1.6, fat:7.3, carbs:17.4, sugar:12.9, sodium:101, sat_fat:4.9, fibre:2.0, score:"D"},
 
+  /* ── Taco Bell — verified Taco Bell NZ Nutrition Guide Aug 2023
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:968, name:"2 Crispy Chicken Strips with Chipotle Dip", chain:"Taco Bell", cat:"chicken", emoji:"🍗", kj:1302, protein:19.6, fat:20.9, carbs:7.8, sugar:2.3, sodium:869, sat_fat:1.9, fibre:7.9, score:"C"},
+  {id:969, name:"2 Crispy Chicken Strips with Creamy Jalapeno Dip", chain:"Taco Bell", cat:"chicken", emoji:"🍗", kj:1318, protein:19.7, fat:21.2, carbs:8.2, sugar:2.3, sodium:861, sat_fat:2.0, fibre:7.4, score:"C"},
+  {id:970, name:"2 Crispy Chicken Strips with Spicy Ranch Dip", chain:"Taco Bell", cat:"chicken", emoji:"🍗", kj:1296, protein:19.7, fat:20.6, carbs:7.8, sugar:2.5, sodium:883, sat_fat:1.9, fibre:8.2, score:"C"},
+  {id:971, name:"Assorted Platter", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:4941, protein:56.2, fat:64.1, carbs:85.8, sugar:6.2, sodium:2083, sat_fat:19.5, fibre:17.7, score:"C"},
+  {id:972, name:"Bean Cantina Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:1860, protein:13.0, fat:12.1, carbs:64.7, sugar:3.4, sodium:809, sat_fat:3.3, fibre:6.9, score:"B"},
+  {id:973, name:"Bean Cali Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2041, protein:15.6, fat:17.6, carbs:61.3, sugar:6.5, sodium:849, sat_fat:6.8, fibre:6.5, score:"C"},
+  {id:974, name:"Bean Cheese Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:1475, protein:8.9, fat:13.8, carbs:45.6, sugar:3.6, sodium:599, sat_fat:4.0, fibre:0.7, score:"C"},
+  {id:975, name:"Bean Cheesy Gordita Crunch", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:2039, protein:20.0, fat:23.1, carbs:45.0, sugar:4.5, sodium:619, sat_fat:8.5, fibre:7.8, score:"B"},
+  {id:976, name:"Bean Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:2200, protein:12.8, fat:20.4, carbs:69.0, sugar:5.9, sodium:751, sat_fat:8.0, fibre:4.5, score:"B"},
+  {id:977, name:"Bean Crunchy Taco", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:508, protein:4.1, fat:4.7, carbs:13.8, sugar:0.6, sodium:75, sat_fat:1.3, fibre:1.4, score:"B"},
+  {id:978, name:"Bean Crunchy Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:691, protein:4.8, fat:8.7, carbs:14.8, sugar:1.7, sodium:90, sat_fat:3.9, fibre:1.5, score:"C"},
+  {id:979, name:"Bean Double Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:2850, protein:16.4, fat:27.5, carbs:86.7, sugar:7.4, sodium:995, sat_fat:8.8, fibre:5.5, score:"B"},
+  {id:980, name:"Bean Grande Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2978, protein:19.9, fat:23.4, carbs:97.9, sugar:7.3, sodium:1168, sat_fat:9.7, fibre:9.0, score:"B"},
+  {id:981, name:"Bean Grilled Stuft Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2624, protein:19.6, fat:20.8, carbs:83.2, sugar:6.6, sodium:986, sat_fat:9.2, fibre:6.3, score:"B"},
+  {id:982, name:"Bean Mini Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:907, protein:7.3, fat:10.0, carbs:22.3, sugar:2.0, sodium:356, sat_fat:3.4, fibre:2.1, score:"B"},
+  {id:983, name:"Bean Power Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:2148, protein:15.5, fat:15.3, carbs:70.5, sugar:4.7, sodium:877, sat_fat:5.3, fibre:7.5, score:"B"},
+  {id:984, name:"Bean Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:2279, protein:26.5, fat:28.5, carbs:41.3, sugar:3.4, sodium:807, sat_fat:16.0, fibre:5.0, score:"C"},
+  {id:985, name:"Bean Soft Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:855, protein:6.7, fat:8.6, carbs:22.9, sugar:2.5, sodium:261, sat_fat:5.1, fibre:1.4, score:"C"},
+  {id:986, name:"Bean Loaded Fries", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:3939, protein:16.1, fat:46.7, carbs:105.9, sugar:6.0, sodium:1130, sat_fat:6.8, fibre:12.0, score:"B"},
+  {id:987, name:"Bean Loaded Nachos", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:2835, protein:12.2, fat:35.9, carbs:70.2, sugar:5.2, sodium:683, sat_fat:6.1, fibre:8.2, score:"B"},
+  {id:988, name:"Beef Cantina Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:2260, protein:22.4, fat:22.5, carbs:59.2, sugar:3.3, sodium:1320, sat_fat:8.1, fibre:6.9, score:"C"},
+  {id:989, name:"Beef Cali Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2239, protein:20.3, fat:22.7, carbs:58.4, sugar:6.5, sodium:1106, sat_fat:9.2, fibre:6.5, score:"C"},
+  {id:990, name:"Beef Cheesy Gordita Crunch", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:2238, protein:24.7, fat:28.3, carbs:42.1, sugar:4.4, sodium:875, sat_fat:10.9, fibre:7.8, score:"B"},
+  {id:991, name:"Beef Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:2398, protein:17.5, fat:25.6, carbs:66.2, sugar:5.9, sodium:1008, sat_fat:10.4, fibre:4.5, score:"C"},
+  {id:992, name:"Beef Crunchy Taco", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:706, protein:8.8, fat:9.9, carbs:10.9, sugar:0.6, sodium:332, sat_fat:3.6, fibre:1.4, score:"C"},
+  {id:993, name:"Beef Crunchy Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:887, protein:9.4, fat:13.9, carbs:11.9, sugar:1.5, sodium:347, sat_fat:6.2, fibre:1.4, score:"C"},
+  {id:994, name:"Beef Double Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:3247, protein:25.8, fat:37.8, carbs:81.0, sugar:7.3, sodium:1508, sat_fat:13.6, fibre:5.5, score:"C"},
+  {id:995, name:"Beef Grande Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:3507, protein:31.4, fat:33.8, carbs:96.7, sugar:7.4, sodium:1729, sat_fat:14.5, fibre:9.0, score:"C"},
+  {id:996, name:"Beef Grilled Stuft Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:3020, protein:29.0, fat:31.2, carbs:77.5, sugar:6.5, sodium:1499, sat_fat:13.9, fibre:6.3, score:"C"},
+  {id:997, name:"Beef Loaded Fries", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:4336, protein:25.5, fat:57.0, carbs:100.3, sugar:5.9, sodium:1643, sat_fat:11.6, fibre:12.0, score:"C"},
+  {id:998, name:"Beef Loaded Nachos", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:3231, protein:21.6, fat:46.2, carbs:64.5, sugar:5.1, sodium:1196, sat_fat:10.8, fibre:8.2, score:"C"},
+  {id:999, name:"Beef Power Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:2544, protein:24.9, fat:25.6, carbs:64.9, sugar:4.5, sodium:1390, sat_fat:10.0, fibre:7.5, score:"C"},
+  {id:1000, name:"Beef Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:2477, protein:31.1, fat:33.7, carbs:38.5, sugar:3.4, sodium:1063, sat_fat:18.4, fibre:5.0, score:"C"},
+  {id:1001, name:"Beef Soft Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:1053, protein:11.4, fat:13.8, carbs:20.1, sugar:2.4, sodium:517, sat_fat:7.5, fibre:1.4, score:"C"},
+  {id:1002, name:"Beefy Cheese Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:1674, protein:13.6, fat:19.0, carbs:42.8, sugar:3.6, sodium:856, sat_fat:6.4, fibre:0.7, score:"C"},
+  {id:1003, name:"Chipotle Crunch Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:1990, protein:18.4, fat:18.2, carbs:56.7, sugar:3.3, sodium:877, sat_fat:6.4, fibre:3.6, score:"C"},
+  {id:1004, name:"Chicken Cantina Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:2010, protein:24.6, fat:13.6, carbs:60.5, sugar:3.0, sodium:1080, sat_fat:3.8, fibre:7.8, score:"A"},
+  {id:1005, name:"Chicken Cali Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2116, protein:21.4, fat:18.3, carbs:59.1, sugar:6.3, sodium:984, sat_fat:7.0, fibre:7.0, score:"C"},
+  {id:1006, name:"Chicken Cheesy Gordita Crunch", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:2114, protein:25.8, fat:23.9, carbs:42.8, sugar:4.2, sodium:753, sat_fat:8.8, fibre:8.2, score:"B"},
+  {id:1007, name:"Chicken Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:2275, protein:18.6, fat:21.1, carbs:66.9, sugar:5.7, sodium:886, sat_fat:8.2, fibre:4.9, score:"B"},
+  {id:1008, name:"Chicken Crunchy Taco", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:583, protein:9.9, fat:5.5, carbs:11.6, sugar:0.4, sodium:210, sat_fat:1.5, fibre:1.8, score:"B"},
+  {id:1009, name:"Chicken Crunchy Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:763, protein:10.6, fat:9.4, carbs:12.6, sugar:1.4, sodium:225, sat_fat:4.1, fibre:1.9, score:"C"},
+  {id:1010, name:"Chicken Double Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:3000, protein:28.0, fat:28.9, carbs:82.4, sugar:7.0, sodium:1264, sat_fat:9.3, fibre:6.4, score:"C"},
+  {id:1011, name:"Chicken Grande Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:3261, protein:33.6, fat:25.0, carbs:98.1, sugar:7.2, sodium:1486, sat_fat:10.2, fibre:9.9, score:"C"},
+  {id:1012, name:"Chicken Grilled Stuft Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2774, protein:31.2, fat:22.3, carbs:79.0, sugar:6.2, sodium:1255, sat_fat:9.6, fibre:7.2, score:"B"},
+  {id:1013, name:"Chicken Loaded Fries", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:4090, protein:27.7, fat:48.1, carbs:101.7, sugar:5.6, sodium:1399, sat_fat:7.3, fibre:12.9, score:"B"},
+  {id:1014, name:"Chicken Loaded Nachos", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:2985, protein:23.8, fat:37.3, carbs:65.9, sugar:4.8, sodium:952, sat_fat:6.5, fibre:9.1, score:"B"},
+  {id:1015, name:"Chicken Power Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:2298, protein:27.1, fat:16.8, carbs:66.3, sugar:4.2, sodium:1147, sat_fat:5.8, fibre:8.3, score:"B"},
+  {id:1016, name:"Chicken Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:2354, protein:32.3, fat:29.3, carbs:39.2, sugar:3.2, sodium:942, sat_fat:16.2, fibre:5.5, score:"C"},
+  {id:1017, name:"Chicken Soft Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:930, protein:12.5, fat:9.3, carbs:20.8, sugar:2.3, sodium:395, sat_fat:5.3, fibre:1.9, score:"C"},
+  {id:1018, name:"Chocodilla", chain:"Taco Bell", cat:"sides", emoji:"🍫", kj:993, protein:4.1, fat:10.1, carbs:30.1, sugar:13.6, sodium:171, sat_fat:5.5, fibre:1.0, score:"C"},
+  {id:1019, name:"Cinnamon Twists", chain:"Taco Bell", cat:"sides", emoji:"🍭", kj:452, protein:0.9, fat:4.8, carbs:15.2, sugar:7.1, sodium:85, sat_fat:0.5, fibre:0.4, score:"C"},
+  {id:1020, name:"Crispy Chicken Taco", chain:"Taco Bell", cat:"chicken", emoji:"🍗", kj:1142, protein:14.3, fat:13.0, carbs:21.9, sugar:3.2, sodium:634, sat_fat:3.3, fibre:5.9, score:"B"},
+  {id:1021, name:"Crispy Chicken Burrito", chain:"Taco Bell", cat:"chicken", emoji:"🍗", kj:2450, protein:29.9, fat:24.0, carbs:57.4, sugar:4.6, sodium:1210, sat_fat:7.3, fibre:10.4, score:"B"},
+  {id:1022, name:"Large Chips", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:2102, protein:7.0, fat:23.2, carbs:63.2, sugar:0.7, sodium:421, sat_fat:2.1, fibre:6.5, score:"B"},
+  {id:1023, name:"Large Nachos", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:2205, protein:6.6, fat:28.2, carbs:58.6, sugar:0.9, sodium:269, sat_fat:2.8, fibre:6.7, score:"B"},
+  {id:1024, name:"Mini Beef Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:1105, protein:11.9, fat:15.2, carbs:19.5, sugar:2.0, sodium:612, sat_fat:5.8, fibre:2.1, score:"C"},
+  {id:1025, name:"Mini Chicken Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:982, protein:13.1, fat:10.8, carbs:20.2, sugar:1.8, sodium:490, sat_fat:3.6, fibre:2.5, score:"B"},
+  {id:1026, name:"Mini Pork Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:1106, protein:12.8, fat:14.7, carbs:19.5, sugar:2.2, sodium:583, sat_fat:6.3, fibre:2.1, score:"C"},
+  {id:1027, name:"Pork Cantina Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:2260, protein:24.2, fat:21.4, carbs:59.1, sugar:3.7, sodium:1260, sat_fat:9.1, fibre:6.8, score:"C"},
+  {id:1028, name:"Pork Cali Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2240, protein:21.2, fat:22.2, carbs:58.4, sugar:6.7, sodium:1077, sat_fat:9.6, fibre:6.6, score:"C"},
+  {id:1029, name:"Pork Cheesy Gordita Crunch", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:2239, protein:25.5, fat:27.8, carbs:42.1, sugar:4.6, sodium:846, sat_fat:11.4, fibre:7.8, score:"C"},
+  {id:1030, name:"Pork Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:2399, protein:18.4, fat:25.1, carbs:66.2, sugar:6.1, sodium:978, sat_fat:10.9, fibre:4.5, score:"C"},
+  {id:1031, name:"Pork Crunchy Taco", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:707, protein:9.7, fat:9.4, carbs:10.9, sugar:0.8, sodium:302, sat_fat:4.1, fibre:1.4, score:"C"},
+  {id:1032, name:"Pork Crunchy Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:888, protein:10.3, fat:13.4, carbs:11.9, sugar:1.8, sodium:317, sat_fat:6.7, fibre:1.5, score:"C"},
+  {id:1033, name:"Pork Double Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:3249, protein:27.6, fat:36.8, carbs:81.1, sugar:7.7, sodium:1449, sat_fat:14.6, fibre:5.6, score:"C"},
+  {id:1034, name:"Pork Grande Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:3509, protein:33.1, fat:32.8, carbs:96.7, sugar:7.9, sodium:1671, sat_fat:15.4, fibre:9.1, score:"C"},
+  {id:1035, name:"Pork Grilled Stuft Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:3022, protein:30.8, fat:30.1, carbs:77.6, sugar:6.9, sodium:1440, sat_fat:14.9, fibre:6.3, score:"C"},
+  {id:1036, name:"Pork Loaded Fries", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:4338, protein:27.3, fat:56.0, carbs:100.3, sugar:6.3, sodium:1584, sat_fat:12.5, fibre:12.0, score:"C"},
+  {id:1037, name:"Pork Loaded Nachos", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:3233, protein:23.4, fat:45.2, carbs:64.5, sugar:5.5, sodium:1138, sat_fat:11.8, fibre:8.3, score:"C"},
+  {id:1038, name:"Pork Power Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:2546, protein:26.7, fat:24.6, carbs:64.9, sugar:5.0, sodium:1332, sat_fat:11.0, fibre:7.5, score:"C"},
+  {id:1039, name:"Pork Quesadilla", chain:"Taco Bell", cat:"sides", emoji:"🧀", kj:2478, protein:32.0, fat:33.2, carbs:38.5, sugar:3.6, sodium:1034, sat_fat:18.9, fibre:5.0, score:"C"},
+  {id:1040, name:"Pork Soft Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:1054, protein:12.2, fat:13.3, carbs:20.1, sugar:2.7, sodium:488, sat_fat:8.0, fibre:1.4, score:"C"},
+  {id:1041, name:"Regular Chips", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:1289, protein:4.3, fat:14.2, carbs:38.8, sugar:0.5, sodium:258, sat_fat:1.3, fibre:4.0, score:"B"},
+  {id:1042, name:"Regular Nachos", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:960, protein:2.9, fat:12.3, carbs:25.5, sugar:0.4, sodium:117, sat_fat:1.2, fibre:2.9, score:"B"},
+  {id:1043, name:"Vegan Cantina Bowl", chain:"Taco Bell", cat:"bowls", emoji:"🥗", kj:1688, protein:11.4, fat:7.0, carbs:66.6, sugar:4.5, sodium:761, sat_fat:1.3, fibre:8.2, score:"B"},
+  {id:1044, name:"Vegan Crunchwrap Supreme", chain:"Taco Bell", cat:"wraps", emoji:"🌯", kj:2059, protein:14.3, fat:14.8, carbs:69.7, sugar:6.0, sodium:715, sat_fat:5.4, fibre:6.3, score:"B"},
+  {id:1045, name:"Vegan Crunchy Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:556, protein:3.6, fat:5.5, carbs:15.0, sugar:1.5, sodium:124, sat_fat:0.8, fibre:2.5, score:"B"},
+  {id:1046, name:"Vegan Grilled Stuft Burrito", chain:"Taco Bell", cat:"burritos", emoji:"🌯", kj:2636, protein:17.5, fat:15.5, carbs:97.8, sugar:6.5, sodium:1096, sat_fat:5.8, fibre:9.0, score:"B"},
+  {id:1047, name:"Vegan Loaded Fries", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:3619, protein:15.9, fat:39.0, carbs:103.1, sugar:6.1, sodium:1025, sat_fat:4.2, fibre:14.4, score:"B"},
+  {id:1048, name:"Vegan Nachos Supreme", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:2675, protein:12.2, fat:32.2, carbs:67.7, sugar:5.9, sodium:676, sat_fat:3.8, fibre:11.3, score:"B"},
+  {id:1049, name:"Vegan Soft Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:722, protein:5.5, fat:5.4, carbs:23.1, sugar:2.4, sodium:295, sat_fat:2.0, fibre:2.5, score:"C"},
+
 ];
 
 const rests = [
@@ -7200,7 +7287,8 @@ const rests = [
   {name:"LJ's",       emoji:"🐟", score:"A", avg_kj:1825, brand:"#00539B", desc:"NZ's seafood takeaway chain. Fresh fish fillets — battered, crumbed or grilled. Grilled options are some of the healthiest items in the app."},
   {name:"Ponsonby Pies", emoji:"🥧", score:"B", avg_kj:2010, brand:"#C41230", desc:"Award-winning NZ pie chain — Great since '78. Huge range from classic mince to gourmet steak and chicken. A Kiwi staple."},
   {name:"Roll'd",       emoji:"🌿", score:"A", avg_kj:1868, brand:"#B5121B", desc:"Fresh Vietnamese kai — rice paper rolls, bánh mì, phở, bún and rice bowls. One of the healthiest fast food menus in the app."},
-  {name:"Takeaways",    emoji:"🐟", score:"A", avg_kj:1556, brand:"#1B6CA8", desc:"Your local NZ fish and chip shop. Classic Kiwi takeaways — battered fish, chips, fritters, hot dogs and more. Numbers are typical averages."}
+  {name:"Takeaways",    emoji:"🐟", score:"A", avg_kj:1556, brand:"#1B6CA8", desc:"Your local NZ fish and chip shop. Classic Kiwi takeaways — battered fish, chips, fritters, hot dogs and more. Numbers are typical averages."},
+  {name:"Taco Bell",    emoji:"🌮", score:"C", avg_kj:2114, brand:"#702082", desc:"The US Tex-Mex chain, now in Aotearoa. Tacos, burritos, crunchwraps and more — big flavour, big kJs. Vegan range available."}
 ];
 
 </script>
@@ -8476,6 +8564,9 @@ function openDetail(id, fromRest, overridePrevPage) {
 
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('pg-detail').classList.add('active');
+  /* Hide floating filter pill — openDetail bypasses nav() */
+  const _fp = document.getElementById('filter-float-pill');
+  if (_fp) _fp.classList.remove('visible');
 
   /* Scroll to top so the user lands at the food name, not the carousel */
   const ps = document.querySelector('#pg-detail .page-scroll');
