@@ -8239,8 +8239,7 @@ function renderRests() {
   document.getElementById('rl').innerHTML = fx.map(r => {
     const s = SC(r.score), it = foods.filter(f => f.chain === r.name);
     return `<div class="rest-card" onclick="openRest(this.dataset.name)" data-name="${r.name}">
-      <div class="rest-ico">${emojiImg(r.emoji,EMO.md)}</div>
-      <div style="flex:1"><div class="rest-name">${r.name}</div><div class="rest-meta">${it.length} item${it.length !== 1 ? 's' : ''} · avg ${kc(r.avg_kj)} cal / ${r.avg_kj}kJ</div></div>
+      <div style="flex:1"><div class="rest-name">${r.name}</div><div class="rest-meta">${it.length} item${it.length !== 1 ? 's' : ''}</div></div>
       <div style="display:flex;align-items:center;gap:10px">
         <div style="background:${s.b};color:${s.t};border:1px solid ${s.br};font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer"
             onclick="event.stopPropagation();openScoreSheet('${r.score}')"
