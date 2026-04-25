@@ -1162,7 +1162,60 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
    Matches each header's height exactly. */
 #search-scroll {
   padding-top: 124px;
+  transition: padding-top 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
+#search-scroll.recent-visible {
+  padding-top: 172px; /* 124 + 48px chips row */
+}
+
+/* ── Recent search chips row ──
+   M3 suggestion chips: shown on input focus (empty state only).
+   Animate in via max-height + opacity. ── */
+.recent-chips-row {
+  display: flex;
+  gap: 8px;
+  padding: 0 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.2s cubic-bezier(0.2, 0, 0, 1), opacity 0.15s ease, padding 0.2s cubic-bezier(0.2, 0, 0, 1);
+  scrollbar-width: none;
+}
+.recent-chips-row::-webkit-scrollbar { display: none; }
+.recent-chips-row.visible {
+  max-height: 48px;
+  opacity: 1;
+  padding: 8px 16px 4px;
+}
+/* M3 Suggestion chip: surface-container-high bg, history icon, label */
+.recent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px 0 8px;
+  border-radius: var(--shape-full);
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant, rgba(168,181,164,0.3));
+  color: var(--md-on-surface-variant);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.recent-chip:active {
+  background: var(--md-surface-container-highest, #2a342a);
+  color: var(--md-on-surface);
+}
+.recent-chip .ms { font-size: 16px; flex-shrink: 0; opacity: 0.7; }
 #pg-rmenu-scroll {
   padding-top: 122px; /* hero starts below filter bar */
 }
@@ -1368,6 +1421,80 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   transition: background 0.15s;
 }
 .fsh-clear:hover { background: var(--md-surface-container-high); }
+
+/* ── Dietary flag badges ──────────────────────────────────────────────────
+   Shown on food cards and detail page hero.
+   Dark-theme M3 colour tokens — light text on dark tinted bg.
+   ─────────────────────────────────────────────────────────────────────── */
+.diet-badges {
+  display: flex; flex-wrap: wrap; gap: 4px;
+  padding: 0 14px 10px;
+}
+.det-diet-badges {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  padding: 0; margin-top: 10px;
+}
+.diet-badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 10px; border-radius: var(--shape-full);
+  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+  line-height: 1.6; white-space: nowrap; letter-spacing: 0.3px;
+  cursor: pointer; user-select: none;
+  transition: opacity 0.12s;
+}
+.diet-badge:active { opacity: 0.7; }
+/* ── Dietary tooltip — M3 Rich Tooltip singleton ── */
+.diet-tooltip {
+  position: fixed; z-index: 9999;
+  max-width: 220px; min-width: 160px;
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--shape-md);
+  padding: 10px 12px 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  pointer-events: none;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.diet-tooltip.visible {
+  opacity: 1; transform: translateY(0);
+  pointer-events: auto;
+}
+.diet-tooltip-label {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+  color: var(--md-on-surface); margin-bottom: 3px;
+  display: flex; align-items: center; gap: 5px;
+}
+.diet-tooltip-desc {
+  font-family: var(--font-ui); font-size: 11.5px; font-weight: 400;
+  color: var(--md-on-surface-variant); line-height: 1.5;
+}
+.diet-badge.vegan        { background: #142B14; color: #7EC850; border: 1px solid #2A5C1A; }
+.diet-badge.vegetarian   { background: #112B1E; color: #63C890; border: 1px solid #1A5040; }
+.diet-badge.halal        { background: #0D2A38; color: #4FC3D4; border: 1px solid #175870; }
+.diet-badge.gf           { background: #2E1E00; color: #FFB347; border: 1px solid #5C3A00; }
+.diet-badge.dairy        { background: #0D1E38; color: #64B5F6; border: 1px solid #1A3870; }
+.diet-badge.nuts         { background: #2E1500; color: #FFCC80; border: 1px solid #5C2E00; }
+.diet-badge-caveat {
+  font-family: var(--font-ui); font-size: 10.5px;
+  color: var(--md-on-surface-variant); padding: 0 14px 10px;
+  line-height: 1.4;
+}
+.det-diet-caveat {
+  margin-top: 8px; padding: 8px 12px;
+  width: 100%; box-sizing: border-box;
+  background: var(--md-surface-container);
+  border-radius: var(--shape-md);
+  border-left: 3px solid #4FC3D4;
+  font-family: var(--font-ui); font-size: 11px;
+  color: var(--md-on-surface-variant); line-height: 1.5;
+}
+/* Filter sheet dietary section */
+.fsh-diet-note {
+  margin: 6px 20px 8px;
+  font-family: var(--font-ui); font-size: 11px;
+  color: var(--md-on-surface-variant); line-height: 1.5;
+}
 
 /* ── Sort controls row — sits above food list, below sticky header ── */
 .sort-controls {
@@ -1863,6 +1990,105 @@ body.native #filter-float-pill {
   transform: translateX(1px);
 }
 
+/* ── Favourites heart button on food card ── */
+.fc-fave {
+  width: 30px; height: 30px; padding: 0;
+  border-radius: var(--shape-full);
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  border: 1px solid var(--md-outline-variant);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.fc-fave .ms { font-size: 16px; }
+.fc-fave.faved { color: #FFB4AB; border-color: #FFB4AB; background: rgba(255,180,171,0.1); }
+.fc-fave:hover { background: color-mix(in srgb, var(--md-on-surface) 5%, transparent); }
+
+/* ── Heart button on detail topbar ── */
+.det-fave-btn {
+  width: 48px; height: 48px;
+  border-radius: var(--shape-full);
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  color: var(--md-on-surface); flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.det-fave-btn.faved { color: #FFB4AB; }
+.det-fave-btn:hover { background: rgba(255,255,255,0.06); }
+.det-fave-btn .ms { font-size: 22px; }
+
+/* ── M3 Rich tooltip — fave first-time education ── */
+#fave-tooltip {
+  position: fixed;
+  z-index: 80;
+  width: 232px;
+  background: var(--md-surface-container-highest);
+  border-radius: var(--shape-md);
+  padding: 12px 14px 14px;
+  box-shadow: 0 2px 6px 2px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.3);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.9) translateY(6px);
+  transition: opacity 0.18s ease, transform 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.07);
+}
+#fave-tooltip.show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+/* Caret pointing down toward the heart button */
+#fave-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  right: var(--tip-caret-x, 14px);
+  width: 12px; height: 12px;
+  background: var(--md-surface-container-highest);
+  transform: rotate(45deg);
+  border-right: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+/* Caret pointing up — used when tooltip renders below button */
+#fave-tooltip.tip-below::after {
+  bottom: auto;
+  top: -6px;
+  border-right: none; border-bottom: none;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  border-left: 1px solid rgba(255,255,255,0.07);
+}
+.fave-tip-title {
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 700;
+  color: var(--md-primary);
+  margin-bottom: 5px;
+}
+.fave-tip-body {
+  font-size: 12px; line-height: 1.5;
+  color: var(--md-on-surface-variant);
+}
+.fave-tip-body strong { color: var(--md-on-surface); font-weight: 600; }
+
+/* ── Faves page ── */
+.faves-topbar {
+  display: flex; align-items: center; padding: 4px 4px 0;
+  height: 54px; flex-shrink: 0;
+  background: var(--md-surface); gap: 4px;
+}
+.faves-title {
+  flex: 1; font-family: var(--font-display);
+  font-size: 17px; font-weight: 700; color: var(--md-on-surface); padding-left: 4px;
+}
+.faves-grid { padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+.faves-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 24px 24px; text-align: center; gap: 12px;
+}
+.faves-empty-icon { font-size: 48px; opacity: 0.35; }
+.faves-empty-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--md-on-surface); }
+.faves-empty-sub { font-size: 13px; color: var(--md-on-surface-variant); line-height: 1.5; }
+
 /* Legacy no-op (kept so any stale references don't break layout) */
 .fc-btn-tonal, .fc-btn-filled { display: none; }
 
@@ -2182,11 +2408,12 @@ body.native #filter-float-pill {
 }
 .det-hero-desc {
   font-size: 13px; color: var(--md-on-surface-variant); line-height: 1.5;
-  margin-bottom: 16px; padding-bottom: 16px;
-  border-bottom: 1px solid var(--md-outline-variant);
+  margin-bottom: 0;
 }
 .det-hero-energy {
   display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: nowrap;
+  margin-top: 16px; padding-top: 16px;
+  border-top: 1px solid var(--md-outline-variant);
   margin-bottom: 4px;
 }
 .det-emoji { font-size: 52px; line-height: 1; display:inline-flex; align-items:baseline; }
@@ -3463,6 +3690,63 @@ body.native #filter-float-pill {
 .card-sub-xs { font-size:11px; color:var(--md-on-surface-variant); line-height:1.4; }
 .card-meta { font-size:10px; color:var(--md-on-surface-variant); opacity:0.6; margin-top:6px; }
 
+/* ══════════════════════════════════════════
+   SKELETON LOADING  —  M3 shimmer pattern
+   ══════════════════════════════════════════ */
+@keyframes skel-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+/* Base shimmer bone — apply to any placeholder shape */
+.skel-bone {
+  background: linear-gradient(
+    90deg,
+    var(--md-surface-container-high) 25%,
+    #253028 50%,
+    var(--md-surface-container-high) 75%
+  );
+  background-size: 200% 100%;
+  animation: skel-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--shape-sm);
+}
+/* Full overlay inside a .page-scroll (position:relative already set) */
+.skel-layer {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  min-height: 100%;
+  z-index: 20;
+  background: var(--md-surface);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.22s ease;
+  padding: 0 16px 24px;
+  box-sizing: border-box;
+}
+/* For pages with page-content-area wrapper (search, rmenu) */
+.skel-layer.skel-no-pad { padding-left: 0; padding-right: 0; }
+/* Fade-out trigger class */
+.skel-layer.hiding { opacity: 0; }
+/* Skeleton row — horizontal flex with gap */
+.skel-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+/* Skeleton section block */
+.skel-sec {
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+/* Skeleton horizontal scroll strip (carousel preview) */
+.skel-hscroll {
+  display: flex;
+  gap: 10px;
+  overflow: hidden;
+  margin: 0 -16px;
+  padding: 0 16px;
+}
+
 </style>
 </head>
 <body>
@@ -3497,6 +3781,61 @@ body.native #filter-float-pill {
       <div class="page active" id="pg-home">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
         <div class="page-scroll">
+          <!-- ─── HOME SKELETON ─── -->
+          <div class="skel-layer" id="skel-home" aria-hidden="true">
+            <!-- topbar wordmark -->
+            <div style="height:16px"></div>
+            <div class="skel-bone" style="height:18px;width:90px;margin-bottom:20px;border-radius:var(--shape-full)"></div>
+            <!-- greeting card -->
+            <div class="skel-bone" style="height:120px;width:100%;border-radius:var(--shape-lg);margin-bottom:24px"></div>
+            <!-- section header -->
+            <div class="skel-row" style="margin-bottom:14px">
+              <div class="skel-bone" style="height:16px;width:90px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:13px;width:56px;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- category chips row -->
+            <div class="skel-hscroll" style="margin-bottom:24px">
+              <div class="skel-bone" style="height:72px;width:64px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:72px;width:64px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:72px;width:64px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:72px;width:64px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:72px;width:64px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:72px;width:64px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+            </div>
+            <!-- section header 2 -->
+            <div class="skel-row" style="margin-bottom:14px">
+              <div>
+                <div class="skel-bone" style="height:16px;width:130px;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:12px;width:90px;border-radius:var(--shape-full)"></div>
+              </div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:13px;width:50px;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- ho-card carousel -->
+            <div class="skel-hscroll" style="margin-bottom:24px">
+              <div class="skel-bone" style="height:130px;width:150px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+              <div class="skel-bone" style="height:130px;width:150px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+              <div class="skel-bone" style="height:130px;width:150px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+            </div>
+            <!-- section header 3 -->
+            <div class="skel-row" style="margin-bottom:14px">
+              <div>
+                <div class="skel-bone" style="height:16px;width:150px;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:12px;width:110px;border-radius:var(--shape-full)"></div>
+              </div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:13px;width:50px;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- restaurant tiles row -->
+            <div class="skel-hscroll">
+              <div class="skel-bone" style="height:80px;width:74px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:80px;width:74px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:80px;width:74px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:80px;width:74px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div class="skel-bone" style="height:80px;width:74px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+            </div>
+          </div>
 
           <!-- M3 top bar — wordmark + avatar -->
           <div class="home-topbar">
@@ -3524,6 +3863,18 @@ body.native #filter-float-pill {
         </button>
       </div>
     </div></div>
+          </div>
+
+          <!-- Your Faves — hidden until at least 1 fave exists -->
+          <div class="home-section" id="home-faves-section" style="display:none">
+            <div class="home-sec">
+              <div class="home-sec-text">
+                <div class="home-sec-title">Your faves</div>
+                <div class="home-sec-sub">Foods you've saved</div>
+              </div>
+              <span class="home-see-all" onclick="openFaves()">See all →</span>
+            </div>
+            <div class="home-scroll" id="home-faves"></div>
           </div>
 
           <!-- Categories -->
@@ -3582,67 +3933,7 @@ body.native #filter-float-pill {
               </div>
               <span class="home-see-all" onclick="goSearchLowCal()">See all →</span>
             </div>
-            <div class="home-scroll" id="home-hacks"><div class="ho-card score-a mh-110" onclick="openDetail(604,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍣</span></span>
-      <div class="ho-name">Shrimp Cocktail</div>
-      <div class="ho-chain">Smart Sushi</div>
-      <div class="ho-kj">201<span>cal / 842kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(93,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍗</span></span>
-      <div class="ho-name">Original Fillet</div>
-      <div class="ho-chain">KFC</div>
-      <div class="ho-kj">200<span>cal / 835kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(125,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍖</span></span>
-      <div class="ho-name">BBQ Ribs</div>
-      <div class="ho-chain">Nando's</div>
-      <div class="ho-kj">284<span>cal / 1190kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(453,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍗</span></span>
-      <div class="ho-name">Spicy Chicken Strips 3 pack</div>
-      <div class="ho-chain">Wendy's</div>
-      <div class="ho-kj">200<span>cal / 838kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(25,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🫓</span></span>
-      <div class="ho-name">Chicken Crave Pita</div>
-      <div class="ho-chain">Pita Pit</div>
-      <div class="ho-kj">329<span>cal / 1376kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(204,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍗</span></span>
-      <div class="ho-name">Seasoned Tenders (5 pack)</div>
-      <div class="ho-chain">Pizza Hut</div>
-      <div class="ho-kj">327<span>cal / 1368kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(317,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🥖</span></span>
-      <div class="ho-name">Chicken Strips Sub</div>
-      <div class="ho-chain">Subway</div>
-      <div class="ho-kj">337<span>cal / 1410kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(383,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍣</span></span>
-      <div class="ho-name">Sashimi Salmon</div>
-      <div class="ho-chain">St. Pierre's</div>
-      <div class="ho-kj">284<span>cal / 1190kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(239,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍔</span></span>
-      <div class="ho-name">Cheeseburger</div>
-      <div class="ho-chain">Burger King</div>
-      <div class="ho-kj">330<span>cal / 1380kJ</span></div>
-    </div><div class="ho-card score-a mh-110" onclick="openDetail(74,false)">
-      <span class="ho-badge" style="background:#002020;color:#80DEEA;border-color:#00474F">A</span>
-      <span class="ho-emoji"><span class="ms-34" aria-hidden="true">🍳</span></span>
-      <div class="ho-name">Bacon &amp; Egg McMuffin</div>
-      <div class="ho-chain">McDonald's</div>
-      <div class="ho-kj">356<span>cal / 1490kJ</span></div>
-    </div></div>
+            <div class="home-scroll" id="home-hacks"></div>
           </div>
 
           <!-- High Protein Snacks -->
@@ -3787,6 +4078,69 @@ body.native #filter-float-pill {
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
       </div>
+
+      <!-- ═══════════════════════════════════════════
+           PAGE: FAVES
+           ═══════════════════════════════════════════ -->
+      <div class="page" id="pg-faves">
+        <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
+        <div class="faves-topbar">
+          <button class="rmenu-appbar-back" onclick="nav('home')">
+            <span class="ms">arrow_back</span>
+          </button>
+          <div class="faves-title">Your favourites</div>
+        </div>
+        <div class="page-scroll">
+          <!-- ─── FAVES SKELETON ─── -->
+          <div class="skel-layer" id="skel-faves" aria-hidden="true" style="padding-top:12px">
+            <!-- 4 food-card skeletons -->
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:70%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:45%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:55%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:60%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:40%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:50%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:75%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:50%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:60%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:65%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:42%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:52%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+          </div>
+          <div id="faves-grid-wrap"></div>
+          <div style="height:24px"></div>
+        </div>
+        <div class="page-footer">
+          <div class="bnav">
+            <div class="nav-item on" onclick="nav('home')"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
+            <div class="nav-item" onclick="nav('search')"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
+            <div class="nav-item" onclick="nav('restaurants')"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
+            <div class="nav-item" onclick="nav('insights')"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          </div>
+          <div class="hi"><div class="hi-bar"></div></div>
+        </div>
+      </div>
+
       <div class="page" id="pg-search">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
 
@@ -3797,10 +4151,11 @@ body.native #filter-float-pill {
           <div style="padding:16px 16px 0">
             <div class="search-box">
               <span class="ms sz-20 txt-var">search</span>
-              <input id="si" type="text" placeholder="Search burgers, pies, pizza…" oninput="doSearch()">
+              <input id="si" type="text" placeholder="Search burgers, pies, pizza…" oninput="doSearch()" onfocus="showRecentChips()" onblur="hideRecentChipsDelayed()" onkeydown="onSearchKeyDown(event)">
               <button class="search-clear-btn hidden" id="search-clear-btn" onclick="clearSearch()" aria-label="Clear search"><span class="ms sz-20">close</span></button>
             </div>
           </div>
+          <div id="recent-chips-row" class="recent-chips-row" role="list" aria-label="Recent searches"></div>
           <div class="pills" id="cats">
             <button class="pill pill-filter" id="filter-btn-pill" onclick="openFilterSheet()" aria-label="Filter">
               <span class="ms sz-20">tune</span>
@@ -3831,6 +4186,52 @@ body.native #filter-float-pill {
         </div>
 
         <div class="page-scroll" id="search-scroll">
+          <!-- ─── SEARCH SKELETON ─── -->
+          <div class="skel-layer" id="skel-search" aria-hidden="true" style="padding-top:12px">
+            <!-- sort chip -->
+            <div class="skel-bone" style="height:32px;width:110px;border-radius:var(--shape-full);margin-bottom:14px"></div>
+            <!-- 5 food card rows -->
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:72%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:48%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:58%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:60%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:40%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:55%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:78%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:44%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:62%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:65%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:42%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:50%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+              <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+              <div style="flex:1;padding-top:4px">
+                <div class="skel-bone" style="height:14px;width:68%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                <div class="skel-bone" style="height:11px;width:46%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                <div class="skel-bone" style="height:11px;width:56%;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+          </div>
         <div class="sort-controls" id="sort-controls">
           <button class="sort-chip" id="sort-chip" onclick="openSortSheet()">
             <span class="ms">swap_vert</span>
@@ -3858,6 +4259,69 @@ body.native #filter-float-pill {
       <div class="page" id="pg-restaurants">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
         <div class="page-scroll">
+          <!-- ─── RESTAURANTS SKELETON ─── -->
+          <div class="skel-layer" id="skel-restaurants" aria-hidden="true" style="padding-top:16px">
+            <!-- topbar -->
+            <div class="skel-bone" style="height:22px;width:130px;border-radius:var(--shape-full);margin-bottom:8px"></div>
+            <div class="skel-bone" style="height:13px;width:200px;border-radius:var(--shape-full);margin-bottom:18px"></div>
+            <!-- search bar -->
+            <div class="skel-bone" style="height:44px;width:100%;border-radius:var(--shape-full);margin-bottom:14px"></div>
+            <!-- count + sort -->
+            <div class="skel-row" style="margin-bottom:12px">
+              <div class="skel-bone" style="height:12px;width:90px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:12px;width:70px;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- 6 rest-card rows -->
+            <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+              <div class="skel-bone" style="width:44px;height:44px;flex-shrink:0;border-radius:50%"></div>
+              <div style="flex:1">
+                <div class="skel-bone" style="height:14px;width:65%;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:11px;width:40%;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-bone" style="width:32px;height:28px;border-radius:var(--shape-sm)"></div>
+            </div>
+            <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+              <div class="skel-bone" style="width:44px;height:44px;flex-shrink:0;border-radius:50%"></div>
+              <div style="flex:1">
+                <div class="skel-bone" style="height:14px;width:55%;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:11px;width:35%;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-bone" style="width:32px;height:28px;border-radius:var(--shape-sm)"></div>
+            </div>
+            <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+              <div class="skel-bone" style="width:44px;height:44px;flex-shrink:0;border-radius:50%"></div>
+              <div style="flex:1">
+                <div class="skel-bone" style="height:14px;width:70%;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:11px;width:42%;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-bone" style="width:32px;height:28px;border-radius:var(--shape-sm)"></div>
+            </div>
+            <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+              <div class="skel-bone" style="width:44px;height:44px;flex-shrink:0;border-radius:50%"></div>
+              <div style="flex:1">
+                <div class="skel-bone" style="height:14px;width:60%;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:11px;width:38%;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-bone" style="width:32px;height:28px;border-radius:var(--shape-sm)"></div>
+            </div>
+            <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+              <div class="skel-bone" style="width:44px;height:44px;flex-shrink:0;border-radius:50%"></div>
+              <div style="flex:1">
+                <div class="skel-bone" style="height:14px;width:50%;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:11px;width:32%;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-bone" style="width:32px;height:28px;border-radius:var(--shape-sm)"></div>
+            </div>
+            <div class="skel-row" style="padding:14px 0">
+              <div class="skel-bone" style="width:44px;height:44px;flex-shrink:0;border-radius:50%"></div>
+              <div style="flex:1">
+                <div class="skel-bone" style="height:14px;width:75%;border-radius:var(--shape-full);margin-bottom:6px"></div>
+                <div class="skel-bone" style="height:11px;width:44%;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-bone" style="width:32px;height:28px;border-radius:var(--shape-sm)"></div>
+            </div>
+          </div>
         <div class="topbar"><div class="page-title">Restaurants</div><div class="page-sub">Restaurants and fast food across NZ</div></div>
         <div class="search-wrap" style="padding-top:0">
           <div class="search-box">
@@ -4005,6 +4469,60 @@ body.native #filter-float-pill {
         </div>
         <!-- List scroll: hero scrolls away, food list below -->
         <div class="page-scroll" id="pg-rmenu-scroll">
+          <!-- ─── RMENU SKELETON ─── -->
+          <div class="skel-layer" id="skel-rmenu" aria-hidden="true" style="padding-top:0;padding-left:0;padding-right:0">
+            <!-- hero block -->
+            <div class="skel-bone" style="height:130px;width:100%;border-radius:0;margin-bottom:0"></div>
+            <!-- count + filter row -->
+            <div class="skel-row" style="padding:12px 16px;margin-bottom:0">
+              <div class="skel-bone" style="height:12px;width:70px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:32px;width:80px;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- 5 food card rows -->
+            <div style="padding:0 16px">
+              <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+                <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+                <div style="flex:1;padding-top:4px">
+                  <div class="skel-bone" style="height:14px;width:70%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                  <div class="skel-bone" style="height:11px;width:45%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                  <div class="skel-bone" style="height:11px;width:55%;border-radius:var(--shape-full)"></div>
+                </div>
+              </div>
+              <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+                <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+                <div style="flex:1;padding-top:4px">
+                  <div class="skel-bone" style="height:14px;width:58%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                  <div class="skel-bone" style="height:11px;width:40%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                  <div class="skel-bone" style="height:11px;width:52%;border-radius:var(--shape-full)"></div>
+                </div>
+              </div>
+              <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+                <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+                <div style="flex:1;padding-top:4px">
+                  <div class="skel-bone" style="height:14px;width:76%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                  <div class="skel-bone" style="height:11px;width:48%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                  <div class="skel-bone" style="height:11px;width:60%;border-radius:var(--shape-full)"></div>
+                </div>
+              </div>
+              <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+                <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+                <div style="flex:1;padding-top:4px">
+                  <div class="skel-bone" style="height:14px;width:63%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                  <div class="skel-bone" style="height:11px;width:42%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                  <div class="skel-bone" style="height:11px;width:50%;border-radius:var(--shape-full)"></div>
+                </div>
+              </div>
+              <div class="skel-row" style="align-items:flex-start;padding:14px;background:var(--md-surface-container);border-radius:var(--shape-lg);margin-bottom:10px">
+                <div class="skel-bone" style="width:68px;height:68px;flex-shrink:0;border-radius:var(--shape-md)"></div>
+                <div style="flex:1;padding-top:4px">
+                  <div class="skel-bone" style="height:14px;width:68%;border-radius:var(--shape-full);margin-bottom:8px"></div>
+                  <div class="skel-bone" style="height:11px;width:43%;border-radius:var(--shape-full);margin-bottom:10px"></div>
+                  <div class="skel-bone" style="height:11px;width:54%;border-radius:var(--shape-full)"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         <div class="rest-hero" id="rest-hero-block">
           <div class="rest-hrow">
             <div class="rest-hico" id="rh-ico"></div>
@@ -4049,6 +4567,9 @@ body.native #filter-float-pill {
             <span class="ms">arrow_back</span>
           </button>
           <div class="flex-1"></div>
+          <button class="det-fave-btn" id="det-fave-btn" onclick="onFaveCard(curFood&&curFood.id)" title="Save to favourites">
+            <span class="ms" id="det-fave-ico">favorite_border</span>
+          </button>
           <button class="det-appbar-action" onclick="openShareSheet()" title="Share">
             <span class="ms">ios_share</span>
           </button>
@@ -4056,6 +4577,58 @@ body.native #filter-float-pill {
         </div>
 
         <div class="page-scroll" id="det-scroll">
+          <!-- ─── DETAIL SKELETON ─── -->
+          <div class="skel-layer" id="skel-detail" aria-hidden="true" style="padding-top:0;padding-left:0;padding-right:0">
+            <!-- hero block -->
+            <div class="skel-bone" style="height:200px;width:100%;border-radius:0;margin-bottom:0"></div>
+            <!-- tabs -->
+            <div class="skel-row" style="padding:14px 16px 0;gap:8px;margin-bottom:0">
+              <div class="skel-bone" style="height:36px;width:80px;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:36px;width:80px;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- 5 nutrition rows -->
+            <div style="padding:0 16px">
+              <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+                <div class="skel-bone" style="height:13px;width:80px;border-radius:var(--shape-full)"></div>
+                <div style="flex:1"></div>
+                <div class="skel-bone" style="height:13px;width:40px;border-radius:var(--shape-full)"></div>
+                <div class="skel-bone" style="height:8px;width:60px;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+                <div class="skel-bone" style="height:13px;width:90px;border-radius:var(--shape-full)"></div>
+                <div style="flex:1"></div>
+                <div class="skel-bone" style="height:13px;width:44px;border-radius:var(--shape-full)"></div>
+                <div class="skel-bone" style="height:8px;width:56px;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+                <div class="skel-bone" style="height:13px;width:70px;border-radius:var(--shape-full)"></div>
+                <div style="flex:1"></div>
+                <div class="skel-bone" style="height:13px;width:38px;border-radius:var(--shape-full)"></div>
+                <div class="skel-bone" style="height:8px;width:64px;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-row" style="padding:14px 0;border-bottom:1px solid var(--md-surface-container-high)">
+                <div class="skel-bone" style="height:13px;width:100px;border-radius:var(--shape-full)"></div>
+                <div style="flex:1"></div>
+                <div class="skel-bone" style="height:13px;width:42px;border-radius:var(--shape-full)"></div>
+                <div class="skel-bone" style="height:8px;width:58px;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-row" style="padding:14px 0">
+                <div class="skel-bone" style="height:13px;width:85px;border-radius:var(--shape-full)"></div>
+                <div style="flex:1"></div>
+                <div class="skel-bone" style="height:13px;width:46px;border-radius:var(--shape-full)"></div>
+                <div class="skel-bone" style="height:8px;width:52px;border-radius:var(--shape-full)"></div>
+              </div>
+            </div>
+            <!-- healthier options section -->
+            <div style="padding:0 16px;margin-top:8px">
+              <div class="skel-bone" style="height:16px;width:160px;border-radius:var(--shape-full);margin-bottom:12px"></div>
+              <div class="skel-hscroll" style="margin:0">
+                <div class="skel-bone" style="height:110px;width:140px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+                <div class="skel-bone" style="height:110px;width:140px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+                <div class="skel-bone" style="height:110px;width:140px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+              </div>
+            </div>
+          </div>
 
         <!-- Sticky compact bar: appears once hero scrolls away -->
         <div class="det-appbar hidden" id="det-appbar">
@@ -4077,6 +4650,7 @@ body.native #filter-float-pill {
             <div class="det-hero-score" id="det-sring-hero"></div>
           </div>
           <div class="det-hero-desc" id="det-hero-desc"></div>
+          <div id="det-diet-badges" class="det-diet-badges"></div>
           <div class="det-hero-energy">
             <div><span class="det-cal-num" id="det-cal"></span><span class="det-cal-unit">cal<span class="det-kj-secondary" id="det-kj-sec"></span></span></div>
             <button class="burn-btn" onclick="openBurnSheet()" aria-label="Burn it off">
@@ -4123,6 +4697,54 @@ body.native #filter-float-pill {
       <div class="page" id="pg-compare">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
         <div class="page-scroll">
+          <!-- ─── COMPARE SKELETON ─── -->
+          <div class="skel-layer" id="skel-compare" aria-hidden="true" style="padding-top:16px">
+            <!-- back button + title -->
+            <div class="skel-row" style="margin-bottom:16px">
+              <div class="skel-bone" style="width:36px;height:36px;border-radius:50%"></div>
+              <div class="skel-bone" style="height:18px;width:120px;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- 2 side-by-side header cards -->
+            <div class="skel-row" style="align-items:stretch;gap:10px;margin-bottom:20px">
+              <div style="flex:1">
+                <div class="skel-bone" style="height:120px;width:100%;border-radius:var(--shape-lg)"></div>
+              </div>
+              <div style="flex:1">
+                <div class="skel-bone" style="height:120px;width:100%;border-radius:var(--shape-lg)"></div>
+              </div>
+            </div>
+            <!-- 5 comparison rows -->
+            <div class="skel-row" style="margin-bottom:12px;padding:12px;background:var(--md-surface-container);border-radius:var(--shape-md)">
+              <div class="skel-bone" style="height:12px;width:70px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+            </div>
+            <div class="skel-row" style="margin-bottom:12px;padding:12px;background:var(--md-surface-container);border-radius:var(--shape-md)">
+              <div class="skel-bone" style="height:12px;width:80px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+            </div>
+            <div class="skel-row" style="margin-bottom:12px;padding:12px;background:var(--md-surface-container);border-radius:var(--shape-md)">
+              <div class="skel-bone" style="height:12px;width:60px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+            </div>
+            <div class="skel-row" style="margin-bottom:12px;padding:12px;background:var(--md-surface-container);border-radius:var(--shape-md)">
+              <div class="skel-bone" style="height:12px;width:90px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+            </div>
+            <div class="skel-row" style="margin-bottom:12px;padding:12px;background:var(--md-surface-container);border-radius:var(--shape-md)">
+              <div class="skel-bone" style="height:12px;width:75px;border-radius:var(--shape-full)"></div>
+              <div style="flex:1"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:12px;width:50px;border-radius:var(--shape-full)"></div>
+            </div>
+          </div>
         <div id="cmp-header"></div>
         <div id="cmp-content"></div>
         </div><!-- /page-scroll -->
@@ -4144,6 +4766,34 @@ body.native #filter-float-pill {
       <div class="page" id="pg-insights">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
         <div class="page-scroll">
+          <!-- ─── INSIGHTS SKELETON ─── -->
+          <div class="skel-layer" id="skel-insights" aria-hidden="true" style="padding-top:0;padding-left:0;padding-right:0">
+            <!-- hero -->
+            <div class="skel-bone" style="height:220px;width:100%;border-radius:0;margin-bottom:0"></div>
+            <!-- chip strip -->
+            <div style="display:flex;gap:8px;overflow:hidden;padding:12px 16px">
+              <div class="skel-bone" style="height:34px;width:90px;flex-shrink:0;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:34px;width:80px;flex-shrink:0;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:34px;width:75px;flex-shrink:0;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:34px;width:68px;flex-shrink:0;border-radius:var(--shape-full)"></div>
+              <div class="skel-bone" style="height:34px;width:60px;flex-shrink:0;border-radius:var(--shape-full)"></div>
+            </div>
+            <!-- carousel section header -->
+            <div style="padding:8px 16px 12px">
+              <div class="skel-row" style="margin-bottom:10px">
+                <div class="skel-bone" style="width:36px;height:36px;border-radius:var(--shape-md)"></div>
+                <div class="skel-bone" style="height:16px;width:140px;border-radius:var(--shape-full)"></div>
+                <div style="flex:1"></div>
+                <div class="skel-bone" style="height:24px;width:55px;border-radius:var(--shape-full)"></div>
+              </div>
+              <div class="skel-bone" style="height:12px;width:220px;border-radius:var(--shape-full);margin-bottom:14px"></div>
+            </div>
+            <!-- carousel cards -->
+            <div class="skel-hscroll" style="margin:0;padding:0 16px">
+              <div class="skel-bone" style="height:180px;width:280px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+              <div class="skel-bone" style="height:180px;width:280px;flex-shrink:0;border-radius:var(--shape-lg)"></div>
+            </div>
+          </div>
         <!-- ─── HERO HEADER ─── -->
         <div class="learn-hero">
           <!-- decorative background shapes -->
@@ -5025,6 +5675,12 @@ body.native #filter-float-pill {
       <span id="snackbar-msg">Done</span>
     </div>
 
+    <!-- M3 Rich tooltip — fave first-time education -->
+    <div id="fave-tooltip" role="tooltip" aria-live="polite">
+      <div class="fave-tip-title">Ka pai — saved to faves!</div>
+      <div class="fave-tip-body">Find it anytime on your home page under <strong>Your faves</strong>. Heart it again to remove it.</div>
+    </div>
+
     </div><!-- /app -->
 
     <!-- ═══════════════════════════════════════════
@@ -5032,6 +5688,12 @@ body.native #filter-float-pill {
          Used by the food detail page.
          ═══════════════════════════════════════════ -->
     <div class="sheet-scrim" id="sheet-scrim" onclick="closeAllSheets()"></div>
+
+    <!-- Dietary flag tooltip — singleton, positioned by openDietTooltip() -->
+    <div class="diet-tooltip" id="diet-tooltip" role="tooltip" aria-live="polite">
+      <div class="diet-tooltip-label" id="diet-tooltip-label"></div>
+      <div class="diet-tooltip-desc" id="diet-tooltip-desc"></div>
+    </div>
     <div class="bottom-sheet" id="share-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-header" id="sheet-header">
@@ -5146,6 +5808,26 @@ body.native #filter-float-pill {
           </div>
         </div>
       </div>
+        <!-- Dietary filters section -->
+        <div class="fsh-divider"></div>
+        <div class="fsh-section">
+          <div class="fsh-section-title">Dietary</div>
+          <div class="fsh-chips">
+            <button class="fsh-chip" id="fsh-vegan" onclick="toggleFilter('vegan',this)">
+              <span>🌿</span>Vegan
+            </button>
+            <button class="fsh-chip" id="fsh-vegetarian" onclick="toggleFilter('vegetarian',this)">
+              <span>🥬</span>Vegetarian
+            </button>
+            <button class="fsh-chip" id="fsh-halal" onclick="toggleFilter('halal',this)">
+              <span>☾</span>Halal
+            </button>
+            <button class="fsh-chip" id="fsh-gluten_free" onclick="toggleFilter('gluten_free',this)">
+              <span>🌾</span>Gluten-free
+            </button>
+          </div>
+          <div class="fsh-diet-note">Flags based on menu labelling &amp; chain certifications. Always confirm with staff for allergens.</div>
+        </div>
       <button class="fsh-clear" id="fsh-clear" onclick="clearFilters()">Clear all</button>
     </div>
 
@@ -7265,6 +7947,233 @@ const foods = [
 
 ];
 
+const DIET_FLAGS_DATA = {
+  13:["vegetarian"],
+  28:["vegetarian"],
+  53:["contains_dairy"],
+  78:["halal"],
+  79:["halal"],
+  80:["halal"],
+  81:["halal"],
+  82:["halal"],
+  83:["halal"],
+  84:["halal","vegetarian"],
+  85:["halal"],
+  86:["halal"],
+  87:["contains_dairy","halal"],
+  88:["contains_dairy","halal"],
+  89:["halal"],
+  90:["halal"],
+  91:["halal"],
+  92:["halal"],
+  93:["halal"],
+  94:["halal"],
+  95:["halal"],
+  96:["halal"],
+  97:["halal"],
+  98:["halal"],
+  99:["halal"],
+  100:["halal"],
+  101:["halal"],
+  102:["halal"],
+  103:["halal"],
+  104:["halal"],
+  105:["halal"],
+  106:["halal"],
+  107:["halal"],
+  108:["halal"],
+  109:["halal"],
+  110:["halal"],
+  111:["halal"],
+  112:["halal"],
+  113:["halal"],
+  114:["halal"],
+  115:["halal"],
+  116:["halal"],
+  117:["halal"],
+  118:["halal"],
+  119:["halal"],
+  120:["halal"],
+  121:["halal"],
+  122:["halal"],
+  123:["halal"],
+  124:["halal"],
+  125:["halal"],
+  126:["halal"],
+  127:["halal"],
+  128:["halal"],
+  129:["halal"],
+  130:["halal"],
+  131:["halal"],
+  132:["halal"],
+  133:["halal"],
+  134:["halal"],
+  135:["halal"],
+  136:["halal"],
+  137:["halal"],
+  138:["halal"],
+  139:["halal"],
+  140:["halal"],
+  141:["halal"],
+  142:["halal"],
+  143:["halal"],
+  144:["halal"],
+  145:["halal"],
+  146:["halal"],
+  147:["halal"],
+  148:["halal"],
+  149:["halal"],
+  150:["halal"],
+  151:["halal"],
+  152:["halal"],
+  153:["contains_dairy","halal"],
+  154:["halal"],
+  167:["contains_dairy"],
+  168:["vegetarian"],
+  171:["contains_dairy"],
+  173:["vegetarian"],
+  182:["vegetarian"],
+  184:["contains_dairy"],
+  185:["vegan","vegetarian"],
+  186:["vegetarian"],
+  220:["vegan","vegetarian"],
+  230:["contains_dairy"],
+  232:["contains_dairy"],
+  234:["contains_dairy"],
+  236:["contains_dairy"],
+  259:["contains_dairy"],
+  260:["vegan","vegetarian"],
+  261:["vegan","vegetarian"],
+  262:["contains_dairy","vegetarian"],
+  263:["vegan","vegetarian"],
+  264:["contains_dairy","vegetarian"],
+  265:["vegan","vegetarian"],
+  266:["vegan","vegetarian"],
+  267:["vegan","vegetarian"],
+  270:["contains_dairy"],
+  291:["contains_dairy"],
+  292:["contains_dairy"],
+  293:["contains_dairy"],
+  294:["contains_dairy"],
+  295:["contains_dairy"],
+  305:["contains_dairy"],
+  306:["contains_dairy"],
+  307:["contains_dairy"],
+  308:["contains_dairy"],
+  309:["contains_dairy"],
+  310:["contains_dairy"],
+  311:["contains_dairy"],
+  312:["contains_dairy"],
+  313:["contains_dairy"],
+  325:["vegetarian"],
+  329:["vegetarian"],
+  330:["vegetarian"],
+  334:["contains_dairy"],
+  345:["contains_dairy"],
+  390:["vegetarian"],
+  391:["vegetarian"],
+  392:["contains_dairy"],
+  396:["vegetarian"],
+  397:["vegan","vegetarian"],
+  398:["vegan","vegetarian"],
+  399:["vegan","vegetarian"],
+  421:["contains_dairy"],
+  423:["vegan","vegetarian"],
+  426:["contains_dairy"],
+  467:["contains_dairy"],
+  470:["contains_dairy"],
+  471:["contains_dairy"],
+  473:["contains_dairy"],
+  474:["contains_dairy"],
+  475:["contains_dairy"],
+  476:["contains_dairy"],
+  477:["contains_dairy"],
+  478:["contains_dairy"],
+  536:["vegan","vegetarian"],
+  537:["vegan","vegetarian"],
+  538:["vegetarian"],
+  539:["vegetarian"],
+  540:["contains_dairy"],
+  545:["vegetarian"],
+  547:["vegan","vegetarian"],
+  548:["vegan","vegetarian"],
+  585:["vegetarian"],
+  586:["vegetarian"],
+  625:["contains_dairy"],
+  630:["vegetarian"],
+  665:["vegetarian"],
+  673:["contains_nuts"],
+  682:["contains_nuts"],
+  702:["contains_dairy"],
+  704:["contains_dairy"],
+  711:["contains_dairy"],
+  715:["contains_dairy"],
+  717:["contains_dairy"],
+  723:["contains_dairy"],
+  724:["contains_dairy"],
+  726:["contains_dairy"],
+  727:["contains_dairy"],
+  758:["vegan","vegetarian"],
+  759:["vegan","vegetarian"],
+  844:["vegetarian"],
+  849:["contains_dairy"],
+  850:["contains_dairy"],
+  851:["contains_dairy"],
+  852:["contains_dairy"],
+  853:["contains_dairy"],
+  854:["contains_dairy"],
+  855:["contains_dairy"],
+  856:["contains_dairy"],
+  857:["contains_dairy"],
+  861:["contains_dairy"],
+  867:["contains_dairy"],
+  869:["contains_dairy"],
+  872:["contains_dairy"],
+  875:["contains_dairy"],
+  880:["contains_dairy"],
+  881:["contains_dairy"],
+  887:["contains_dairy"],
+  890:["contains_dairy"],
+  901:["contains_dairy"],
+  902:["contains_dairy"],
+  906:["contains_dairy"],
+  919:["contains_dairy"],
+  922:["vegan","vegetarian"],
+  923:["vegan","vegetarian"],
+  924:["contains_dairy"],
+  928:["contains_dairy"],
+  929:["contains_dairy"],
+  931:["contains_dairy"],
+  935:["contains_dairy"],
+  936:["contains_dairy"],
+  937:["contains_dairy"],
+  938:["contains_dairy"],
+  940:["contains_dairy"],
+  943:["contains_dairy"],
+  951:["contains_dairy"],
+  953:["contains_dairy"],
+  958:["contains_dairy"],
+  959:["contains_dairy"],
+  967:["contains_dairy"],
+  974:["contains_dairy"],
+  975:["contains_dairy"],
+  990:["contains_dairy"],
+  1002:["contains_dairy"],
+  1006:["contains_dairy"],
+  1029:["contains_dairy"],
+  1043:["vegan","vegetarian"],
+  1044:["vegan","vegetarian"],
+  1045:["vegan","vegetarian"],
+  1046:["vegan","vegetarian"],
+  1047:["vegan","vegetarian"],
+  1048:["vegan","vegetarian"],
+  1049:["vegan","vegetarian"],
+};
+
+/* Helper — returns array of dietary flag strings for a food item */
+function getFoodFlags(f) { return DIET_FLAGS_DATA[f.id] || []; }
+
+
 const rests = [
   /* brand: primary brand colour used as a subtle tint on cards + restaurant header pages. */
   {name:"Pita Pit",     emoji:"🫓", score:"A", avg_kj:1428, brand:"#009B3A", desc:"Fresh-made pitas stuffed to order. One of the better fast food options in Aotearoa — high protein, reasonable kJs."},
@@ -7324,14 +8233,50 @@ const BW  = s  => ({A:'90%',B:'70%',C:'45%',D:'18%'}[s]);
 let catSel='all', cmpList=[], sortLo=true, rsfSel='all', rSB=true;
 let lastSearch = null; // { q: '', cat: 'all', label: 'Burgers' } | null — most recent meaningful search
 let curRest=null, mSL=true, mCatSel='all', dFR=false, curFood=null, prevPage='search';
-let srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false };
+let srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
 let searchInteracted = false;
 let prevRestPage = 'restaurants';
 let savedPrevPage = 'search';
-let rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false };
+let rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
 let filterCtx = 'search'; /* which page opened the filter sheet */
 
 /* ── Navigation ── */
+/* ══════════════════════════════════════════
+   SKELETON HELPERS  —  M3 shimmer show/hide
+   ══════════════════════════════════════════ */
+var _skelTimers = {};
+/**
+ * showSkel(id) — reveal skeleton layer, scroll host to top.
+ * id: one of 'home','search','restaurants','rmenu','detail','compare','insights','faves'
+ */
+function showSkel(id) {
+  var el = document.getElementById('skel-' + id);
+  if (!el) return;
+  /* Cancel any pending hide timer */
+  if (_skelTimers[id]) { clearTimeout(_skelTimers[id]); delete _skelTimers[id]; }
+  el.classList.remove('hiding');
+  el.style.display = '';
+}
+/**
+ * hideSkel(id, delay) — fade out then remove from flow.
+ * delay (ms): how long to keep skeleton visible before fading (default 260ms).
+ */
+function hideSkel(id, delay) {
+  var el = document.getElementById('skel-' + id);
+  if (!el) return;
+  var wait = (delay === undefined) ? 180 : delay;
+  _skelTimers[id] = setTimeout(function() {
+    el.classList.add('hiding');
+    /* After transition ends, fully hide so it doesn't intercept touches */
+    var onEnd = function() {
+      el.style.display = 'none';
+      el.removeEventListener('transitionend', onEnd);
+    };
+    el.addEventListener('transitionend', onEnd);
+    delete _skelTimers[id];
+  }, wait);
+}
+
 function nav(p) {
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('pg-' + p).classList.add('active');
@@ -7342,17 +8287,20 @@ function nav(p) {
     const ico = item.querySelector('.ms');
     if (ico) ico.classList.toggle('filled', isOn);
   });
-  if (p === 'home') renderHome();
-  if (p === 'compare') renderCmp();
-  if (p === 'restaurants') { curRest = null; renderRests(); }
+  if (p === 'home') { showSkel('home'); renderHome(); hideSkel('home'); }
+  if (p === 'compare') { showSkel('compare'); renderCmp(); hideSkel('compare'); }
+  if (p === 'restaurants') { showSkel('restaurants'); curRest = null; renderRests(); hideSkel('restaurants'); }
+  if (p === 'insights') { showSkel('insights'); hideSkel('insights'); }
   /* Re-evaluate tray visibility now that active page has changed */
   /* Reset search header to visible whenever the search page is (re)entered */
   if (p === 'search') {
+    showSkel('search');
     const hdr = document.getElementById('search-sticky-hdr');
     if (hdr) { hdr.classList.remove('hidden'); hdr.classList.remove('scrolled'); }
     const scr = document.getElementById('search-scroll');
     if (scr) scr.scrollTo({ top: 0, behavior: 'instant' });
     updateFilterUI();
+    hideSkel('search');
   } else {
     /* Hide floating pill when leaving search page */
     const pill = document.getElementById('filter-float-pill');
@@ -7390,6 +8338,7 @@ function nav(p) {
 (function() {
   document.addEventListener('scroll', function(e) {
     if (e.target.id !== 'det-scroll') return;
+    closeDietTooltip();
     var appbar = document.getElementById('det-appbar');
     var hero = document.getElementById('det-hero');
     if (!appbar || !hero) return;
@@ -7508,6 +8457,16 @@ function makeCard(f, fromRest) {
       <div class="fc-score score-${sc}" onclick="event.stopPropagation();openScoreSheet('${esc}',${f.id})" style="cursor:pointer" title="What does score ${esc} mean?">${esc}</div>
     </div>
 
+    <!-- Diet badges — only rendered when item has flags -->
+    ${(()=>{ const _fl=getFoodFlags(f); if(!_fl.length) return '';
+      const _DB={'vegan':'🌿 Vegan','vegetarian':'🥬 Vegetarian','halal':'☾ Halal','gluten_free':'🌾 GF','contains_dairy':'🥛 Dairy','contains_nuts':'🥜 Nuts'};
+      const _BC={'vegan':'vegan','vegetarian':'vegetarian','halal':'halal','gluten_free':'gf','contains_dairy':'dairy','contains_nuts':'nuts'};
+      const _badges=['vegan','vegetarian','halal','gluten_free','contains_dairy','contains_nuts']
+        .filter(k=>_fl.includes(k))
+        .map(k=>'<span class="diet-badge '+_BC[k]+'">'+_DB[k]+'</span>').join('');
+      return _badges ? '<div class="diet-badges">'+_badges+'</div>' : '';
+    })()}
+
     <!-- Zone 2: Stats — calories + macros (id enables live size swap) -->
     <div class="fc-stats" id="${statsId}">
       <div>
@@ -7536,13 +8495,13 @@ function makeCard(f, fromRest) {
     <!-- Divider -->
     <div class="fc-divider"></div>
 
-    <!-- Zone 3: Actions — Compare + Details -->
+    <!-- Zone 3: Actions — Compare + Fave -->
     <div class="fc-actions">
       <button class="fc-compare" onclick="event.stopPropagation();toggleCmp(${f.id})">
         ${cmpIcon}<span>${cmpLabel}</span>
       </button>
-      <button class="fc-details" onclick="event.stopPropagation();${df}" aria-label="View details">
-        <span class="ms">chevron_right</span>
+      <button class="fc-fave${isFaved(f.id) ? ' faved' : ''}" id="fcfv${f.id}" onclick="event.stopPropagation();onFaveCard(${f.id})" aria-label="Save to favourites">
+        <span class="ms">${isFaved(f.id) ? 'favorite' : 'favorite_border'}</span>
       </button>
     </div>
 
@@ -7620,6 +8579,190 @@ function setSizeForCard(id, size, btn) {
 }
 
 
+/* ── Recent search history (localStorage) ── */
+const RECENT_Q_KEY = 'kc_recent_q';
+const RECENT_Q_MAX = 5;
+
+function saveRecentQuery(q) {
+  if (!q) return;
+  q = q.trim();
+  if (q.length < 2) return;
+  let arr = loadRecentQueries();
+  arr = arr.filter(x => x.toLowerCase() !== q.toLowerCase()); // dedupe
+  arr.unshift(q);
+  if (arr.length > RECENT_Q_MAX) arr = arr.slice(0, RECENT_Q_MAX);
+  try { localStorage.setItem(RECENT_Q_KEY, JSON.stringify(arr)); } catch(e) {}
+}
+
+function loadRecentQueries() {
+  try { const r = localStorage.getItem(RECENT_Q_KEY); return r ? JSON.parse(r) : []; }
+  catch(e) { return []; }
+}
+
+/* ── Favourites — localStorage persistence ── */
+const FAVES_KEY = 'kc_faves';
+function loadFaves() {
+  try { const r = localStorage.getItem(FAVES_KEY); return r ? JSON.parse(r) : []; }
+  catch(e) { return []; }
+}
+function saveFaves(arr) {
+  try { localStorage.setItem(FAVES_KEY, JSON.stringify(arr)); } catch(e) {}
+}
+function isFaved(id) { return loadFaves().includes(id); }
+function toggleFave(id) {
+  const arr = loadFaves();
+  const idx = arr.indexOf(id);
+  if (idx >= 0) arr.splice(idx, 1); else arr.push(id);
+  saveFaves(arr);
+  return arr.includes(id); // returns new faved state
+}
+
+/* Update every visible heart button for a given food id */
+function syncFaveUI(id, faved) {
+  /* Food card heart */
+  const cardBtn = document.getElementById('fcfv' + id);
+  if (cardBtn) {
+    const ico = cardBtn.querySelector('.ms');
+    cardBtn.classList.toggle('faved', faved);
+    if (ico) ico.textContent = faved ? 'favorite' : 'favorite_border';
+  }
+  /* Detail topbar heart — only if this food is currently open */
+  if (curFood && curFood.id === id) {
+    const detBtn = document.getElementById('det-fave-btn');
+    const detIco = document.getElementById('det-fave-ico');
+    if (detBtn) detBtn.classList.toggle('faved', faved);
+    if (detIco) detIco.textContent = faved ? 'favorite' : 'favorite_border';
+  }
+}
+
+/* ── Fave first-time tooltip ── */
+const FAVE_TIP_KEY = 'kc_fave_tip_seen';
+let _faveTipTimer = null;
+
+function showFaveTip(btnEl) {
+  if (!btnEl || localStorage.getItem(FAVE_TIP_KEY)) return;
+  localStorage.setItem(FAVE_TIP_KEY, '1');
+
+  const tip = document.getElementById('fave-tooltip');
+  if (!tip) return;
+
+  const TOOLTIP_W = 232;
+  const GAP = 10; /* px gap between tooltip and button */
+  const app = document.getElementById('APP');
+  const appR = app ? app.getBoundingClientRect() : {left:0,right:390,top:0,bottom:844};
+  const bR = btnEl.getBoundingClientRect();
+
+  /* Horizontal — right-align tooltip edge near button, clamp within app */
+  let left = bR.right - TOOLTIP_W;
+  left = Math.max(appR.left + 8, Math.min(left, appR.right - TOOLTIP_W - 8));
+
+  /* Caret x offset relative to tooltip right edge so it points at button centre */
+  const btnCentreX = bR.left + bR.width / 2;
+  const caretX = Math.max(10, Math.min(TOOLTIP_W - 22, (left + TOOLTIP_W) - btnCentreX - 6));
+  tip.style.setProperty('--tip-caret-x', caretX + 'px');
+
+  /* Vertical — prefer above, fall back to below */
+  const spaceAbove = bR.top - appR.top;
+  tip.classList.remove('tip-below');
+  if (spaceAbove >= 110) {
+    tip.style.top  = '';
+    tip.style.bottom = (window.innerHeight - bR.top + GAP) + 'px';
+  } else {
+    tip.classList.add('tip-below');
+    tip.style.bottom = '';
+    tip.style.top = (bR.bottom + GAP) + 'px';
+  }
+  tip.style.left = left + 'px';
+
+  /* Animate in */
+  tip.classList.add('show');
+
+  /* Auto-dismiss after 5 s */
+  if (_faveTipTimer) clearTimeout(_faveTipTimer);
+  _faveTipTimer = setTimeout(hideFaveTip, 5000);
+
+  /* Dismiss on any tap outside */
+  setTimeout(() => document.addEventListener('pointerdown', hideFaveTip, { once: true }), 200);
+}
+
+function hideFaveTip() {
+  const tip = document.getElementById('fave-tooltip');
+  if (tip) tip.classList.remove('show');
+  if (_faveTipTimer) { clearTimeout(_faveTipTimer); _faveTipTimer = null; }
+}
+
+/* Toggle fave from card or detail, then sync UI + tooltip on first use */
+function onFaveCard(id) {
+  if (!id) return;
+  const faved = toggleFave(id);
+  syncFaveUI(id, faved);
+  /* Show first-time rich tooltip instead of toast when adding for the first time */
+  if (faved && !localStorage.getItem(FAVE_TIP_KEY)) {
+    const btnEl = document.getElementById('fcfv' + id) || document.getElementById('det-fave-btn');
+    showFaveTip(btnEl);
+  } else {
+    showToast(faved ? 'Added to favourites' : 'Removed from favourites', faved ? 'favorite' : 'favorite_border');
+  }
+  /* Refresh home faves carousel if home is visible */
+  const home = document.getElementById('pg-home');
+  if (home && home.classList.contains('active')) renderHomeFaves();
+}
+
+function renderRecentChips() {
+  const row = document.getElementById('recent-chips-row');
+  if (!row) return;
+  const arr = loadRecentQueries();
+  if (!arr.length) { row.innerHTML = ''; return; }
+  row.innerHTML = arr.map(q => {
+    const label = q.length > 18 ? q.slice(0, 17) + '…' : q;
+    const safe = q.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+    return `<button class="recent-chip" role="listitem" aria-label="Recent search: ${safe}" data-q="${safe}" onmousedown="applyRecentQuery(this.dataset.q)" type="button"><span class="ms">schedule</span>${label}</button>`;
+  }).join('');
+}
+
+function applyRecentQuery(q) {
+  const si = document.getElementById('si');
+  if (si) { si.value = q; }
+  hideRecentChips();
+  saveRecentQuery(q); // move to top
+  doSearch();
+}
+
+let _recentHideTimer = null;
+function showRecentChips() {
+  clearTimeout(_recentHideTimer);
+  const si = document.getElementById('si');
+  if (si && si.value.trim()) return; // only show on empty input
+  renderRecentChips();
+  const arr = loadRecentQueries();
+  if (!arr.length) return;
+  const row = document.getElementById('recent-chips-row');
+  if (row) row.classList.add('visible');
+  const scroll = document.getElementById('search-scroll');
+  if (scroll) scroll.classList.add('recent-visible');
+}
+
+function hideRecentChips() {
+  const row = document.getElementById('recent-chips-row');
+  if (row) row.classList.remove('visible');
+  const scroll = document.getElementById('search-scroll');
+  if (scroll) scroll.classList.remove('recent-visible');
+}
+
+function hideRecentChipsDelayed() {
+  _recentHideTimer = setTimeout(hideRecentChips, 220);
+}
+
+function onSearchKeyDown(e) {
+  if (e.key === 'Enter') {
+    const si = document.getElementById('si');
+    const q = si ? si.value.trim() : '';
+    if (q) saveRecentQuery(q);
+    hideRecentChips();
+    si && si.blur();
+  }
+}
+
 /* ── Search page ── */
 function clearSearch() {
   const si = document.getElementById('si');
@@ -7671,6 +8814,7 @@ function doSearch() {
     "fritter":"fishnchips","dim sim":"fishnchips","dimsim":"fishnchips"
   };
   const raw = document.getElementById('si').value.toLowerCase().trim();
+  if (raw) hideRecentChips(); // hide recent chips as soon as user types
   const cb = document.getElementById('search-clear-btn');
   if (cb) cb.classList.toggle('hidden', !raw && catSel === 'all');
   const rawNoSpace = raw.replace(/\s+/g, '');
@@ -7701,11 +8845,16 @@ function doSearch() {
     });
   }
   /* Nutrition filters */
-  if (srFilters.protein)  fx = fx.filter(f => f.protein >= 20);
-  if (srFilters.sugar)    fx = fx.filter(f => f.sugar <= 5);
-  if (srFilters.fat)      fx = fx.filter(f => f.fat <= 10);
-  if (srFilters.balanced) fx = fx.filter(f => f.protein >= 15 && f.sugar <= 10 && f.sat_fat <= 8);
-  if (srFilters.sodium)   fx = fx.filter(f => f.sodium <= 600);
+  if (srFilters.protein)     fx = fx.filter(f => f.protein >= 20);
+  if (srFilters.sugar)       fx = fx.filter(f => f.sugar <= 5);
+  if (srFilters.fat)         fx = fx.filter(f => f.fat <= 10);
+  if (srFilters.balanced)    fx = fx.filter(f => f.protein >= 15 && f.sugar <= 10 && f.sat_fat <= 8);
+  if (srFilters.sodium)      fx = fx.filter(f => f.sodium <= 600);
+  /* Dietary filters */
+  if (srFilters.vegan)       fx = fx.filter(f => getFoodFlags(f).includes('vegan'));
+  if (srFilters.vegetarian)  fx = fx.filter(f => getFoodFlags(f).includes('vegetarian'));
+  if (srFilters.halal)       fx = fx.filter(f => getFoodFlags(f).includes('halal'));
+  if (srFilters.gluten_free) fx = fx.filter(f => getFoodFlags(f).includes('gluten_free'));
   /* Sort */
   const CAT_ORDER_S = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','drinks','other'];
   const GRADE_ORDER = { A:0, B:1, C:2, D:3 };
@@ -7719,7 +8868,8 @@ function doSearch() {
     return ca - cb || b.kj - a.kj;
   });
   const isDefault = !q && catSel === 'all' && srFilters.sort === 'def' &&
-    !srFilters.protein && !srFilters.sugar && !srFilters.fat && !srFilters.balanced && !srFilters.sodium;
+    !srFilters.protein && !srFilters.sugar && !srFilters.fat && !srFilters.balanced && !srFilters.sodium &&
+    !srFilters.vegan && !srFilters.vegetarian && !srFilters.halal && !srFilters.gluten_free;
   if (isDefault && !searchInteracted) {
     const rlblEl = document.getElementById('rlbl'); if (rlblEl) { rlblEl.textContent = ''; rlblEl.style.display = 'none'; }
     const scEl = document.getElementById('sort-controls'); if (scEl) scEl.style.display = 'none';
@@ -7802,7 +8952,7 @@ function openRmenuFilterSheet() {
 }
 function syncFilterSheetToCtx() {
   const f = filterCtx === 'rmenu' ? rmFilters : srFilters;
-  ['protein','sugar','fat','balanced','sodium'].forEach(k => {
+  ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].forEach(k => {
     const el = document.getElementById('fsh-' + k);
     if (el) el.classList.toggle('on', f[k]);
   });
@@ -7821,7 +8971,7 @@ function updateFilterUI() {
     if (el) el.classList.toggle('on', srFilters.sort === v);
   });
   /* Search filter badge — sort not counted here, only nutrition filters */
-  const srCount = ['protein','sugar','fat','balanced','sodium'].filter(k => srFilters[k]).length;
+  const srCount = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].filter(k => srFilters[k]).length;
   const badge = document.getElementById('filter-badge');
   const btn = document.getElementById('filter-btn');
   if (badge) { badge.textContent = srCount; badge.classList.toggle('visible', srCount > 0); }
@@ -7846,6 +8996,48 @@ function updateFilterUI() {
 }
 
 const NUT_LABELS = { protein:'High protein', sugar:'Low sugar', fat:'Low fat', balanced:'Balanced', sodium:'Low sodium' };
+const DIET_LABELS = { vegan:'Vegan', vegetarian:'Vegetarian', halal:'Halal', gluten_free:'Gluten-free' };
+const DIET_TOOLTIPS = {
+  vegan:          { label:'🌿 Vegan',            desc:'No animal products — entirely plant-based.' },
+  vegetarian:     { label:'🥬 Vegetarian',        desc:'No meat or fish. May contain dairy or eggs.' },
+  halal:          { label:'☾ Halal',             desc:'Prepared under halal certification.' },
+  gluten_free:    { label:'🌾 Gluten-free',       desc:'No gluten-containing ingredients confirmed by this restaurant.' },
+  contains_dairy: { label:'🥛 Contains dairy',    desc:'Contains milk, cheese, or other dairy products.' },
+  contains_nuts:  { label:'🥜 Contains nuts',     desc:'Contains tree nuts or peanuts. Check with staff if you have a nut allergy.' },
+};
+let _dietTooltipTimer = null;
+function openDietTooltip(key, el) {
+  const tip = document.getElementById('diet-tooltip');
+  const tlbl = document.getElementById('diet-tooltip-label');
+  const tdesc = document.getElementById('diet-tooltip-desc');
+  if (!tip || !DIET_TOOLTIPS[key]) return;
+  /* Populate */
+  const t = DIET_TOOLTIPS[key];
+  tlbl.textContent = t.label;
+  tdesc.textContent = t.desc;
+  /* Position — below the badge, clamped to screen */
+  const r = el.getBoundingClientRect();
+  const tipW = 220, tipH = 70;
+  let left = r.left;
+  let top  = r.bottom + 6;
+  /* Clamp right edge */
+  if (left + tipW > window.innerWidth - 8) left = window.innerWidth - tipW - 8;
+  if (left < 8) left = 8;
+  /* Flip above if too close to bottom */
+  if (top + tipH > window.innerHeight - 16) top = r.top - tipH - 6;
+  tip.style.left = left + 'px';
+  tip.style.top  = top  + 'px';
+  /* Show */
+  tip.classList.add('visible');
+  /* Auto-dismiss after 3.5s */
+  clearTimeout(_dietTooltipTimer);
+  _dietTooltipTimer = setTimeout(closeDietTooltip, 3500);
+}
+function closeDietTooltip() {
+  const tip = document.getElementById('diet-tooltip');
+  if (tip) tip.classList.remove('visible');
+  clearTimeout(_dietTooltipTimer);
+}
 function syncFilterPill() {
   const pill = document.getElementById('filter-float-pill');
   const lbl  = document.getElementById('filter-float-pill-lbl');
@@ -7858,19 +9050,20 @@ function syncFilterPill() {
   const headerHidden = hdr && hdr.classList.contains('hidden');
   /* Any filter or sort active? */
   const hasSort = srFilters.sort !== 'def';
-  const hasNut  = ['protein','sugar','fat','balanced','sodium'].some(k => srFilters[k]);
+  const hasNut  = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].some(k => srFilters[k]);
   if (!headerHidden || (!hasSort && !hasNut)) { pill.classList.remove('visible'); return; }
   /* Build summary label */
   const parts = [];
   if (hasSort) parts.push(SORT_LABELS[srFilters.sort]);
   ['protein','sugar','fat','balanced','sodium'].forEach(k => { if (srFilters[k]) parts.push(NUT_LABELS[k]); });
+  ['vegan','vegetarian','halal','gluten_free'].forEach(k => { if (srFilters[k]) parts.push(DIET_LABELS[k]); });
   lbl.textContent = parts.length <= 2 ? parts.join(' · ') : parts.slice(0,2).join(' · ') + ' +' + (parts.length - 2);
   pill.classList.add('visible');
 }
 
 /* Opens sort sheet if only sort active, filter sheet if nutrition filters active */
 function openActiveFilterSheet() {
-  const hasNut = ['protein','sugar','fat','balanced','sodium'].some(k => srFilters[k]);
+  const hasNut = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].some(k => srFilters[k]);
   if (hasNut) openFilterSheet();
   else openSortSheet();
 }
@@ -7903,10 +9096,10 @@ function toggleFilter(key) {
 
 function clearFilters() {
   if (filterCtx === 'rmenu') {
-    rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false };
+    rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
     updateFilterUI(); renderMenu();
   } else {
-    srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false };
+    srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
     searchInteracted = false;
     catSel = 'all';
     document.querySelectorAll('#cats .pill').forEach(p => p.classList.toggle('on', p.getAttribute('onclick') === "setCat('all',this)"));
@@ -8058,11 +9251,35 @@ function renderWelcomeCarousel() {
 
 
 
+/* Render / refresh the Your Faves carousel on home */
+function renderHomeFaves() {
+  const sec = document.getElementById('home-faves-section');
+  const el  = document.getElementById('home-faves');
+  if (!sec || !el) return;
+  const ids = loadFaves();
+  if (ids.length === 0) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  el.innerHTML = faveItems.map(x => {
+    const exf = effectiveScore(x); const s = SC(exf), sc = exf.toLowerCase();
+    return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false,'home')" style="min-height:110px">
+      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exf}</span>
+      <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
+      <div class="ho-name">${x.name}</div>
+      <div class="ho-chain">${x.chain}</div>
+      <div class="ho-kj">${kc(x.kj)}<span>cal / ${x.kj}kJ</span></div>
+    </div>`;
+  }).join('');
+}
+
 function renderHome() {
   const scoreRank = {A:0,B:1,C:2,D:3};
 
   /* ── Welcome carousel ── */
   renderWelcomeCarousel();
+
+  /* ── Your Faves carousel ── */
+  renderHomeFaves();
 
   /* Category chips */
   const cats = [
@@ -8097,7 +9314,7 @@ function renderHome() {
   const hacksPool = foods
     .filter(f => ['A','B'].includes(f.score) && f.kj >= 600 && f.kj <= 1500 && f.protein >= 13 && f.sugar <= 10)
     .sort((a, b) => (b.protein / b.kj) - (a.protein / a.kj));
-  const hackDay = new Date().getDay(); // 0–6
+  const hackDay = new Date().getDay() % (hacksPool.length || 7); // 0–6, same modulo pattern as welcome tips
   const hacksRotated = [...hacksPool.slice(hackDay), ...hacksPool.slice(0, hackDay)];
   const hacksChains = new Set();
   const hacks = hacksRotated
@@ -8120,7 +9337,7 @@ function renderHome() {
   const proteinPool = foods
     .filter(f => ['A','B'].includes(f.score) && f.protein >= 20)
     .sort((a, b) => b.protein - a.protein);
-  const proteinDay = new Date().getDay();
+  const proteinDay = new Date().getDay() % (proteinPool.length || 7); // same modulo pattern as welcome tips
   const proteinRotated = [...proteinPool.slice(proteinDay), ...proteinPool.slice(0, proteinDay)];
   const proteinChains = new Set();
   const proteinItems = proteinRotated
@@ -8202,7 +9419,7 @@ function goSearchCat(cat) {
 
 function goSearchLowCal() {
   /* Reset all filters, then pre-apply: lowest cal sort + high protein */
-  srFilters = { sort:'lo', protein:true, sugar:false, fat:false, balanced:false, sodium:false };
+  srFilters = { sort:'lo', protein:true, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
   catSel = 'all';
   searchInteracted = true;
   const si = document.getElementById('si'); if (si) si.value = '';
@@ -8215,7 +9432,7 @@ function goSearchLowCal() {
 
 function goSearchHighProtein() {
   /* Reset all filters, then pre-apply: highest protein sort + high protein filter */
-  srFilters = { sort:'protein', protein:true, sugar:false, fat:false, balanced:false, sodium:false };
+  srFilters = { sort:'protein', protein:true, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
   catSel = 'all';
   searchInteracted = true;
   const si = document.getElementById('si'); if (si) si.value = '';
@@ -8260,7 +9477,8 @@ function openRest(name) {
   prevRestPage = activePg ? activePg.id.replace('pg-','') : 'restaurants';
   savedPrevPage = prevPage;
   curRest = name; mSL = true;
-  rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false };
+  rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+  showSkel('rmenu');
   updateFilterUI();
   document.getElementById('msi').value = '';
   mCatSel = 'all';
@@ -8308,8 +9526,7 @@ function openRest(name) {
   renderMenu();
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('pg-rmenu').classList.add('active');
-
-
+  hideSkel('rmenu');
 }
 function renderMenu() {
   const q = (document.getElementById('msi').value || '').toLowerCase();
@@ -8324,11 +9541,15 @@ function renderMenu() {
   let it = foods.filter(f => f.chain === curRest);
   if (mCatSel !== 'all') it = it.filter(f => f.cat === mCatSel);
   if (q) it = it.filter(f => f.name.toLowerCase().includes(q));
-  if (rmFilters.protein)  it = it.filter(f => f.protein >= 20);
-  if (rmFilters.sugar)    it = it.filter(f => f.sugar <= 5);
-  if (rmFilters.fat)      it = it.filter(f => f.fat <= 10);
-  if (rmFilters.balanced) it = it.filter(f => f.protein >= 15 && f.sugar <= 10 && f.sat_fat <= 8);
-  if (rmFilters.sodium)   it = it.filter(f => f.sodium <= 600);
+  if (rmFilters.protein)     it = it.filter(f => f.protein >= 20);
+  if (rmFilters.sugar)       it = it.filter(f => f.sugar <= 5);
+  if (rmFilters.fat)         it = it.filter(f => f.fat <= 10);
+  if (rmFilters.balanced)    it = it.filter(f => f.protein >= 15 && f.sugar <= 10 && f.sat_fat <= 8);
+  if (rmFilters.sodium)      it = it.filter(f => f.sodium <= 600);
+  if (rmFilters.vegan)       it = it.filter(f => getFoodFlags(f).includes('vegan'));
+  if (rmFilters.vegetarian)  it = it.filter(f => getFoodFlags(f).includes('vegetarian'));
+  if (rmFilters.halal)       it = it.filter(f => getFoodFlags(f).includes('halal'));
+  if (rmFilters.gluten_free) it = it.filter(f => getFoodFlags(f).includes('gluten_free'));
   const CAT_ORDER = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','drinks','other'];
   if (rmFilters.sort === 'lo') it.sort((a, b) => a.kj - b.kj);
   else if (rmFilters.sort === 'hi') it.sort((a, b) => b.kj - a.kj);
@@ -8358,16 +9579,31 @@ function restBack() {
 }
 
 function openDetail(id, fromRest, overridePrevPage) {
+  showSkel('detail');
   curFood = foods.find(f => f.id === id);
   dFR = !!fromRest;
   /* Remember which page we came from so detBack returns correctly */
   const activePg = document.querySelector('.page.active');
   prevPage = overridePrevPage || (activePg ? activePg.id.replace('pg-', '') : 'search');
+  /* Save search query to history when tapping a result from search */
+  if (!fromRest) {
+    const si = document.getElementById('si');
+    const sq = si ? si.value.trim() : '';
+    if (sq) saveRecentQuery(sq);
+    hideRecentChips();
+  }
   const f = curFood;
   const esc = effectiveScore(f); const cal = kc(f.kj), s = SC(esc), sc = esc.toLowerCase();
 
   /* ── Topbar back button ── */
   document.getElementById('det-back').innerHTML = '<span class="ms">arrow_back</span>';
+
+  /* ── Topbar fave button ── */
+  const fvd = isFaved(id);
+  const detFaveBtn = document.getElementById('det-fave-btn');
+  const detFaveIco = document.getElementById('det-fave-ico');
+  if (detFaveBtn) detFaveBtn.classList.toggle('faved', fvd);
+  if (detFaveIco) detFaveIco.textContent = fvd ? 'favorite' : 'favorite_border';
 
   /* ── Sticky compact appbar — reset to hidden, scroll listener reveals it ── */
   const detAppbar = document.getElementById('det-appbar');
@@ -8389,6 +9625,26 @@ function openDetail(id, fromRest, overridePrevPage) {
 
   const heroDesc = document.getElementById('det-hero-desc');
   if (heroDesc) heroDesc.textContent = descs[f.id] || '';
+
+  /* ── Dietary badges ── */
+  closeDietTooltip();
+  const _dietBadges = document.getElementById('det-diet-badges');
+  if (_dietBadges) {
+    const _fl = getFoodFlags(f);
+    const _BC = {vegan:'vegan', vegetarian:'vegetarian', halal:'halal', gluten_free:'gf', contains_dairy:'dairy', contains_nuts:'nuts'};
+    const _DB = {vegan:'🌿 Vegan', vegetarian:'🥬 Vegetarian', halal:'☾ Halal', gluten_free:'🌾 Gluten-free', contains_dairy:'🥛 Contains dairy', contains_nuts:'🥜 Contains nuts'};
+    const _b = ['vegan','vegetarian','halal','gluten_free','contains_dairy','contains_nuts']
+      .filter(k => _fl.includes(k))
+      .map(k => `<span class="diet-badge ${_BC[k]}" onclick="event.stopPropagation();openDietTooltip('${k}',this)" role="button" aria-label="${_DB[k]}">${_DB[k]}</span>`).join('');
+    /* Data caveat for chains without full allergen breakdown */
+    const _CAVEATS = {
+      'KFC': 'KFC NZ is Halal certified. KFC NZ does not publish a full allergen breakdown — confirm dietary requirements with staff.',
+      "Nando's": "Nando's NZ is Halal certified. Nutritional values sourced from Nando's AU — NZ-specific allergen data unavailable.",
+    };
+    const _cv = _CAVEATS[f.chain];
+    _dietBadges.innerHTML = (_b ? _b : '') + (_cv ? `<div class="det-diet-caveat">${_cv}</div>` : '');
+    _dietBadges.style.display = (_b || _cv) ? '' : 'none';
+  }
 
   const heroScore = document.getElementById('det-sring-hero');
   if (heroScore) {
@@ -8570,11 +9826,42 @@ function openDetail(id, fromRest, overridePrevPage) {
   /* Scroll to top so the user lands at the food name, not the carousel */
   const ps = document.querySelector('#pg-detail .page-scroll');
   if (ps) ps.scrollTo({ top: 0, behavior: 'instant' });
+  hideSkel('detail');
 }
+/* Open the Faves grid page */
+function openFaves() {
+  showSkel('faves');
+  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
+  document.getElementById('pg-faves').classList.add('active');
+  /* Sync nav highlight — Home stays highlighted (faves is a sub-page of Home) */
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const isHome = item.getAttribute('onclick') === "nav('home')";
+    item.classList.toggle('on', isHome);
+    const ico = item.querySelector('.ms');
+    if (ico) ico.classList.toggle('filled', isHome);
+  });
+  /* Render faves grid */
+  const wrap = document.getElementById('faves-grid-wrap');
+  if (!wrap) return;
+  const ids = loadFaves();
+  if (ids.length === 0) {
+    wrap.innerHTML = `<div class="faves-empty">
+      <div class="faves-empty-icon"><span class="ms" style="font-size:48px;opacity:0.35">favorite_border</span></div>
+      <div class="faves-empty-title">No favourites yet</div>
+      <div class="faves-empty-sub">Tap the heart icon on any food card or detail page to save it here.</div>
+    </div>`;
+    return;
+  }
+  const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  wrap.innerHTML = `<div class="faves-grid">${faveItems.map(f => makeCard(f, false)).join('')}</div>`;
+  hideSkel('faves');
+}
+
 function detBack() {
   if (dFR && curRest) openRest(curRest);       /* came from restaurant menu */
   else if (prevPage === 'insights') nav('insights'); /* came from insights */
   else if (prevPage === 'home') nav('home');         /* came from home picks */
+  else if (prevPage === 'faves') openFaves();        /* came from faves grid */
   else nav('search');                               /* default — search */
 }
 
@@ -8875,6 +10162,7 @@ function closeAllSheets() {
   document.getElementById('burn-sheet').classList.remove('open');
   document.getElementById('filter-sheet').classList.remove('open');
   document.getElementById('sort-sheet').classList.remove('open');
+  closeDietTooltip();
 }
 
 /* ════════════════════════════════════════════════════
