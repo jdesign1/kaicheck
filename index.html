@@ -1300,8 +1300,8 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   display: inline-flex; align-items: center; justify-content: center;
   position: relative;
   cursor: pointer;
-  border-radius: var(--shape-sm);
-  height: 32px;
+  border-radius: var(--shape-full);
+  height: 34px;
   transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s;
 }
 .pills .pill-filter:hover {
@@ -1309,7 +1309,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   color: var(--md-on-surface);
 }
 .pills .pill-filter.active {
-  background: var(--md-primary-container);
+  background: var(--md-surface-container-high);
   border-color: var(--md-primary);
   color: var(--md-primary);
 }
@@ -1408,7 +1408,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
    Same pattern as Uber Eats / Google Maps filter reminder bar. ── */
 #filter-float-pill {
   position: absolute;
-  top: 80px; /* below status bar content (sb padding 54px + ~22px content) */
+  top: 80px; /* prototype shell: below .sb (54px padding + ~22px content) */
   left: 50%;
   transform: translateX(-50%) translateY(-10px);
   display: flex; align-items: center; gap: 0;
@@ -1463,6 +1463,11 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   background: none; color: var(--md-primary);
   border: none; cursor: pointer; padding: 0;
   flex-shrink: 0;
+}
+
+/* Native browser: position pill just below the OS status bar */
+body.native #filter-float-pill {
+  top: env(safe-area-inset-top, 80px);
 }
 
 /* ── Sort action sheet — compact, no scroll ── */
