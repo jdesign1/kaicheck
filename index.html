@@ -1216,6 +1216,55 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   color: var(--md-on-surface);
 }
 .recent-chip .ms { font-size: 16px; flex-shrink: 0; opacity: 0.7; }
+
+/* ── Search name suggestions dropdown ── */
+.search-suggestions {
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 0; right: 0;
+  background: var(--md-surface-container-high);
+  border-radius: 0 0 var(--shape-md) var(--shape-md);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
+  overflow: hidden;
+  z-index: 12;
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: max-height 0.18s cubic-bezier(0.2,0,0,1), opacity 0.14s ease;
+}
+.search-suggestions.visible {
+  max-height: 260px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.search-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  border-bottom: 1px solid rgba(168,181,164,0.1);
+}
+.search-suggestion-item:last-child { border-bottom: none; }
+.search-suggestion-item:active { background: var(--md-surface-container-highest, #2a342a); }
+.search-suggestion-item .ms { font-size: 18px; color: var(--md-on-surface-variant); flex-shrink: 0; }
+.search-sug-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-sug-chain {
+  font-size: 12px;
+  color: var(--md-on-surface-variant);
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
 #pg-rmenu-scroll {
   padding-top: 122px; /* hero starts below filter bar */
 }
@@ -4170,9 +4219,10 @@ body.native #filter-float-pill {
           <div style="padding:16px 16px 0">
             <div class="search-box">
               <span class="ms sz-20 txt-var">search</span>
-              <input id="si" type="text" placeholder="Search burgers, pies, pizza…" oninput="doSearch()" onfocus="showRecentChips()" onblur="hideRecentChipsDelayed()" onkeydown="onSearchKeyDown(event)">
+              <input id="si" type="text" placeholder="Search burgers, pies, pizza…" autocomplete="off" oninput="doSearch()" onfocus="showRecentChips()" onblur="hideRecentChipsDelayed(); hideSearchSuggestionsDelayed()" onkeydown="onSearchKeyDown(event)">
               <button class="search-clear-btn hidden" id="search-clear-btn" onclick="clearSearch()" aria-label="Clear search"><span class="ms sz-20">close</span></button>
             </div>
+            <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Suggestions"></div>
           </div>
           <div id="recent-chips-row" class="recent-chips-row" role="list" aria-label="Recent searches"></div>
           <div class="pills" id="cats">
@@ -8301,6 +8351,7 @@ function hideSkel(id, delay) {
 
 function nav(p) {
   _vl = null; /* leaving restaurant page — release virtual list */
+  closeDietTooltip();
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('pg-' + p).classList.add('active');
   /* Sync filled/outlined state on all nav icons across all pages */
@@ -8354,6 +8405,7 @@ function nav(p) {
     hdr.classList.toggle('scrolled', y > 0 && !hdr.classList.contains('hidden'));
     lastY = y;
     if (typeof syncFilterPill === 'function') syncFilterPill();
+    hideSearchSuggestions();
   }, true);
 })();
 
@@ -8811,13 +8863,62 @@ function hideRecentChipsDelayed() {
   _recentHideTimer = setTimeout(hideRecentChips, 220);
 }
 
+/* ── Search name suggestions ── */
+let _sugHideTimer = null;
+let _sugJustSelected = false;
+function renderSearchSuggestions(raw) {
+  if (_sugJustSelected) { _sugJustSelected = false; return; }
+  const el = document.getElementById('search-suggestions');
+  if (!el) return;
+  if (!raw || raw.length < 1) { hideSearchSuggestions(); return; }
+  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const nRaw = norm(raw);
+  const matches = [];
+  for (let i = 0; i < foods.length && matches.length < 5; i++) {
+    const f = foods[i];
+    if (norm(f.name).includes(nRaw)) matches.push(f);
+  }
+  if (!matches.length) { hideSearchSuggestions(); return; }
+  el.innerHTML = matches.map(f => {
+    const safe = f.name.replace(/"/g, '&quot;');
+    return `<div class="search-suggestion-item" role="option"
+      onmousedown="event.preventDefault(); selectSearchSuggestion('${safe.replace(/'/g, "\\'")}')">
+      <span class="ms">search</span>
+      <span class="search-sug-name">${f.name}</span>
+      <span class="search-sug-chain">${f.chain}</span>
+    </div>`;
+  }).join('');
+  el.classList.add('visible');
+}
+function hideSearchSuggestions() {
+  const el = document.getElementById('search-suggestions');
+  if (el) { el.classList.remove('visible'); el.innerHTML = ''; }
+}
+function hideSearchSuggestionsDelayed() {
+  _sugHideTimer = setTimeout(hideSearchSuggestions, 200);
+}
+function selectSearchSuggestion(name) {
+  clearTimeout(_sugHideTimer);
+  _sugJustSelected = true;
+  const si = document.getElementById('si');
+  if (si) { si.value = name; }
+  hideSearchSuggestions();
+  hideRecentChips();
+  saveRecentQuery(name);
+  doSearch();
+}
+
 function onSearchKeyDown(e) {
   if (e.key === 'Enter') {
     const si = document.getElementById('si');
     const q = si ? si.value.trim() : '';
     if (q) saveRecentQuery(q);
     hideRecentChips();
+    hideSearchSuggestions();
     si && si.blur();
+  } else if (e.key === 'Escape') {
+    hideSearchSuggestions();
+    hideRecentChips();
   }
 }
 
@@ -8825,6 +8926,7 @@ function onSearchKeyDown(e) {
 function clearSearch() {
   const si = document.getElementById('si');
   if (si) { si.value = ''; si.focus(); }
+  hideSearchSuggestions();
   catSel = 'all';
   document.querySelectorAll('#pg-search .pill').forEach(p => p.classList.remove('on'));
   if (typeof clearFilters === 'function') clearFilters();
@@ -8873,6 +8975,7 @@ function doSearch() {
   };
   const raw = document.getElementById('si').value.toLowerCase().trim();
   if (raw) hideRecentChips(); // hide recent chips as soon as user types
+  renderSearchSuggestions(raw);
   const cb = document.getElementById('search-clear-btn');
   if (cb) cb.classList.toggle('hidden', !raw && catSel === 'all');
   const rawNoSpace = raw.replace(/\s+/g, '');
@@ -9096,6 +9199,18 @@ function closeDietTooltip() {
   if (tip) tip.classList.remove('visible');
   clearTimeout(_dietTooltipTimer);
 }
+/* Close diet tooltip on any tap outside the tooltip or a diet badge */
+document.addEventListener('click', function(e) {
+  const tip = document.getElementById('diet-tooltip');
+  if (!tip || !tip.classList.contains('visible')) return;
+  if (tip.contains(e.target)) return;          /* tap inside tooltip = ignore */
+  if (e.target.closest('.diet-badge')) return; /* badge tap handled by openDietTooltip */
+  closeDietTooltip();
+}, true /* capture — fires before stopPropagation on badge */);
+/* Also close on scrim click (sheet open) — scrim eats the event so use capture */
+document.addEventListener('click', function(e) {
+  if (e.target && e.target.id === 'sheet-scrim') closeDietTooltip();
+}, true);
 function syncFilterPill() {
   const pill = document.getElementById('filter-float-pill');
   const lbl  = document.getElementById('filter-float-pill-lbl');
@@ -9530,6 +9645,7 @@ function toggleRS() { rSB = !rSB; document.getElementById('rsa').innerHTML = '<s
 function openRest(name) {
   /* name may come from this.dataset.name (DOM element) or direct string call */
   if (typeof name !== 'string') name = String(name);
+  closeDietTooltip();
   const activePg = document.querySelector('.page.active');
   prevRestPage = activePg ? activePg.id.replace('pg-','') : 'restaurants';
   savedPrevPage = prevPage;
