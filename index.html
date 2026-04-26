@@ -2070,6 +2070,36 @@ body.native #filter-float-pill {
 .det-fave-btn:hover { background: rgba(255,255,255,0.06); }
 .det-fave-btn .ms { font-size: 22px; }
 
+/* ── Heart button on restaurant list cards ── */
+.rc-fave-btn {
+  width: 36px; height: 36px; padding: 0; flex-shrink: 0;
+  border-radius: var(--shape-full);
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  border: 1px solid var(--md-outline-variant);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.rc-fave-btn .ms { font-size: 18px; }
+.rc-fave-btn.faved { color: #FFB4AB; border-color: #FFB4AB; background: rgba(255,180,171,0.1); }
+.rc-fave-btn:hover { background: color-mix(in srgb, var(--md-on-surface) 5%, transparent); }
+
+/* ── Heart button on restaurant menu hero ── */
+.rest-hero-fave-btn {
+  width: 40px; height: 40px; padding: 0; flex-shrink: 0;
+  border-radius: var(--shape-full);
+  background: rgba(255,255,255,0.06);
+  color: var(--md-on-surface-variant);
+  border: none;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.rest-hero-fave-btn .ms { font-size: 22px; }
+.rest-hero-fave-btn.faved { color: #FFB4AB; }
+.rest-hero-fave-btn:hover { background: rgba(255,255,255,0.1); }
+
 /* ── M3 Rich tooltip — fave first-time education ── */
 #fave-tooltip {
   position: fixed;
@@ -2132,7 +2162,76 @@ body.native #filter-float-pill {
   flex: 1; font-family: var(--font-display);
   font-size: 17px; font-weight: 700; color: var(--md-on-surface); padding-left: 4px;
 }
-.faves-grid { padding: 12px 16px 24px; display: flex; flex-direction: column; gap: 12px; }
+.faves-grid { padding: 12px 16px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ── Faves page 2-col card ── */
+.fv-card {
+  background: var(--md-surface-container-high);
+  border-radius: var(--shape-md);
+  padding: 12px 12px 10px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: 0;
+  transition: background 0.2s;
+  min-height: 148px;
+}
+.fv-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--md-on-surface);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.1s;
+}
+.fv-card:active::after { opacity: 0.12; }
+.fv-card.score-a { border-top: 2px solid #00474F; }
+.fv-card.score-b { border-top: 2px solid #1C4A0A; }
+.fv-card.score-c { border-top: 2px solid #4A3200; }
+.fv-card.score-d { border-top: 2px solid #93000A; }
+
+/* Unfave button — absolute top-right, 30px circle */
+.fv-unfave-btn {
+  position: absolute; top: 7px; right: 7px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: rgba(255,180,171,0.12);
+  border: none;
+  color: #FFB4AB;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+  transition: background 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+.fv-unfave-btn:active { background: rgba(255,180,171,0.28); transform: scale(0.9); }
+.fv-badge {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-display); font-size: 10px; font-weight: 700;
+  padding: 2px 5px;
+  border-radius: var(--shape-sm); border: 1px solid;
+  margin-bottom: 6px; align-self: flex-start;
+}
+.fv-emoji { font-size: 24px; line-height: 1; margin-bottom: 6px; display: block; }
+.fv-name {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+  color: var(--md-on-surface); line-height: 1.3;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; margin-bottom: 2px;
+  padding-right: 18px; /* clear unfave btn */
+}
+.fv-chain {
+  font-family: var(--font-ui); font-size: 10px; font-weight: 500;
+  color: var(--md-on-surface-variant); letter-spacing: 0.3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+.fv-kj {
+  margin-top: auto;
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  color: var(--md-primary);
+}
+.fv-kj span {
+  font-family: var(--font-ui); font-size: 9px; font-weight: 400;
+  color: var(--md-on-surface-variant); margin-left: 2px;
+}
 .faves-empty {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 60px 24px 24px; text-align: center; gap: 12px;
@@ -3934,11 +4033,22 @@ body.native #filter-float-pill {
           </div>
 
           <!-- Your Faves — hidden until at least 1 fave exists -->
+          <div class="home-section" id="home-rest-faves-section" style="display:none">
+            <div class="home-sec">
+              <div class="home-sec-text">
+                <div class="home-sec-title">Your restaurants</div>
+                <div class="home-sec-sub">Your saved spots</div>
+              </div>
+              <span class="home-see-all" onclick="nav('restaurants')">See all →</span>
+            </div>
+            <div class="home-scroll" id="home-rest-faves"></div>
+          </div>
+
           <div class="home-section" id="home-faves-section" style="display:none">
             <div class="home-sec">
               <div class="home-sec-text">
                 <div class="home-sec-title">Your faves</div>
-                <div class="home-sec-sub">Foods you've saved</div>
+                <div class="home-sec-sub">Saved foods &amp; restaurants</div>
               </div>
               <span class="home-see-all" onclick="openFaves()">See all →</span>
             </div>
@@ -4600,6 +4710,9 @@ body.native #filter-float-pill {
               <div class="rest-hmeta" id="rh-meta"></div>
             </div>
             <div id="rh-score"></div>
+            <button class="rest-hero-fave-btn" id="rest-hero-fave-btn" onclick="onFaveRest(curRest)" title="Save to favourites">
+              <span class="ms">favorite_border</span>
+            </button>
           </div>
           <div class="rest-desc" id="rh-desc"></div>
         </div>
@@ -8711,6 +8824,7 @@ function loadRecentQueries() {
 
 /* ── Favourites — localStorage persistence ── */
 const FAVES_KEY = 'kc_faves';
+const REST_FAVES_KEY = 'kc_rest_faves';
 function loadFaves() {
   try { const r = localStorage.getItem(FAVES_KEY); return r ? JSON.parse(r) : []; }
   catch(e) { return []; }
@@ -8816,6 +8930,57 @@ function onFaveCard(id) {
   /* Refresh home faves carousel if home is visible */
   const home = document.getElementById('pg-home');
   if (home && home.classList.contains('active')) renderHomeFaves();
+  /* Refresh faves grid if faves page is visible */
+  const favPg = document.getElementById('pg-faves');
+  if (favPg && favPg.classList.contains('active')) _renderFavesGrid();
+}
+
+/* ── Restaurant favourites ── */
+function loadRestFaves() {
+  try { const r = localStorage.getItem(REST_FAVES_KEY); return r ? JSON.parse(r) : []; }
+  catch(e) { return []; }
+}
+function saveRestFaves(arr) {
+  try { localStorage.setItem(REST_FAVES_KEY, JSON.stringify(arr)); } catch(e) {}
+}
+function isRestFaved(name) { return loadRestFaves().includes(name); }
+function toggleRestFave(name) {
+  const arr = loadRestFaves();
+  const idx = arr.indexOf(name);
+  if (idx >= 0) arr.splice(idx, 1); else arr.push(name);
+  saveRestFaves(arr);
+  return arr.includes(name);
+}
+
+/* Sync all visible heart buttons for a given restaurant name */
+function syncRestFaveUI(name, faved) {
+  /* Rest-card heart in restaurants list */
+  const cardBtn = document.getElementById('rcfv-' + name.replace(/[^a-z0-9]/gi, '_'));
+  if (cardBtn) {
+    const ico = cardBtn.querySelector('.ms');
+    cardBtn.classList.toggle('faved', faved);
+    if (ico) ico.textContent = faved ? 'favorite' : 'favorite_border';
+  }
+  /* Hero heart in rmenu page */
+  const heroBtn = document.getElementById('rest-hero-fave-btn');
+  if (heroBtn && curRest === name) {
+    const ico = heroBtn.querySelector('.ms');
+    heroBtn.classList.toggle('faved', faved);
+    if (ico) ico.textContent = faved ? 'favorite' : 'favorite_border';
+  }
+}
+
+function onFaveRest(name) {
+  if (!name) return;
+  const faved = toggleRestFave(name);
+  syncRestFaveUI(name, faved);
+  showToast(faved ? 'Restaurant saved' : 'Restaurant removed', faved ? 'favorite' : 'favorite_border');
+  /* Refresh unified home faves carousel if home is visible */
+  const home = document.getElementById('pg-home');
+  if (home && home.classList.contains('active')) renderHomeFaves();
+  /* Refresh faves grid if faves page is visible */
+  const favPg = document.getElementById('pg-faves');
+  if (favPg && favPg.classList.contains('active')) _renderFavesGrid();
 }
 
 function renderRecentChips() {
@@ -9424,16 +9589,32 @@ function renderWelcomeCarousel() {
 
 
 
-/* Render / refresh the Your Faves carousel on home */
+/* Render / refresh the Your Faves carousel on home — includes restaurants + food items */
 function renderHomeFaves() {
   const sec = document.getElementById('home-faves-section');
   const el  = document.getElementById('home-faves');
   if (!sec || !el) return;
-  const ids = loadFaves();
-  if (ids.length === 0) { sec.style.display = 'none'; return; }
-  sec.style.display = '';
+  const ids   = loadFaves();
+  const names = loadRestFaves();
   const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
-  el.innerHTML = faveItems.map(x => {
+  const favRests  = names.map(n => rests.find(r => r.name === n)).filter(Boolean);
+  if (faveItems.length === 0 && favRests.length === 0) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+
+  /* Restaurant ho-cards first, then food ho-cards */
+  const restCards = favRests.map(r => {
+    const s = SC(r.score), sc = r.score.toLowerCase();
+    const safeName = r.name.replace(/'/g, "\\'");
+    return `<div class="ho-card score-${sc}" onclick="openRest('${safeName}')" style="min-height:110px">
+      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${r.score}</span>
+      <span class="ho-emoji">${emojiImg(r.emoji,EMO.sm)}</span>
+      <div class="ho-name">${r.name}</div>
+      <div class="ho-chain" style="margin-bottom:0">Restaurant</div>
+      <div class="ho-kj" style="margin-top:auto">${r.avg_kj}<span>kJ avg</span></div>
+    </div>`;
+  }).join('');
+
+  const foodCards = faveItems.map(x => {
     const exf = effectiveScore(x); const s = SC(exf), sc = exf.toLowerCase();
     return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false,'home')" style="min-height:110px">
       <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exf}</span>
@@ -9443,6 +9624,14 @@ function renderHomeFaves() {
       <div class="ho-kj">${kc(x.kj)}<span>cal / ${x.kj}kJ</span></div>
     </div>`;
   }).join('');
+
+  el.innerHTML = restCards + foodCards;
+}
+
+/* Superseded — rest faves now merged into renderHomeFaves() */
+function renderHomeRestFaves() {
+  const sec = document.getElementById('home-rest-faves-section');
+  if (sec) sec.style.display = 'none';
 }
 
 function renderHome() {
@@ -9450,6 +9639,9 @@ function renderHome() {
 
   /* ── Welcome carousel ── */
   renderWelcomeCarousel();
+
+  /* ── Your saved restaurants carousel ── */
+  renderHomeRestFaves();
 
   /* ── Your Faves carousel ── */
   renderHomeFaves();
@@ -9492,17 +9684,26 @@ function renderHome() {
   const hackDay = new Date().getDay() % (hacksFull.length || 7);
   const hacks = [...hacksFull.slice(hackDay), ...hacksFull.slice(0, hackDay)].slice(0, 10);
 
+  /* Low calorie hacks — skeleton first, real cards after simulated async delay */
+  const _hacksSkel = Array.from({length:4}, () =>
+    `<div class="skel-bone" style="height:130px;width:150px;flex-shrink:0;border-radius:var(--shape-lg)"></div>`
+  ).join('');
   const hacksEl = document.getElementById('home-hacks');
-  if (hacksEl) hacksEl.innerHTML = hacks.map(x => {
-    const exh = effectiveScore(x); const s = SC(exh), sc = exh.toLowerCase();
-    return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false)" style="min-height:110px">
-      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exh}</span>
-      <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
-      <div class="ho-name">${x.name}</div>
-      <div class="ho-chain">${x.chain}</div>
-      <div class="ho-kj">${kc(x.kj)}<span>cal / ${x.kj}kJ</span></div>
-    </div>`;
-  }).join('');
+  if (hacksEl) hacksEl.innerHTML = _hacksSkel;
+  setTimeout(function() {
+    const el = document.getElementById('home-hacks');
+    if (!el || !document.getElementById('pg-home').classList.contains('active')) return;
+    el.innerHTML = hacks.map(x => {
+      const exh = effectiveScore(x); const s = SC(exh), sc = exh.toLowerCase();
+      return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false)" style="min-height:110px">
+        <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exh}</span>
+        <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
+        <div class="ho-name">${x.name}</div>
+        <div class="ho-chain">${x.chain}</div>
+        <div class="ho-kj">${kc(x.kj)}<span>cal / ${x.kj}kJ</span></div>
+      </div>`;
+    }).join('');
+  }, 700);
 
   /* High protein snacks — Score A/B, protein≥20g, max 1 per chain, sorted by protein desc */
   /* Day-of-week rotation: dedupe first → rotate compact set → genuinely different chains each day */
@@ -9513,17 +9714,27 @@ function renderHome() {
   const proteinFull = proteinPool.filter(f => { if (proteinChains.has(f.chain)) return false; proteinChains.add(f.chain); return true; });
   const proteinDay = new Date().getDay() % (proteinFull.length || 7);
   const proteinItems = [...proteinFull.slice(proteinDay), ...proteinFull.slice(0, proteinDay)].slice(0, 10);
+
+  /* High protein snacks — skeleton first, real cards after simulated async delay */
+  const _proteinSkel = Array.from({length:4}, () =>
+    `<div class="skel-bone" style="height:130px;width:150px;flex-shrink:0;border-radius:var(--shape-lg)"></div>`
+  ).join('');
   const proteinEl = document.getElementById('home-protein');
-  if (proteinEl) proteinEl.innerHTML = proteinItems.map(x => {
-    const exp = effectiveScore(x); const s = SC(exp), sc = exp.toLowerCase();
-    return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false)" style="min-height:110px">
-      <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exp}</span>
-      <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
-      <div class="ho-name">${x.name}</div>
-      <div class="ho-chain">${x.chain}</div>
-      <div class="ho-kj">${x.protein}g<span> protein</span></div>
-    </div>`;
-  }).join('');
+  if (proteinEl) proteinEl.innerHTML = _proteinSkel;
+  setTimeout(function() {
+    const el = document.getElementById('home-protein');
+    if (!el || !document.getElementById('pg-home').classList.contains('active')) return;
+    el.innerHTML = proteinItems.map(x => {
+      const exp = effectiveScore(x); const s = SC(exp), sc = exp.toLowerCase();
+      return `<div class="ho-card score-${sc}" onclick="openDetail(${x.id},false)" style="min-height:110px">
+        <span class="ho-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exp}</span>
+        <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
+        <div class="ho-name">${x.name}</div>
+        <div class="ho-chain">${x.chain}</div>
+        <div class="ho-kj">${x.protein}g<span> protein</span></div>
+      </div>`;
+    }).join('');
+  }, 1100);
 
   /* Healthy eating tips carousel — 5 tips, day-of-week rotation */
   const tipsEl = document.getElementById('home-tips');
@@ -9627,12 +9838,20 @@ function renderRests() {
   document.getElementById('rct').textContent = fx.length + ' restaurant' + (fx.length !== 1 ? 's' : '');
   document.getElementById('rl').innerHTML = fx.map(r => {
     const s = SC(r.score), it = foods.filter(f => f.chain === r.name);
+    const faved = isRestFaved(r.name);
+    const safeId = 'rcfv-' + r.name.replace(/[^a-z0-9]/gi, '_');
+    const safeName = r.name.replace(/\\/g, '\\\\').replace(/'/g, '\\x27');
     return `<div class="rest-card" onclick="openRest(this.dataset.name)" data-name="${r.name}">
       <div style="flex:1"><div class="rest-name">${r.name}</div><div class="rest-meta">${it.length} item${it.length !== 1 ? 's' : ''}</div></div>
-      <div style="display:flex;align-items:center;gap:10px">
+      <div style="display:flex;align-items:center;gap:8px">
         <div style="background:${s.b};color:${s.t};border:1px solid ${s.br};font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer"
             onclick="event.stopPropagation();openScoreSheet('${r.score}')"
             title="What does score ${r.score} mean?">${r.score}</div>
+        <button class="rc-fave-btn${faved ? ' faved' : ''}" id="${safeId}"
+            onclick="event.stopPropagation();onFaveRest('${safeName}')"
+            aria-label="Save ${r.name} to favourites">
+          <span class="ms">${faved ? 'favorite' : 'favorite_border'}</span>
+        </button>
         <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
       </div>
     </div>`;
@@ -9685,6 +9904,14 @@ function openRest(name) {
   if (abt) abt.textContent = r.name;
   document.getElementById('rh-meta').textContent = it.length + ' item' + (it.length !== 1 ? 's' : '') + ' on menu';
   document.getElementById('rh-score').innerHTML = `<div class="fc-score score-${r.score.toLowerCase()}" onclick="event.stopPropagation();openScoreSheet('${r.score}')" style="cursor:pointer;width:40px;height:40px;font-size:16px" title="What does score ${r.score} mean?">${r.score}</div>`;
+  /* Sync hero fave button state */
+  const heroFaveBtn = document.getElementById('rest-hero-fave-btn');
+  if (heroFaveBtn) {
+    const heroFaveIco = heroFaveBtn.querySelector('.ms');
+    const fv = isRestFaved(name);
+    heroFaveBtn.classList.toggle('faved', fv);
+    if (heroFaveIco) heroFaveIco.textContent = fv ? 'favorite' : 'favorite_border';
+  }
   document.getElementById('rh-desc').textContent = r.desc || '';
   /* Build category pills from this chain's actual items */
   const cats = ['all', ...new Set(it.map(f => f.cat))];
@@ -10019,6 +10246,57 @@ function openDetail(id, fromRest, overridePrevPage) {
   hideSkel('detail');
 }
 /* Open the Faves grid page */
+function _renderFavesGrid() {
+  const wrap = document.getElementById('faves-grid-wrap');
+  if (!wrap) return;
+  const ids   = loadFaves();
+  const names = loadRestFaves();
+  const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  const favRests  = names.map(n => rests.find(r => r.name === n)).filter(Boolean);
+
+  if (faveItems.length === 0 && favRests.length === 0) {
+    wrap.innerHTML = `<div class="faves-empty">
+      <div class="faves-empty-icon"><span class="ms" style="font-size:48px;opacity:0.35">favorite_border</span></div>
+      <div class="faves-empty-title">No favourites yet</div>
+      <div class="faves-empty-sub">Tap the heart icon on any food, restaurant card or detail page to save it here.</div>
+    </div>`;
+    return;
+  }
+
+  /* Restaurant cards first, then food items */
+  const restCards = favRests.map(r => {
+    const s = SC(r.score), sc = r.score.toLowerCase();
+    const safeName = r.name.replace(/'/g, "\\'");
+    const itemCount = foods.filter(f => f.chain === r.name).length;
+    return `<div class="fv-card score-${sc}" onclick="openRest('${safeName}')">
+      <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveRest('${safeName}')" aria-label="Remove from favourites">
+        <span class="ms filled" style="font-size:15px">favorite</span>
+      </button>
+      <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${r.score}</span>
+      <span class="fv-emoji">${emojiImg(r.emoji, EMO.sm)}</span>
+      <div class="fv-name">${r.name}</div>
+      <div class="fv-chain">${itemCount} item${itemCount !== 1 ? 's' : ''}</div>
+      <div class="fv-kj">${r.avg_kj}<span>kJ avg</span></div>
+    </div>`;
+  }).join('');
+
+  const foodCards = faveItems.map(f => {
+    const exf = effectiveScore(f); const s = SC(exf), sc = exf.toLowerCase();
+    return `<div class="fv-card score-${sc}" onclick="openDetail(${f.id},false,'faves')">
+      <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveCard(${f.id})" aria-label="Remove from favourites">
+        <span class="ms filled" style="font-size:15px">favorite</span>
+      </button>
+      <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exf}</span>
+      <span class="fv-emoji">${emojiImg(f.emoji, EMO.sm)}</span>
+      <div class="fv-name">${f.name}</div>
+      <div class="fv-chain">${f.chain}</div>
+      <div class="fv-kj">${kc(f.kj)}<span>cal / ${f.kj}kJ</span></div>
+    </div>`;
+  }).join('');
+
+  wrap.innerHTML = `<div class="faves-grid">${restCards}${foodCards}</div>`;
+}
+
 function openFaves() {
   showSkel('faves');
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
@@ -10030,20 +10308,7 @@ function openFaves() {
     const ico = item.querySelector('.ms');
     if (ico) ico.classList.toggle('filled', isHome);
   });
-  /* Render faves grid */
-  const wrap = document.getElementById('faves-grid-wrap');
-  if (!wrap) return;
-  const ids = loadFaves();
-  if (ids.length === 0) {
-    wrap.innerHTML = `<div class="faves-empty">
-      <div class="faves-empty-icon"><span class="ms" style="font-size:48px;opacity:0.35">favorite_border</span></div>
-      <div class="faves-empty-title">No favourites yet</div>
-      <div class="faves-empty-sub">Tap the heart icon on any food card or detail page to save it here.</div>
-    </div>`;
-    return;
-  }
-  const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
-  wrap.innerHTML = `<div class="faves-grid">${faveItems.map(f => makeCard(f, false)).join('')}</div>`;
+  _renderFavesGrid();
   hideSkel('faves');
 }
 
