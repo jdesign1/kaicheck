@@ -1644,6 +1644,9 @@ body.native #filter-float-pill {
    Edit here once → updates everywhere.
    ════════════════════════════════════════════════════ */
 .food-list { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 10px; }
+/* Virtual-list mode: kill stagger animation — cards swap on scroll, animation would flash */
+.food-list.vl-active .food-card { animation: none !important; }
+.vl-spacer { flex-shrink: 0; } /* top/bottom padding spacers for virtual list */
 #fl .det-rest-link { margin: 0; }
 .search-empty-state {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -2524,6 +2527,22 @@ body.native #filter-float-pill {
 .burn-sheet-note {
   font-size: 11px; color: var(--md-on-surface-variant);
   padding: 14px 20px 0; line-height: 1.5; text-align: center;
+}
+.burn-gender-toggle {
+  display: flex; gap: 8px; margin: 0 20px 16px;
+}
+.burn-gender-btn {
+  flex: 1; height: 36px; border-radius: var(--shape-full);
+  border: 1.5px solid var(--md-outline-variant);
+  background: transparent; color: var(--md-on-surface-variant);
+  font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s;
+  display: flex; align-items: center; justify-content: center;
+}
+.burn-gender-btn.on {
+  background: var(--md-primary-container);
+  border-color: var(--md-primary);
+  color: var(--md-primary);
 }
 .det-rdi-badge {
   display: inline-flex; align-items: center; gap: 4px;
@@ -5754,10 +5773,11 @@ body.native #filter-float-pill {
         <div class="burn-sheet-header">
           <div class="burn-sheet-title">Burn it off 🔥</div>
           <div class="burn-sheet-sub" id="burn-sheet-sub"></div>
+          <div class="burn-gender-toggle" id="burn-gender-toggle"></div>
           <div class="burn-sheet-food" id="burn-sheet-food"></div>
         </div>
         <div class="burn-exercises" id="burn-exercises"></div>
-        <div class="burn-sheet-note">Based on an average NZ woman (35y, 168cm, 72kg). Times are approximate.</div>
+        <div class="burn-sheet-note" id="burn-sheet-note"></div>
       </div>
       <button class="score-sheet-dismiss" onclick="closeAllSheets()">Got it</button>
     </div>
@@ -8233,12 +8253,14 @@ const BW  = s  => ({A:'90%',B:'70%',C:'45%',D:'18%'}[s]);
 let catSel='all', cmpList=[], sortLo=true, rsfSel='all', rSB=true;
 let lastSearch = null; // { q: '', cat: 'all', label: 'Burgers' } | null — most recent meaningful search
 let curRest=null, mSL=true, mCatSel='all', dFR=false, curFood=null, prevPage='search';
+let _srScrollTop = 0; /* saved scroll position for search → detail → back */
 let srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
 let searchInteracted = false;
 let prevRestPage = 'restaurants';
 let savedPrevPage = 'search';
 let rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
 let filterCtx = 'search'; /* which page opened the filter sheet */
+let _vl = null; /* virtual list state — set by renderMenu() when items ≥ VL_THRESHOLD */
 
 /* ── Navigation ── */
 /* ══════════════════════════════════════════
@@ -8278,6 +8300,7 @@ function hideSkel(id, delay) {
 }
 
 function nav(p) {
+  _vl = null; /* leaving restaurant page — release virtual list */
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('pg-' + p).classList.add('active');
   /* Sync filled/outlined state on all nav icons across all pages */
@@ -8371,8 +8394,43 @@ function nav(p) {
     }
     hdr.classList.toggle('scrolled', y > 0 && !hdr.classList.contains('hidden'));
     lastY = y;
+    /* Virtual list update on restaurant scroll */
+    if (_vl) _vlRender();
   }, true);
 })();
+
+/* ── Virtual list (restaurant menu) ──
+   Renders only the cards visible in #pg-rmenu-scroll + OVERSCAN buffer above/below.
+   Active when renderMenu() produces ≥ VL_THRESHOLD items (Domino's 99, Taco Bell 82).
+   Uses flex top/bottom spacers so the scrollbar reflects the true item count.
+   _vl = { items, rowH, start, end, listEl, scrollEl } | null
+   ─────────────────────────────────────────────────── */
+const VL_THRESHOLD = 50;
+const VL_OVERSCAN  = 5;
+const VL_ROW_H     = 180; /* estimated px per card + 10px gap — covers pizza toggle cards */
+
+function _vlRender() {
+  if (!_vl) return;
+  const { items, rowH, scrollEl, listEl } = _vl;
+  const scrollTop = scrollEl.scrollTop;
+  const viewH     = scrollEl.clientHeight || 700; /* fallback for hidden page */
+
+  const start = Math.max(0,            Math.floor(scrollTop / rowH) - VL_OVERSCAN);
+  const end   = Math.min(items.length, Math.ceil((scrollTop + viewH) / rowH) + VL_OVERSCAN);
+
+  /* Skip repaint when window unchanged */
+  if (_vl.start === start && _vl.end === end) return;
+  _vl.start = start;
+  _vl.end   = end;
+
+  const topH = start * rowH;
+  const botH = Math.max(0, (items.length - end) * rowH);
+
+  listEl.innerHTML =
+    `<div class="vl-spacer" style="height:${topH}px"></div>` +
+    items.slice(start, end).map(f => makeCard(f, true)).join('') +
+    `<div class="vl-spacer" style="height:${botH}px"></div>`;
+}
 
 /* ── Emoji size tokens ──
    Change these to resize all emoji globally.
@@ -9310,16 +9368,14 @@ function renderHome() {
   ).join('');
 
   /* Low calorie hacks — Score A/B, 600–1500kJ, protein≥13g, sugar≤10g, max 1 per chain */
-  /* Day-of-week rotation: offset the sorted candidate pool so items vary daily */
+  /* Day-of-week rotation: dedupe first → rotate compact set → genuinely different chains each day */
   const hacksPool = foods
     .filter(f => ['A','B'].includes(f.score) && f.kj >= 600 && f.kj <= 1500 && f.protein >= 13 && f.sugar <= 10)
     .sort((a, b) => (b.protein / b.kj) - (a.protein / a.kj));
-  const hackDay = new Date().getDay() % (hacksPool.length || 7); // 0–6, same modulo pattern as welcome tips
-  const hacksRotated = [...hacksPool.slice(hackDay), ...hacksPool.slice(0, hackDay)];
   const hacksChains = new Set();
-  const hacks = hacksRotated
-    .filter(f => { if (hacksChains.has(f.chain)) return false; hacksChains.add(f.chain); return true; })
-    .slice(0, 10);
+  const hacksFull = hacksPool.filter(f => { if (hacksChains.has(f.chain)) return false; hacksChains.add(f.chain); return true; });
+  const hackDay = new Date().getDay() % (hacksFull.length || 7);
+  const hacks = [...hacksFull.slice(hackDay), ...hacksFull.slice(0, hackDay)].slice(0, 10);
 
   const hacksEl = document.getElementById('home-hacks');
   if (hacksEl) hacksEl.innerHTML = hacks.map(x => {
@@ -9334,15 +9390,14 @@ function renderHome() {
   }).join('');
 
   /* High protein snacks — Score A/B, protein≥20g, max 1 per chain, sorted by protein desc */
+  /* Day-of-week rotation: dedupe first → rotate compact set → genuinely different chains each day */
   const proteinPool = foods
     .filter(f => ['A','B'].includes(f.score) && f.protein >= 20)
     .sort((a, b) => b.protein - a.protein);
-  const proteinDay = new Date().getDay() % (proteinPool.length || 7); // same modulo pattern as welcome tips
-  const proteinRotated = [...proteinPool.slice(proteinDay), ...proteinPool.slice(0, proteinDay)];
   const proteinChains = new Set();
-  const proteinItems = proteinRotated
-    .filter(f => { if (proteinChains.has(f.chain)) return false; proteinChains.add(f.chain); return true; })
-    .slice(0, 10);
+  const proteinFull = proteinPool.filter(f => { if (proteinChains.has(f.chain)) return false; proteinChains.add(f.chain); return true; });
+  const proteinDay = new Date().getDay() % (proteinFull.length || 7);
+  const proteinItems = [...proteinFull.slice(proteinDay), ...proteinFull.slice(0, proteinDay)].slice(0, 10);
   const proteinEl = document.getElementById('home-protein');
   if (proteinEl) proteinEl.innerHTML = proteinItems.map(x => {
     const exp = effectiveScore(x); const s = SC(exp), sc = exp.toLowerCase();
@@ -9369,9 +9424,11 @@ function renderHome() {
       </div>`).join('');
   }
 
-  /* Browse by restaurant — all chains */
+  /* Browse by restaurant — all chains, day-of-week rotation for freshness */
+  const restsDay = new Date().getDay() % (rests.length || 7);
+  const restsRotated = [...rests.slice(restsDay), ...rests.slice(0, restsDay)];
   const restsEl = document.getElementById('home-rests');
-  if (restsEl) restsEl.innerHTML = rests.map(r => {
+  if (restsEl) restsEl.innerHTML = restsRotated.map(r => {
     const s = SC(r.score);
     return `<div class="home-rest-tile" onclick="openRest(this.dataset.name)" data-name="${r.name}">
       <span class="home-rest-emoji">${emojiImg(r.emoji,EMO.sm)}</span>
@@ -9560,7 +9617,19 @@ function renderMenu() {
     return ca - cb || b.kj - a.kj;
   });
   document.getElementById('mct').textContent = it.length + ' item' + (it.length !== 1 ? 's' : '');
-  document.getElementById('ml').innerHTML = it.map(f => makeCard(f, true)).join('');
+  const mlEl = document.getElementById('ml');
+  if (it.length >= VL_THRESHOLD) {
+    /* Virtual list — only visible cards in DOM */
+    mlEl.classList.add('vl-active');
+    const scrollEl = document.getElementById('pg-rmenu-scroll');
+    _vl = { items: it, rowH: VL_ROW_H, start: -1, end: -1, listEl: mlEl, scrollEl };
+    _vlRender();
+  } else {
+    /* Normal render — small menus (< 50 items), stamp all at once */
+    mlEl.classList.remove('vl-active');
+    _vl = null;
+    mlEl.innerHTML = it.map(f => makeCard(f, true)).join('');
+  }
 }
 function toggleMS() { mSL = !mSL; document.getElementById('msrt').innerHTML = '<span class="ms sz-20">swap_vert</span> ' + (mSL ? 'Lowest' : 'Highest') + ' cal'; renderMenu(); }
 
@@ -9585,6 +9654,11 @@ function openDetail(id, fromRest, overridePrevPage) {
   /* Remember which page we came from so detBack returns correctly */
   const activePg = document.querySelector('.page.active');
   prevPage = overridePrevPage || (activePg ? activePg.id.replace('pg-', '') : 'search');
+  /* Snapshot scroll position so detBack() can restore it */
+  if (prevPage === 'search') {
+    const _scrEl = document.getElementById('search-scroll');
+    _srScrollTop = _scrEl ? _scrEl.scrollTop : 0;
+  }
   /* Save search query to history when tapping a result from search */
   if (!fromRest) {
     const si = document.getElementById('si');
@@ -9862,7 +9936,14 @@ function detBack() {
   else if (prevPage === 'insights') nav('insights'); /* came from insights */
   else if (prevPage === 'home') nav('home');         /* came from home picks */
   else if (prevPage === 'faves') openFaves();        /* came from faves grid */
-  else nav('search');                               /* default — search */
+  else {
+    nav('search');                                    /* default — search */
+    /* Restore scroll position — nav() resets to 0, override it back */
+    if (_srScrollTop > 0) {
+      const _scrEl = document.getElementById('search-scroll');
+      if (_scrEl) _scrEl.scrollTo({ top: _srScrollTop, behavior: 'instant' });
+    }
+  }
 }
 
 function swTab(t, el) {
@@ -10167,27 +10248,61 @@ function closeAllSheets() {
 
 /* ════════════════════════════════════════════════════
    BURN IT OFF SHEET
-   MET-based exercise times for avg NZ woman
-   35y · 168cm · 72kg → BMR ~1,450 kcal (Mifflin-St Jeor)
-   Weight used for MET × kg × hours calc.
+   MET-based exercise times — Male/Female NZ avg profiles
+   Female: 35y · 168cm · 72kg (Stats NZ)
+   Male:   35y · 177cm · 87kg (Stats NZ)
    kJ → kcal: divide by 4.184
-   Formula: mins = (kcal / (MET × 72)) × 60
+   Formula: mins = (kcal / (MET × kg)) × 60
    ════════════════════════════════════════════════════ */
+const BURN_PROFILES = {
+  f: { label: 'Female', weight: 72, note: 'avg NZ woman (35y, 168cm, 72kg)' },
+  m: { label: 'Male',   weight: 87, note: 'avg NZ man (35y, 177cm, 87kg)'   },
+};
+
+function _renderBurnContent(f, kcal, gKey) {
+  const profile = BURN_PROFILES[gKey];
+  const weight  = profile.weight;
+  const exercises = [
+    { name: 'Walking',  icon: 'directions_walk', met: 3.5 },
+    { name: 'Jogging',  icon: 'directions_run',  met: 7.0 },
+    { name: 'Cycling',  icon: 'directions_bike', met: 6.8 },
+    { name: 'Swimming', icon: 'pool',             met: 8.0 },
+  ];
+  const mins = ex => Math.round((kcal / (ex.met * weight)) * 60);
+
+  document.getElementById('burn-gender-toggle').innerHTML =
+    ['f','m'].map(g =>
+      `<button class="burn-gender-btn${gKey===g?' on':''}" onclick="setBurnGender('${g}')">${BURN_PROFILES[g].label}</button>`
+    ).join('');
+
+  document.getElementById('burn-exercises').innerHTML = exercises.map(ex => {
+    const m   = mins(ex);
+    const hrs = Math.floor(m / 60);
+    const rem = m % 60;
+    const display = hrs > 0 ? `${hrs}h ${rem}m` : `${m}`;
+    const unit    = hrs > 0 ? '' : 'mins';
+    return `<div class="burn-ex-card">
+      <div class="burn-ex-icon-wrap"><span class="ms">${ex.icon}</span></div>
+      <div class="burn-ex-name">${ex.name}</div>
+      <div class="burn-ex-mins">${display}<span class="burn-ex-unit"> ${unit}</span></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('burn-sheet-note').textContent =
+    `Based on ${profile.note}. Times are approximate.`;
+}
+
+function setBurnGender(g) {
+  localStorage.setItem('kc_burn_gender', g);
+  if (!curFood) return;
+  _renderBurnContent(curFood, curFood.kj / 4.184, g);
+}
+
 function openBurnSheet() {
   if (!curFood) return;
-  const f = curFood;
+  const f    = curFood;
   const kcal = f.kj / 4.184;
-  const weight = 72; // avg NZ woman kg
-
-  // MET values (moderate intensity, standard reference)
-  const exercises = [
-    { name: 'Walking',   icon: 'directions_walk',  met: 3.5  },
-    { name: 'Jogging',   icon: 'directions_run',   met: 7.0  },
-    { name: 'Cycling',   icon: 'directions_bike',  met: 6.8  },
-    { name: 'Swimming',  icon: 'pool',              met: 8.0  },
-  ];
-
-  const mins = ex => Math.round((kcal / (ex.met * weight)) * 60);
+  const gKey = localStorage.getItem('kc_burn_gender') || 'f';
 
   document.getElementById('burn-sheet-sub').textContent =
     `How long to burn off ${Math.round(kcal)} kcal (${f.kj} kJ)?`;
@@ -10199,18 +10314,7 @@ function openBurnSheet() {
        <div class="burn-sheet-food-kj">${Math.round(kcal)} cal &nbsp;·&nbsp; ${f.kj} kJ</div>
      </div>`;
 
-  document.getElementById('burn-exercises').innerHTML = exercises.map(ex => {
-    const m = mins(ex);
-    const hrs = Math.floor(m / 60);
-    const rem = m % 60;
-    const display = hrs > 0 ? `${hrs}h ${rem}m` : `${m}`;
-    const unit   = hrs > 0 ? '' : 'mins';
-    return `<div class="burn-ex-card">
-      <div class="burn-ex-icon-wrap"><span class="ms">${ex.icon}</span></div>
-      <div class="burn-ex-name">${ex.name}</div>
-      <div class="burn-ex-mins">${display}<span class="burn-ex-unit"> ${unit}</span></div>
-    </div>`;
-  }).join('');
+  _renderBurnContent(f, kcal, gKey);
 
   document.getElementById('burn-sheet').classList.add('open');
   document.getElementById('sheet-scrim').classList.add('visible');
