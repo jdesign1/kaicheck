@@ -2070,6 +2070,19 @@ body.native #filter-float-pill {
 .det-fave-btn:hover { background: rgba(255,255,255,0.06); }
 .det-fave-btn .ms { font-size: 22px; }
 
+/* ── Heart button on meal total page appbar ── */
+.meal-save-btn {
+  width: 48px; height: 48px;
+  border-radius: var(--shape-full);
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none; cursor: pointer;
+  color: var(--md-on-surface); flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.meal-save-btn.saved { color: #FFB4AB; }
+.meal-save-btn:hover { background: rgba(255,255,255,0.06); }
+.meal-save-btn .ms { font-size: 22px; }
+
 /* ── Heart button on restaurant list cards ── */
 .rc-fave-btn {
   width: 36px; height: 36px; padding: 0; flex-shrink: 0;
@@ -2154,15 +2167,58 @@ body.native #filter-float-pill {
 
 /* ── Faves page ── */
 .faves-topbar {
-  display: flex; align-items: center; padding: 4px 4px 0;
+  display: flex; align-items: center; padding: 4px 12px 0 16px;
   height: 54px; flex-shrink: 0;
-  background: var(--md-surface); gap: 4px;
+  background: var(--md-surface); gap: 8px;
 }
 .faves-title {
   flex: 1; font-family: var(--font-display);
-  font-size: 17px; font-weight: 700; color: var(--md-on-surface); padding-left: 4px;
+  font-size: 22px; font-weight: 700; color: var(--md-on-surface);
 }
-.faves-grid { padding: 12px 16px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.faves-sync-btn {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--md-surface-container); border: 1px solid var(--md-outline-variant);
+  border-radius: var(--shape-full); padding: 5px 10px 5px 8px;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+}
+.faves-sync-lbl {
+  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+  color: var(--md-on-surface-variant);
+}
+/* Section layout */
+.faves-section { padding: 0 16px 4px; }
+.faves-section-hdr {
+  font-family: var(--font-ui); font-size: 11px; font-weight: 700;
+  color: var(--md-on-surface-variant); letter-spacing: 0.8px;
+  text-transform: uppercase; padding: 16px 0 8px;
+}
+.faves-empty-inline {
+  text-align: center; padding: 16px 8px 8px; color: var(--md-on-surface-variant);
+}
+/* Saved meals list */
+.faves-meals-list { display: flex; flex-direction: column; gap: 2px; }
+.faves-meal-row {
+  display: flex; align-items: center;
+  background: var(--md-surface-container); border-radius: var(--shape-md);
+  padding: 12px 10px 12px 14px; cursor: pointer;
+  position: relative; transition: background 0.15s;
+}
+.faves-meal-row:active { background: var(--md-surface-container-high); }
+/* Insights entry card */
+.faves-insights-card {
+  background: var(--md-surface-container); border-radius: var(--shape-md);
+  padding: 16px; transition: background 0.15s;
+}
+.faves-insights-card:active { background: var(--md-surface-container-high); }
+/* Save meal button in meal header */
+.meal-save-btn {
+  background: none; border: none; padding: 4px;
+  color: var(--md-on-surface-variant); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--shape-full); transition: background 0.15s, color 0.15s;
+}
+.meal-save-btn:active { background: rgba(255,255,255,0.1); color: var(--md-on-surface); }
+.faves-grid { padding: 4px 0 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
 /* ── Faves page 2-col card ── */
 .fv-card {
@@ -3314,6 +3370,81 @@ body.native #filter-float-pill {
   color: var(--md-on-error-container);
 }
 
+/* ── % RDI toggle pill ── */
+.cmp-rdi-btn {
+  height: 28px; padding: 0 12px;
+  border-radius: var(--shape-full);
+  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
+  color: var(--md-on-surface-variant);
+  cursor: pointer; margin-left: auto; flex-shrink: 0;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: flex; align-items: center; gap: 4px;
+}
+.cmp-rdi-btn.on {
+  background: var(--md-secondary-container, #253028);
+  border-color: var(--md-secondary, #A8B5A4);
+  color: var(--md-on-secondary-container, #CCDBC5);
+}
+
+/* ── In-restaurant compare banner ── */
+.cmp-rest-banner {
+  display: none;
+  margin: 0 12px 10px;
+  padding: 10px 14px;
+  background: var(--md-primary-container);
+  border-radius: var(--shape-lg);
+  border: 1px solid color-mix(in srgb, var(--md-primary) 30%, transparent);
+}
+.cmp-rest-banner.visible { display: flex; align-items: center; gap: 10px; }
+.cmp-rest-banner-text { flex: 1; font-size: 13px; font-weight: 500; color: var(--md-on-primary-container); line-height: 1.4; }
+.cmp-rest-banner-btn {
+  flex-shrink: 0; height: 32px; padding: 0 14px;
+  border-radius: var(--shape-full);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+  background: var(--md-primary); border: none;
+  color: var(--md-on-primary); cursor: pointer;
+}
+.cmp-rest-banner-dismiss {
+  flex-shrink: 0; background: none; border: none; cursor: pointer;
+  color: var(--md-on-primary-container); opacity: 0.6;
+  padding: 4px; border-radius: var(--shape-full);
+}
+
+/* ── Goal-based compare pills ── */
+.cmp-goal-row {
+  display: flex; gap: 6px; align-items: center;
+  padding: 10px 12px 4px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.cmp-goal-row::-webkit-scrollbar { display: none; }
+.cmp-goal-pill {
+  flex-shrink: 0; height: 30px; padding: 0 12px;
+  border-radius: var(--shape-full);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
+  color: var(--md-on-surface-variant);
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.cmp-goal-pill.on {
+  background: var(--md-primary-container);
+  border-color: var(--md-primary);
+  color: var(--md-primary);
+}
+/* Winner card: bright border + subtle glow */
+.cmp-crd.goal-win {
+  border: 2px solid var(--md-primary);
+  box-shadow: 0 0 0 3px rgba(126,200,80,0.15);
+}
+/* Loser card(s): dimmed */
+.cmp-crd.goal-lose {
+  opacity: 0.45;
+}
+
 /* ════════════════════════════════════════════════════
    M3 MODAL BOTTOM SHEET — Share feature
    Used by: Food Detail page, Compare page
@@ -3914,6 +4045,235 @@ body.native #filter-float-pill {
   padding: 0 16px;
 }
 
+/* ── Tray mode toggle ── */
+.cmp-tray-mode { display: flex; gap: 4px; flex-shrink: 0; }
+.cmp-mode-pill {
+  height: 28px; padding: 0 10px; border-radius: var(--shape-full);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
+  color: var(--md-on-surface-variant);
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.cmp-mode-pill.on {
+  background: var(--md-primary-container);
+  border-color: var(--md-primary);
+  color: var(--md-primary);
+}
+/* ── Tray kJ total (meal mode) ── */
+.cmp-tray-kj {
+  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
+  white-space: nowrap; flex-shrink: 0;
+}
+.cmp-tray-kj.kj-green { color: #7EC850; }
+.cmp-tray-kj.kj-amber { color: #FFB95A; }
+.cmp-tray-kj.kj-red   { color: #FFB4AB; }
+
+/* ── pg-meal ── */
+.meal-hero {
+  padding: 16px;
+  background: var(--md-surface-container);
+  border-radius: var(--shape-lg);
+  margin: 0 16px 16px;
+}
+.meal-kj-total {
+  font-family: var(--font-display); font-size: 40px; font-weight: 800;
+  line-height: 1; margin-bottom: 4px;
+}
+.meal-kj-total.kj-green { color: #7EC850; }
+.meal-kj-total.kj-amber { color: #FFB95A; }
+.meal-kj-total.kj-red   { color: #FFB4AB; }
+.meal-rdi-bar-wrap {
+  margin: 8px 0 4px; background: var(--md-surface-container-high);
+  border-radius: var(--shape-full); height: 6px; overflow: hidden;
+}
+.meal-rdi-bar { height: 100%; border-radius: var(--shape-full); transition: width 0.3s ease; }
+.meal-rdi-label { font-size: 11px; color: var(--md-on-surface-variant); margin-top: 4px; }
+.meal-grade-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; border-radius: var(--shape-full);
+  font-family: var(--font-ui); font-size: 13px; font-weight: 700; margin-top: 10px;
+}
+.meal-grade-badge.score-a { background: rgba(128,222,234,0.15); color: #80DEEA; border: 1px solid #80DEEA; }
+.meal-grade-badge.score-b { background: rgba(168,240,117,0.15); color: #A8F075; border: 1px solid #A8F075; }
+.meal-grade-badge.score-c { background: rgba(255,185,90,0.15);  color: #FFB95A; border: 1px solid #FFB95A; }
+.meal-grade-badge.score-d { background: rgba(255,180,171,0.15); color: #FFB4AB; border: 1px solid #FFB4AB; }
+.meal-section { padding: 0 16px; margin-bottom: 20px; }
+.meal-section-title {
+  font-family: var(--font-ui); font-size: 13px; font-weight: 700;
+  color: var(--md-on-surface-variant); letter-spacing: 0.5px;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.meal-item-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; background: var(--md-surface-container);
+  border-radius: var(--shape-md); margin-bottom: 6px;
+}
+.meal-item-emo { font-size: 22px; flex-shrink: 0; }
+.meal-item-info { flex: 1; min-width: 0; }
+.meal-item-name { font-size: 13px; font-weight: 600; color: var(--md-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.meal-item-chain { font-size: 11px; color: var(--md-on-surface-variant); }
+.meal-item-kj { font-size: 13px; font-weight: 700; color: var(--md-on-surface-variant); flex-shrink: 0; }
+.meal-item-rm { background: none; border: none; cursor: pointer; color: var(--md-on-surface-variant); padding: 4px; border-radius: var(--shape-full); flex-shrink: 0; }
+.meal-nut-table { width: 100%; border-collapse: collapse; }
+.meal-nut-table th, .meal-nut-table td {
+  padding: 8px 0; font-family: var(--font-ui); font-size: 13px;
+  border-bottom: 1px solid var(--md-surface-container-high);
+}
+.meal-nut-table th { font-weight: 700; color: var(--md-on-surface-variant); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+.meal-nut-table td:nth-child(2), .meal-nut-table th:nth-child(2) { text-align: right; }
+.meal-nut-table td:last-child,   .meal-nut-table th:last-child   { text-align: right; }
+.meal-nut-rdi { font-size: 11px; color: var(--md-on-surface-variant); }
+.meal-swap-card {
+  background: var(--md-primary-container); border-radius: var(--shape-lg);
+  padding: 14px; display: flex; gap: 10px; align-items: flex-start;
+}
+.meal-swap-icon { color: var(--md-primary); flex-shrink: 0; }
+.meal-swap-title { font-size: 13px; font-weight: 700; color: var(--md-on-primary-container); margin-bottom: 3px; }
+.meal-swap-desc { font-size: 12px; color: var(--md-on-primary-container); opacity: 0.8; line-height: 1.4; }
+.meal-swap-btn {
+  height: 30px; padding: 0 12px;
+  border-radius: var(--shape-full); border: none; cursor: pointer;
+  background: var(--md-primary); color: var(--md-on-primary);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+}
+/* ── Meal hero energy row ── */
+.meal-energy-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.meal-cal-total {
+  font-family: var(--font-display); font-size: 40px; font-weight: 800;
+  line-height: 1; margin-bottom: 2px; color: var(--md-on-surface);
+}
+/* Grade letter badge — compact circle, tappable */
+.meal-grade-letter {
+  width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 20px; font-weight: 800;
+  cursor: pointer; border: 2px solid; margin-top: 4px;
+  transition: opacity 0.15s;
+}
+.meal-grade-letter:active { opacity: 0.7; }
+.meal-grade-letter.score-a { background: rgba(128,222,234,0.15); color: #80DEEA; border-color: #80DEEA; }
+.meal-grade-letter.score-b { background: rgba(168,240,117,0.15); color: #A8F075; border-color: #A8F075; }
+.meal-grade-letter.score-c { background: rgba(255,185,90,0.15);  color: #FFB95A; border-color: #FFB95A; }
+.meal-grade-letter.score-d { background: rgba(255,180,171,0.15); color: #FFB4AB; border-color: #FFB4AB; }
+/* Meal nutrition gender tabs */
+.meal-nut-tabs { display: flex; border-bottom: 1px solid var(--md-surface-container-high); margin: 4px 16px 0; }
+.meal-nut-tab {
+  flex: 1; text-align: center; padding: 12px 0;
+  font-family: var(--font-ui); font-size: 14px; font-weight: 600;
+  color: var(--md-on-surface-variant); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.meal-nut-tab.on { color: var(--md-primary); border-bottom-color: var(--md-primary); }
+/* Swap secondary "See details" button */
+.meal-swap-see-btn {
+  height: 30px; padding: 0 12px;
+  border-radius: var(--shape-full); cursor: pointer;
+  background: transparent; border: 1px solid var(--md-primary);
+  color: var(--md-primary);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+}
+/* Snackbar undo action button */
+.snackbar-action {
+  background: none; border: none; cursor: pointer;
+  color: var(--md-primary); font-family: var(--font-ui);
+  font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+  padding: 0; margin-left: auto; flex-shrink: 0;
+}
+/* ── Home meal quick-action card ── */
+.home-meal-card {
+  margin: 0 16px 16px; background: var(--md-primary-container);
+  border-radius: var(--shape-lg); padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+}
+.home-meal-card:active { opacity: 0.8; }
+.home-meal-card-icon { font-size: 28px; flex-shrink: 0; }
+.home-meal-card-text { flex: 1; }
+.home-meal-card-title { font-size: 14px; font-weight: 700; color: var(--md-on-primary-container); }
+.home-meal-card-sub { font-size: 12px; color: var(--md-on-primary-container); opacity: 0.75; margin-top: 2px; }
+.home-meal-card-arrow { color: var(--md-primary); flex-shrink: 0; }
+
+/* ── Meal Builder Sheet ── */
+.mb-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 4px 16px 12px;
+}
+.mb-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--md-on-surface); }
+.mb-slot-empty {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px; margin: 0 16px 8px;
+  background: var(--md-surface-container-high);
+  border-radius: var(--shape-md);
+  border: 1.5px dashed var(--md-outline-variant);
+  cursor: pointer;
+}
+.mb-slot-empty:active { opacity: 0.7; }
+.mb-slot-search {
+  margin: 0 16px 8px; border-radius: var(--shape-md);
+  border: 1.5px solid var(--md-primary);
+  background: var(--md-surface-container-high);
+  overflow: hidden;
+}
+.mb-search-row { display: flex; align-items: center; gap: 8px; padding: 10px 12px; }
+.mb-search-input {
+  flex: 1; background: none; border: none; outline: none;
+  font-family: var(--font-ui); font-size: 14px; color: var(--md-on-surface);
+  caret-color: var(--md-primary);
+}
+.mb-search-input::placeholder { color: var(--md-on-surface-variant); }
+.mb-results { max-height: 210px; overflow-y: auto; overscroll-behavior: contain; }
+.mb-result-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px; cursor: pointer;
+  border-top: 1px solid var(--md-surface-container);
+}
+.mb-result-row:active { background: var(--md-surface-container); }
+.mb-result-info { flex: 1; min-width: 0; }
+.mb-result-name { font-size: 13px; font-weight: 600; color: var(--md-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mb-result-chain { font-size: 11px; color: var(--md-on-surface-variant); }
+.mb-result-right { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.mb-result-kj { font-size: 12px; color: var(--md-on-surface-variant); }
+.mb-slot-filled {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; margin: 0 16px 8px;
+  background: var(--md-surface-container);
+  border-radius: var(--shape-md);
+  border: 1.5px solid var(--md-outline-variant);
+  cursor: pointer;
+}
+.mb-slot-filled:active { opacity: 0.8; }
+.mb-slot-filled-info { flex: 1; min-width: 0; }
+.mb-slot-filled-name { font-size: 13px; font-weight: 600; color: var(--md-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mb-slot-rm { background: none; border: none; cursor: pointer; color: var(--md-on-surface-variant); padding: 4px; flex-shrink: 0; border-radius: var(--shape-full); }
+.mb-add-slot-btn {
+  display: flex; align-items: center; gap: 8px;
+  margin: 4px 16px 16px; padding: 10px 14px;
+  background: none; border: none; cursor: pointer;
+  color: var(--md-primary); font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+}
+.mb-footer {
+  padding: 12px 16px 8px;
+  border-top: 1px solid var(--md-surface-container-high);
+  flex-shrink: 0;
+}
+.mb-kj-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.mb-kj-label { font-size: 12px; color: var(--md-on-surface-variant); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+.mb-kj-val { font-size: 18px; font-weight: 800; font-family: var(--font-display); }
+.mb-kj-val.kj-green { color: #7EC850; }
+.mb-kj-val.kj-amber { color: #FFB95A; }
+.mb-kj-val.kj-red   { color: #FFB4AB; }
+.mb-kj-val.kj-zero  { color: var(--md-on-surface-variant); }
+.mb-cta {
+  width: 100%; height: 48px; border-radius: var(--shape-full);
+  background: var(--md-primary); color: var(--md-on-primary);
+  border: none; cursor: pointer;
+  font-family: var(--font-ui); font-size: 15px; font-weight: 700;
+  transition: opacity 0.15s;
+}
+.mb-cta:disabled { opacity: 0.38; cursor: not-allowed; }
+
 </style>
 </head>
 <body>
@@ -3928,8 +4288,12 @@ body.native #filter-float-pill {
 
     <div class="cmp-tray" id="cmp-tray">
       <div class="cmp-tray-inner">
-        <span class="cmp-tray-label">Compare</span>
+        <div class="cmp-tray-mode">
+          <button class="cmp-mode-pill on" id="cmp-mode-compare" onclick="setCmpMode('compare')">Compare</button>
+          <button class="cmp-mode-pill"    id="cmp-mode-meal"    onclick="setCmpMode('meal')">Meal</button>
+        </div>
         <div class="cmp-tray-chips" id="cmp-tray-chips"></div>
+        <div class="cmp-tray-kj" id="cmp-tray-kj" style="display:none"></div>
         <button class="cmp-tray-btn" id="cmp-tray-btn" onclick="goCmp()" disabled="">
           Compare →
         </button>
@@ -4053,6 +4417,16 @@ body.native #filter-float-pill {
               <span class="home-see-all" onclick="openFaves()">See all →</span>
             </div>
             <div class="home-scroll" id="home-faves"></div>
+          </div>
+
+          <!-- Build a meal quick-action -->
+          <div class="home-meal-card" onclick="openMealBuilder()" id="home-meal-card">
+            <div class="home-meal-card-icon">🍽️</div>
+            <div class="home-meal-card-text">
+              <div class="home-meal-card-title">Build a meal</div>
+              <div class="home-meal-card-sub">Add items and see your total nutrition</div>
+            </div>
+            <span class="ms home-meal-card-arrow" style="font-size:20px">chevron_right</span>
           </div>
 
           <!-- Categories -->
@@ -4251,7 +4625,7 @@ body.native #filter-float-pill {
           <div class="nav-item on" onclick="nav(&#39;home&#39;)"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;insights&#39;)"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
@@ -4263,10 +4637,11 @@ body.native #filter-float-pill {
       <div class="page" id="pg-faves">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
         <div class="faves-topbar">
-          <button class="rmenu-appbar-back" onclick="nav('home')">
-            <span class="ms">arrow_back</span>
+          <div class="faves-title">Saved</div>
+          <button class="faves-sync-btn" onclick="showToast('Sign in to sync across devices','sync')" aria-label="Sign in to sync">
+            <span class="ms" style="font-size:18px;color:var(--md-on-surface-variant)">sync</span>
+            <span class="faves-sync-lbl">Sign in to sync</span>
           </button>
-          <div class="faves-title">Your favourites</div>
         </div>
         <div class="page-scroll">
           <!-- ─── FAVES SKELETON ─── -->
@@ -4310,10 +4685,10 @@ body.native #filter-float-pill {
         </div>
         <div class="page-footer">
           <div class="bnav">
-            <div class="nav-item on" onclick="nav('home')"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
+            <div class="nav-item" onclick="nav('home')"><div class="nav-ico"><span class="ms">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
             <div class="nav-item" onclick="nav('search')"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
             <div class="nav-item" onclick="nav('restaurants')"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-            <div class="nav-item" onclick="nav('insights')"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+            <div class="nav-item on" onclick="nav('faves')"><div class="nav-ico"><span class="ms filled">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
           </div>
           <div class="hi"><div class="hi-bar"></div></div>
         </div>
@@ -4426,7 +4801,7 @@ body.native #filter-float-pill {
           <div class="nav-item on" onclick="nav(&#39;home&#39;)"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;insights&#39;)"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
@@ -4581,7 +4956,7 @@ body.native #filter-float-pill {
       </div>
     </div><div class="rest-card" onclick="openRest(this.dataset.name)" data-name="Burger King">
       <div class="rest-ico"><span class="ms-42" aria-hidden="true">🍔</span></div>
-      <div class="flex-1"><div class="rest-name">Burger King</div><div class="rest-meta">85 items</div></div>
+      <div class="flex-1"><div class="rest-name">Burger King</div><div class="rest-meta">109 items</div></div>
       <div class="row-10">
         <div style="background:#261800;color:#FFB95A;border:1px solid #4A3200;font-family:&#39;Outfit&#39;,sans-serif;font-size:13px;font-weight:700;padding:4px 12px;border-radius:8px;cursor:pointer" onclick="event.stopPropagation();openScoreSheet(&#39;C&#39;)" title="What does score C mean?">C</div>
         <span class="ms sz-20 txt-var">chevron_right</span>
@@ -4614,7 +4989,7 @@ body.native #filter-float-pill {
           <div class="nav-item on" onclick="nav(&#39;home&#39;)"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;insights&#39;)"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
@@ -4723,6 +5098,11 @@ body.native #filter-float-pill {
             <span class="filter-badge" id="rmenu-filter-badge"></span>
           </button>
         </div>
+        <div class="cmp-rest-banner" id="cmp-rest-banner">
+          <div class="cmp-rest-banner-text">These two are in your compare tray — see them side by side?</div>
+          <button class="cmp-rest-banner-btn" onclick="goCmp()">Compare →</button>
+          <button class="cmp-rest-banner-dismiss" onclick="dismissCmpBanner()" title="Dismiss"><span class="ms" style="font-size:16px">close</span></button>
+        </div>
         <div class="food-list" id="ml"></div>
         </div><!-- /page-scroll -->
         </div><!-- /page-content-area -->
@@ -4731,7 +5111,7 @@ body.native #filter-float-pill {
           <div class="nav-item on" onclick="nav(&#39;home&#39;)"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;insights&#39;)"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
@@ -4867,7 +5247,7 @@ body.native #filter-float-pill {
           <div class="nav-item on" onclick="nav(&#39;home&#39;)"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;insights&#39;)"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
@@ -4936,10 +5316,33 @@ body.native #filter-float-pill {
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;compare&#39;)"><div class="nav-ico"><span class="ms">compare_arrows</span></div><div class="nav-lbl">Compare</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;insights&#39;)"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           PAGE: MEAL
+           Meal builder summary — summed nutrition,
+           meal grade, swap suggestion.
+           ═══════════════════════════════════════════ -->
+      <div class="page" id="pg-meal">
+        <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
+        <div class="page-scroll">
+          <div id="meal-header"></div>
+          <div id="meal-content"></div>
+        </div><!-- /page-scroll -->
+        <div class="page-footer">
+        <div class="bnav">
+          <div class="nav-item" onclick="nav('home')"><div class="nav-ico"><span class="ms">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav('search')"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav('restaurants')"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
+          <div class="nav-item on" onclick="goCmp()"><div class="nav-ico"><span class="ms filled">restaurant_menu</span></div><div class="nav-lbl">Meal</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav('faves')"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
+        </div>
+        <div class="hi"><div class="hi-bar"></div>
+        </div></div><!-- /page-footer -->
       </div>
 
       <!-- ═══════════════════════════════════════════
@@ -5826,7 +6229,7 @@ body.native #filter-float-pill {
           <div class="nav-item on" onclick="nav(&#39;home&#39;)"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;insights&#39;)"><div class="nav-ico"><span class="ms">insights</span></div><div class="nav-lbl">Learn</div><div class="nav-dot"></div></div>
+          <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
         </div><!-- /page-footer --></div>
@@ -5855,6 +6258,7 @@ body.native #filter-float-pill {
     <div class="snackbar" id="snackbar">
       <span class="ms sz-20" id="snackbar-ico">check_circle</span>
       <span id="snackbar-msg">Done</span>
+      <button class="snackbar-action" id="snackbar-action" style="display:none" onclick="if(window._snackbarActionFn){window._snackbarActionFn();document.getElementById('snackbar').classList.remove('show');}">Undo</button>
     </div>
 
     <!-- M3 Rich tooltip — fave first-time education -->
@@ -5881,7 +6285,11 @@ body.native #filter-float-pill {
       <div class="sheet-header" id="sheet-header">
         <!-- populated by openShareSheet() -->
       </div>
-      <div class="sheet-actions">
+      <div class="sheet-actions" id="share-actions">
+        <button class="sheet-action" id="share-img-btn" onclick="shareCompareImage()" style="display:none">
+          <div class="sheet-action-ico"><span class="ms">image</span></div>
+          <span class="sheet-action-lbl">Image card</span>
+        </button>
         <button class="sheet-action" onclick="shareCopyText()">
           <div class="sheet-action-ico"><span class="ms">content_copy</span></div>
           <span class="sheet-action-lbl">Copy text</span>
@@ -5902,6 +6310,61 @@ body.native #filter-float-pill {
       <div class="sheet-toast" id="sheet-toast">
         <span class="ms ">check_circle</span>
         <span id="sheet-toast-msg">Copied to clipboard</span>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         M3 MODAL BOTTOM SHEET — Meal Builder
+         Opened by openMealBuilder() from home card
+         or tray. Slot-based item selection.
+         ═══════════════════════════════════════════ -->
+    <div class="bottom-sheet" id="meal-builder-sheet" style="height:90vh;display:flex;flex-direction:column">
+      <div class="sheet-handle"></div>
+      <div class="mb-header">
+        <div>
+          <div class="mb-title">Build a meal 🍽️</div>
+          <div style="font-size:12px;color:var(--md-on-surface-variant);margin-top:2px">Tap a slot to search for an item</div>
+        </div>
+        <button onclick="closeAllSheets()" style="background:none;border:none;cursor:pointer;color:var(--md-on-surface-variant);padding:8px;border-radius:var(--shape-full)">
+          <span class="ms">close</span>
+        </button>
+      </div>
+      <div class="sheet-scroll" id="mb-body"></div>
+      <div class="mb-footer" id="mb-footer">
+        <div class="mb-kj-row">
+          <span class="mb-kj-label">Total</span>
+          <span class="mb-kj-val kj-zero">—</span>
+        </div>
+        <button class="mb-cta" disabled>See meal total →</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         M3 MODAL BOTTOM SHEET — Quick Compare (2-item)
+         Opened by goCmp() when exactly 2 items queued.
+         "See full comparison" escalates to pg-compare.
+         ═══════════════════════════════════════════ -->
+    <div class="bottom-sheet" id="quick-cmp-sheet" style="height:82vh;display:flex;flex-direction:column">
+      <div class="sheet-handle"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px 8px">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--md-on-surface)">Quick compare</div>
+          <div style="font-size:12px;color:var(--md-on-surface-variant);margin-top:1px">2 items · tap a goal to rank</div>
+        </div>
+        <button onclick="closeAllSheets()" style="background:none;border:none;cursor:pointer;color:var(--md-on-surface-variant);padding:8px;border-radius:var(--shape-full)">
+          <span class="ms">close</span>
+        </button>
+      </div>
+      <div class="sheet-scroll" id="quick-cmp-scroll" style="flex:1;overflow-y:auto;padding:0 0 8px">
+        <div id="quick-cmp-content"></div>
+      </div>
+      <div style="padding:8px 16px 16px;background:var(--md-surface-container-low);border-top:1px solid var(--md-outline-variant)">
+        <button onclick="escalateToCmpPage()" style="width:100%;height:44px;border-radius:var(--shape-full);
+            background:var(--md-primary-container);border:1px solid var(--md-primary);
+            color:var(--md-primary);font-family:var(--font-ui);font-size:14px;font-weight:700;
+            cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">
+          <span class="ms sz-20">open_in_full</span>See full comparison
+        </button>
       </div>
     </div>
 
@@ -6004,9 +6467,6 @@ body.native #filter-float-pill {
             </button>
             <button class="fsh-chip" id="fsh-halal" onclick="toggleFilter('halal',this)">
               <span>☾</span>Halal
-            </button>
-            <button class="fsh-chip" id="fsh-gluten_free" onclick="toggleFilter('gluten_free',this)">
-              <span>🌾</span>Gluten-free
             </button>
           </div>
           <div class="fsh-diet-note">Flags based on menu labelling &amp; chain certifications. Always confirm with staff for allergens.</div>
@@ -6861,6 +7321,52 @@ const foods = [
   {id:75, name:"Chicken McMuffin", chain:"McDonald's", cat:"chicken", emoji:"🍗", kj:1460, protein:19.8, fat:14.9, carbs:31.5, sugar:5.8, sodium:920, sat_fat:4.2, fibre:2.0, score:"B"},
   {id:76, name:"Hotcakes", chain:"McDonald's", cat:"sides", emoji:"🥞", kj:2060, protein:11.2, fat:23.4, carbs:62.1, sugar:25.0, sodium:900, sat_fat:10.0, fibre:2.5, score:"C"},
   {id:77, name:"Hash Brown", chain:"McDonald's", cat:"sides", emoji:"🥔", kj:720, protein:2.3, fat:10.5, carbs:17.6, sugar:0.5, sodium:450, sat_fat:1.5, fibre:2.0, score:"C"},
+  /* ── McDonald's drinks — McDonald's NZ nutrition info ── */
+  {id:1074, name:"Coca-Cola Small", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:475, protein:0, fat:0, carbs:28, sugar:28, sodium:19, sat_fat:0, fibre:0, score:"D"},
+  {id:1075, name:"Coca-Cola Large", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:1040, protein:0, fat:0, carbs:61, sugar:61, sodium:41, sat_fat:0, fibre:0, score:"D"},
+  {id:1076, name:"Coke No Sugar Small", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:4, protein:0, fat:0, carbs:0, sugar:0, sodium:19, sat_fat:0, fibre:0, score:"B"},
+  {id:1077, name:"Coke No Sugar Medium", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:50, protein:0, fat:0, carbs:0, sugar:0, sodium:30, sat_fat:0, fibre:0, score:"B"},
+  {id:1078, name:"Coke No Sugar Large", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:4, protein:0, fat:0, carbs:0, sugar:0, sodium:42, sat_fat:0, fibre:0, score:"B"},
+  {id:1079, name:"Sprite Small", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:460, protein:0, fat:0, carbs:27, sugar:27, sodium:15, sat_fat:0, fibre:0, score:"D"},
+  {id:1080, name:"Sprite Medium", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:735, protein:0, fat:0, carbs:43, sugar:43, sodium:24, sat_fat:0, fibre:0, score:"D"},
+  {id:1081, name:"Sprite Large", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:1010, protein:0, fat:0, carbs:60, sugar:60, sodium:33, sat_fat:0, fibre:0, score:"D"},
+  {id:1082, name:"Fanta Small", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:510, protein:0, fat:0, carbs:30, sugar:30, sodium:10, sat_fat:0, fibre:0, score:"D"},
+  {id:1083, name:"Fanta Medium", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:815, protein:0, fat:0, carbs:48, sugar:48, sodium:16, sat_fat:0, fibre:0, score:"D"},
+  {id:1084, name:"Fanta Large", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:1120, protein:0, fat:0, carbs:66, sugar:66, sodium:22, sat_fat:0, fibre:0, score:"D"},
+  {id:1085, name:"Frozen Coke Small", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:615, protein:0, fat:0, carbs:36, sugar:36, sodium:28, sat_fat:0, fibre:0, score:"D"},
+  {id:1086, name:"Frozen Coke Medium", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:895, protein:0, fat:0, carbs:53, sugar:53, sodium:41, sat_fat:0, fibre:0, score:"D"},
+  {id:1087, name:"Frozen Coke Large", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:1230, protein:0, fat:0, carbs:73, sugar:73, sodium:56, sat_fat:0, fibre:0, score:"D"},
+  {id:1088, name:"Mango Fruitopia Small", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:610, protein:0.3, fat:0, carbs:35, sugar:32, sodium:20, sat_fat:0, fibre:0, score:"D"},
+  {id:1089, name:"Mango Fruitopia Medium", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:880, protein:0.4, fat:0, carbs:51, sugar:47, sodium:29, sat_fat:0, fibre:0, score:"D"},
+  {id:1090, name:"Mango Fruitopia Large", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:1210, protein:0.6, fat:0, carbs:70, sugar:64, sodium:40, sat_fat:0, fibre:0, score:"D"},
+  {id:1091, name:"Chocolate Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1350, protein:6.5, fat:4.8, carbs:61, sugar:55, sodium:152, sat_fat:3.2, fibre:0.5, score:"C"},
+  {id:1092, name:"Chocolate Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1890, protein:9.1, fat:6.7, carbs:86, sugar:77, sodium:213, sat_fat:4.5, fibre:0.7, score:"C"},
+  {id:1093, name:"Chocolate Shake Large", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:2620, protein:12.6, fat:9.3, carbs:119, sugar:107, sodium:295, sat_fat:6.2, fibre:1.0, score:"D"},
+  {id:1094, name:"Strawberry Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1260, protein:6.5, fat:4.8, carbs:57, sugar:51, sodium:107, sat_fat:3.2, fibre:0, score:"C"},
+  {id:1095, name:"Strawberry Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1765, protein:9.1, fat:6.7, carbs:80, sugar:72, sodium:150, sat_fat:4.5, fibre:0, score:"C"},
+  {id:1096, name:"Strawberry Shake Large", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:2450, protein:12.6, fat:9.3, carbs:110, sugar:99, sodium:207, sat_fat:6.2, fibre:0, score:"D"},
+  {id:1097, name:"Vanilla Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1250, protein:6.5, fat:5.5, carbs:55, sugar:48, sodium:106, sat_fat:3.7, fibre:0, score:"C"},
+  {id:1098, name:"Vanilla Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1750, protein:9.1, fat:7.7, carbs:77, sugar:67, sodium:148, sat_fat:5.2, fibre:0, score:"C"},
+  {id:1099, name:"Vanilla Shake Large", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:2430, protein:12.6, fat:10.7, carbs:106, sugar:93, sodium:205, sat_fat:7.2, fibre:0, score:"D"},
+  {id:1100, name:"McCafe Flat White Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:435, protein:5.2, fat:5.2, carbs:8.4, sugar:8.0, sodium:70, sat_fat:3.5, fibre:0, score:"B"},
+  {id:1101, name:"McCafe Flat White Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:580, protein:7.0, fat:7.0, carbs:11.2, sugar:10.7, sodium:93, sat_fat:4.7, fibre:0, score:"B"},
+  {id:1102, name:"McCafe Flat White Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:735, protein:8.8, fat:8.8, carbs:14.2, sugar:13.5, sodium:118, sat_fat:5.9, fibre:0, score:"B"},
+  {id:1103, name:"McCafe Latte Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:435, protein:5.2, fat:5.2, carbs:8.4, sugar:8.0, sodium:70, sat_fat:3.5, fibre:0, score:"B"},
+  {id:1104, name:"McCafe Latte Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:730, protein:8.7, fat:8.7, carbs:14.0, sugar:13.4, sodium:117, sat_fat:5.8, fibre:0, score:"B"},
+  {id:1105, name:"McCafe Latte Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:920, protein:11.0, fat:11.0, carbs:17.7, sugar:16.9, sodium:148, sat_fat:7.3, fibre:0, score:"B"},
+  {id:1106, name:"McCafe Cappuccino Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:365, protein:4.4, fat:4.4, carbs:7.0, sugar:6.7, sodium:59, sat_fat:2.9, fibre:0, score:"B"},
+  {id:1107, name:"McCafe Cappuccino Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:505, protein:6.1, fat:6.1, carbs:9.7, sugar:9.3, sodium:82, sat_fat:4.1, fibre:0, score:"B"},
+  {id:1108, name:"McCafe Cappuccino Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:655, protein:7.8, fat:7.8, carbs:12.5, sugar:12.0, sodium:105, sat_fat:5.2, fibre:0, score:"B"},
+  {id:1109, name:"McCafe Hot Chocolate Small", chain:"McDonald's", cat:"drinks", emoji:"🍫", kj:840, protein:5.0, fat:5.8, carbs:29.5, sugar:27.5, sodium:108, sat_fat:3.8, fibre:1.5, score:"C"},
+  {id:1110, name:"McCafe Hot Chocolate Medium", chain:"McDonald's", cat:"drinks", emoji:"🍫", kj:1175, protein:7.0, fat:8.1, carbs:41.3, sugar:38.5, sodium:151, sat_fat:5.3, fibre:2.1, score:"C"},
+  {id:1111, name:"McCafe Hot Chocolate Large", chain:"McDonald's", cat:"drinks", emoji:"🍫", kj:1490, protein:8.9, fat:10.3, carbs:52.3, sugar:48.8, sodium:192, sat_fat:6.7, fibre:2.6, score:"C"},
+  {id:1112, name:"Orange Juice", chain:"McDonald's", cat:"drinks", emoji:"🍊", kj:480, protein:1.8, fat:0.2, carbs:26.8, sugar:26.8, sodium:3, sat_fat:0, fibre:0.4, score:"B", natural_sugar:true},
+  {id:1113, name:"Apple Juice", chain:"McDonald's", cat:"drinks", emoji:"🍎", kj:420, protein:0.5, fat:0.1, carbs:24.5, sugar:23.5, sodium:10, sat_fat:0, fibre:0.2, score:"C"},
+  {id:1114, name:"Water", chain:"McDonald's", cat:"drinks", emoji:"💧", kj:0, protein:0, fat:0, carbs:0, sugar:0, sodium:0, sat_fat:0, fibre:0, score:"A"},
+  {id:1115, name:"McFlurry Oreo Regular", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:1370, protein:6.8, fat:7.5, carbs:52.4, sugar:40.7, sodium:176, sat_fat:4.8, fibre:0.5, score:"D"},
+  {id:1116, name:"McFlurry Oreo Mini", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:710, protein:3.5, fat:3.9, carbs:27.2, sugar:21.1, sodium:91, sat_fat:2.5, fibre:0.3, score:"C"},
+  {id:1117, name:"McFlurry Caramel Regular", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:1340, protein:6.4, fat:6.8, carbs:53.7, sugar:42.5, sodium:205, sat_fat:4.4, fibre:0, score:"D"},
+  {id:1118, name:"McFlurry Caramel Mini", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:695, protein:3.3, fat:3.5, carbs:27.9, sugar:22.1, sodium:106, sat_fat:2.3, fibre:0, score:"C"},
   /* ── KFC — verified KFC NZ Nutrition Page — kfc.co.nz/nutrition — April 2026
      Scores auto-calculated by pipeline.py v2.0 — FSANZ daily reference values. ── */
   {id:78, name:"Colonel Burger", chain:"KFC", cat:"burgers", emoji:"🍔", kj:1805, protein:25.3, fat:16.3, carbs:42.7, sugar:10.1, sodium:809, sat_fat:2.5, fibre:5.0, score:"B"},
@@ -7198,7 +7704,7 @@ const foods = [
   {id:285, name:"Hash Bites Large", chain:"Burger King", cat:"sides", emoji:"🥔", kj:1570, protein:5.1, fat:16.4, carbs:48.8, sugar:1.1, sodium:1680, sat_fat:1.8, fibre:2.0, score:"C"},
   {id:286, name:"Onion Rings 6 Pack", chain:"Burger King", cat:"sides", emoji:"🧅", kj:945, protein:4.4, fat:9.9, carbs:28.7, sugar:2.9, sodium:402, sat_fat:1.0, fibre:2.0, score:"B"},
   {id:287, name:"Onion Rings 9 Pack", chain:"Burger King", cat:"sides", emoji:"🧅", kj:1240, protein:5.7, fat:12.9, carbs:37.5, sugar:3.8, sodium:526, sat_fat:1.3, fibre:2.0, score:"B"},
-  {id:288, name:"Chicken Fries 9 Pack", chain:"Burger King", cat:"sides", emoji:"🍗", kj:1863, protein:26.1, fat:27.1, carbs:28.5, sugar:2.9, sodium:1100, sat_fat:3.2, fibre:2.0, score:"B"},
+  {id:288, name:"Chicken Fries 9 Pack", chain:"Burger King", cat:"sides", emoji:"🍗", kj:1636, protein:14.3, fat:27.1, carbs:23.0, sugar:0.6, sodium:638, sat_fat:4.3, fibre:2.0, score:"C"},
   {id:289, name:"Curly Fries Large", chain:"Burger King", cat:"sides", emoji:"🍟", kj:2028, protein:5.5, fat:28.3, carbs:52.6, sugar:0.6, sodium:1553, sat_fat:2.8, fibre:2.0, score:"C"},
   {id:290, name:"Curly Fries Share Box", chain:"Burger King", cat:"sides", emoji:"🍟", kj:3718, protein:10.1, fat:51.9, carbs:96.4, sugar:1.1, sodium:2847, sat_fat:5.1, fibre:2.0, score:"C"},
   {id:291, name:"Soft Serve Cone", chain:"Burger King", cat:"desserts", emoji:"🍦", kj:543, protein:3.4, fat:3.7, carbs:20.5, sugar:15.3, sodium:72, sat_fat:2.4, fibre:0.0, score:"C"},
@@ -8128,6 +8634,33 @@ const foods = [
   {id:1048, name:"Vegan Nachos Supreme", chain:"Taco Bell", cat:"sides", emoji:"🍟", kj:2675, protein:12.2, fat:32.2, carbs:67.7, sugar:5.9, sodium:676, sat_fat:3.8, fibre:11.3, score:"B"},
   {id:1049, name:"Vegan Soft Taco Supreme", chain:"Taco Bell", cat:"tacos", emoji:"🌮", kj:722, protein:5.5, fat:5.4, carbs:23.1, sugar:2.4, sodium:295, sat_fat:2.0, fibre:2.5, score:"C"},
 
+  /* ── Burger King — verified Burger King NZ Nutrition Information — April 2026
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1050, name:"King Box Nuggets", chain:"Burger King", cat:"sides", emoji:"🍗", kj:1990, protein:23.7, fat:20.5, carbs:52.8, sugar:1.4, sodium:1470, sat_fat:4.6, fibre:2.0, score:"B"},
+  {id:1051, name:"King Box Cheeseburger", chain:"Burger King", cat:"sides", emoji:"🍔", kj:2600, protein:24.4, fat:27.7, carbs:67.7, sugar:7.7, sodium:1400, sat_fat:11.3, fibre:2.0, score:"C"},
+  {id:1052, name:"Chicken Fries 4 Pack King Box", chain:"Burger King", cat:"sides", emoji:"🍗", kj:2321, protein:18.0, fat:27.0, carbs:57.0, sugar:0.8, sodium:1795, sat_fat:3.5, fibre:2.0, score:"C"},
+  {id:1053, name:"Frozen Coke Small", chain:"Burger King", cat:"drinks", emoji:"🥤", kj:679, protein:0.0, fat:0.0, carbs:40.0, sugar:40.0, sodium:31, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1054, name:"Frozen Coke Medium", chain:"Burger King", cat:"drinks", emoji:"🥤", kj:941, protein:0.0, fat:0.0, carbs:55.5, sugar:55.5, sodium:43, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1055, name:"Frozen Coke Large", chain:"Burger King", cat:"drinks", emoji:"🥤", kj:1292, protein:0.0, fat:0.0, carbs:76.1, sugar:76.1, sodium:59, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1056, name:"Frozen Keri Small", chain:"Burger King", cat:"drinks", emoji:"🥤", kj:372, protein:0.0, fat:0.0, carbs:21.4, sugar:19.5, sodium:9, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1057, name:"Frozen Keri Medium", chain:"Burger King", cat:"drinks", emoji:"🥤", kj:516, protein:0.0, fat:0.0, carbs:29.7, sugar:27.1, sodium:13, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1058, name:"Frozen Keri Large", chain:"Burger King", cat:"drinks", emoji:"🥤", kj:708, protein:0.0, fat:0.0, carbs:40.7, sugar:37.2, sodium:18, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1059, name:"Lime Shake Small", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:1350, protein:5.7, fat:4.7, carbs:37.8, sugar:32.6, sodium:97, sat_fat:3.2, fibre:0.0, score:"B"},
+  {id:1060, name:"Lime Shake Medium", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:2310, protein:8.6, fat:7.1, carbs:60.6, sugar:52.8, sodium:147, sat_fat:4.8, fibre:0.0, score:"B"},
+  {id:1061, name:"Lime Shake Large", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:3290, protein:11.6, fat:9.6, carbs:84.2, sugar:73.6, sodium:200, sat_fat:6.6, fibre:0.0, score:"B"},
+  {id:1062, name:"Super Shake Chocolate", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:3970, protein:10.3, fat:10.5, carbs:80.0, sugar:67.5, sodium:608, sat_fat:7.6, fibre:0.0, score:"B"},
+  {id:1063, name:"Super Shake Strawberry", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:3700, protein:10.3, fat:10.5, carbs:77.0, sugar:65.6, sodium:553, sat_fat:7.6, fibre:0.0, score:"B"},
+  {id:1064, name:"Super Shake Banana", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:3720, protein:10.3, fat:10.5, carbs:76.8, sugar:65.6, sodium:553, sat_fat:7.6, fibre:0.0, score:"B"},
+  {id:1065, name:"Super Shake Lime", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:3700, protein:10.3, fat:10.5, carbs:76.9, sugar:65.6, sodium:553, sat_fat:7.6, fibre:0.0, score:"B"},
+  {id:1066, name:"Cosmic Shake Small", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:1510, protein:5.6, fat:4.6, carbs:72.6, sugar:64.9, sodium:99, sat_fat:3.1, fibre:0.0, score:"D"},
+  {id:1067, name:"Cosmic Shake Medium", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:2143, protein:8.4, fat:6.9, carbs:102.0, sugar:90.7, sodium:148, sat_fat:4.6, fibre:0.0, score:"D"},
+  {id:1068, name:"Cosmic Shake Large", chain:"Burger King", cat:"drinks", emoji:"🥛", kj:2974, protein:12.0, fat:9.8, carbs:140.0, sugar:125.0, sodium:209, sat_fat:6.6, fibre:0.0, score:"D"},
+  {id:1069, name:"Cookie Dough Bites 4 Pack", chain:"Burger King", cat:"desserts", emoji:"🍪", kj:1504, protein:4.6, fat:15.4, carbs:50.2, sugar:22.2, sodium:201, sat_fat:7.3, fibre:0.0, score:"C"},
+  {id:1070, name:"Strawberry Cheesecake", chain:"Burger King", cat:"desserts", emoji:"🍰", kj:950, protein:1.0, fat:10.0, carbs:31.5, sugar:19.0, sodium:49, sat_fat:5.9, fibre:0.0, score:"C"},
+  {id:1071, name:"King Fusion Maple Toffee Crunch Sundae", chain:"Burger King", cat:"desserts", emoji:"🍨", kj:2720, protein:5.6, fat:9.3, carbs:65.0, sugar:54.4, sodium:142, sat_fat:6.1, fibre:0.0, score:"B"},
+  {id:1072, name:"King Fusion Cosmic Sundae", chain:"Burger King", cat:"desserts", emoji:"🍨", kj:1505, protein:4.9, fat:5.9, carbs:70.6, sugar:65.0, sodium:95, sat_fat:3.9, fibre:0.0, score:"D"},
+  {id:1073, name:"Wild Berry Sundae", chain:"Burger King", cat:"desserts", emoji:"🍓", kj:1073, protein:4.6, fat:5.5, carbs:46.4, sugar:42.8, sodium:89, sat_fat:3.7, fibre:0.0, score:"C"},
+
 ];
 
 const DIET_FLAGS_DATA = {
@@ -8410,18 +8943,64 @@ function effectiveScore(f) {
   else if (sugarPk > 12) i = Math.min(i + 1, 3);
   return G[i];
 }
+/* ── healthScore(f) — continuous nutrient-density score (lower = healthier)
+   Mirrors pipeline.py v2.2 per-1000kJ algorithm exactly, but returns the
+   raw numeric penalty rather than a bucketed grade letter. Two items that
+   both score "B" can still be ranked against each other. ── */
+function healthScore(f) {
+  if (!f || !f.kj || f.kj <= 0) return 99;
+  const k   = 1000 / f.kj;
+  const sf  = (f.sat_fat || 0) * k;
+  const na  = (f.sodium  || 0) * k;
+  const fa  = (f.fat     || 0) * k;
+  const pr  = (f.protein || 0) * k;
+  const fi  = (f.fibre   || 0) * k;
+  /* Sugar tier: natural_sugar flag or high fibre proxy → gentler thresholds */
+  const suRaw = (f.sugar || 0) * k;
+  const naturalSu = f.natural_sugar || fi > 5;
+  let pts = 0;
+  /* Sat fat */
+  if (sf > 2.5) pts++; if (sf > 5) pts++; if (sf > 8) pts++;
+  /* Sodium */
+  if (na > 200) pts++; if (na > 400) pts++; if (na > 650) pts++;
+  /* Sugar — added sugar gets extended tiers */
+  if (suRaw > 4)  pts++;
+  if (suRaw > 9)  pts++;
+  if (suRaw > 15) pts++;
+  if (!naturalSu && suRaw > 25) pts++;
+  if (!naturalSu && suRaw > 40) pts++;
+  /* Fat */
+  if (fa > 7)  pts++;
+  if (fa > 12) pts++;
+  /* Protein bonus */
+  if (pr >= 11) pts--;
+  if (pr >= 18) pts--;
+  /* Absolute calorie penalty — penalise high-kJ items even at identical nutrient density */
+  if (f.kj > 3000) pts++;
+  if (f.kj > 4500) pts++;
+  /* Fractional tiebreakers — keep values < 0.5 so integer ranking is never disturbed,
+     but ensure healthScore is unique per food so a winner is always surfaced.
+     Lower sodium = better (add fraction), higher protein = better (subtract fraction),
+     lower kJ = better (add fraction). */
+  const frac = (f.sodium || 0) / 10000
+             - (f.protein || 0) / 5000
+             + (f.kj || 0) / 500000;
+  return pts + frac;
+}
+
 const BC  = s  => ({A:'#5A8F35',B:'#7EC850',C:'#C8A84B',D:'#B8292A'}[s]);
 const BW  = s  => ({A:'90%',B:'70%',C:'45%',D:'18%'}[s]);
 
-let catSel='all', cmpList=[], sortLo=true, rsfSel='all', rSB=true;
+let catSel='all', cmpList=[], cmpGoal='grade', cmpShowRdi=false, cmpMode='compare', sortLo=true, rsfSel='all', rSB=true;
+let _cmpRestBannerDismissed = false;
 let lastSearch = null; // { q: '', cat: 'all', label: 'Burgers' } | null — most recent meaningful search
 let curRest=null, mSL=true, mCatSel='all', dFR=false, curFood=null, prevPage='search';
 let _srScrollTop = 0; /* saved scroll position for search → detail → back */
-let srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+let srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
 let searchInteracted = false;
 let prevRestPage = 'restaurants';
 let savedPrevPage = 'search';
-let rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+let rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
 let filterCtx = 'search'; /* which page opened the filter sheet */
 let _vl = null; /* virtual list state — set by renderMenu() when items ≥ VL_THRESHOLD */
 
@@ -8476,7 +9055,9 @@ function nav(p) {
   });
   if (p === 'home') { showSkel('home'); renderHome(); hideSkel('home'); }
   if (p === 'compare') { showSkel('compare'); renderCmp(); hideSkel('compare'); }
+  if (p === 'meal') { renderMeal(); }
   if (p === 'restaurants') { showSkel('restaurants'); curRest = null; renderRests(); hideSkel('restaurants'); }
+  if (p === 'faves') { showSkel('faves'); _renderFavesGrid(); hideSkel('faves'); }
   if (p === 'insights') { showSkel('insights'); hideSkel('insights'); }
   /* Re-evaluate tray visibility now that active page has changed */
   /* Reset search header to visible whenever the search page is (re)entered */
@@ -8825,6 +9406,43 @@ function loadRecentQueries() {
 /* ── Favourites — localStorage persistence ── */
 const FAVES_KEY = 'kc_faves';
 const REST_FAVES_KEY = 'kc_rest_faves';
+const MEALS_KEY = 'kc_saved_meals';
+
+/* ── Saved meals ── */
+function loadMeals() {
+  try { const r = localStorage.getItem(MEALS_KEY); return r ? JSON.parse(r) : []; }
+  catch(e) { return []; }
+}
+function saveMeal(meal) {
+  try {
+    const arr = loadMeals();
+    arr.unshift(meal); /* newest first */
+    if (arr.length > 20) arr.length = 20; /* cap at 20 saved meals */
+    localStorage.setItem(MEALS_KEY, JSON.stringify(arr));
+  } catch(e) {}
+}
+function deleteMeal(idx) {
+  try {
+    const arr = loadMeals();
+    arr.splice(idx, 1);
+    localStorage.setItem(MEALS_KEY, JSON.stringify(arr));
+  } catch(e) {}
+}
+/* Returns true if current cmpList IDs exactly match any saved meal */
+function isMealCurrentlySaved() {
+  if (!cmpList.length) return false;
+  const key = [...cmpList].sort().join(',');
+  return loadMeals().some(m => m.ids && [...m.ids].sort().join(',') === key);
+}
+/* Heart tap on meal total page */
+function onMealFave() {
+  if (!cmpList.length) return;
+  if (isMealCurrentlySaved()) {
+    showToast('Already in Faves', 'favorite');
+  } else {
+    promptSaveMeal();
+  }
+}
 function loadFaves() {
   try { const r = localStorage.getItem(FAVES_KEY); return r ? JSON.parse(r) : []; }
   catch(e) { return []; }
@@ -9180,7 +9798,6 @@ function doSearch() {
   if (srFilters.vegan)       fx = fx.filter(f => getFoodFlags(f).includes('vegan'));
   if (srFilters.vegetarian)  fx = fx.filter(f => getFoodFlags(f).includes('vegetarian'));
   if (srFilters.halal)       fx = fx.filter(f => getFoodFlags(f).includes('halal'));
-  if (srFilters.gluten_free) fx = fx.filter(f => getFoodFlags(f).includes('gluten_free'));
   /* Sort */
   const CAT_ORDER_S = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','drinks','other'];
   const GRADE_ORDER = { A:0, B:1, C:2, D:3 };
@@ -9195,7 +9812,7 @@ function doSearch() {
   });
   const isDefault = !q && catSel === 'all' && srFilters.sort === 'def' &&
     !srFilters.protein && !srFilters.sugar && !srFilters.fat && !srFilters.balanced && !srFilters.sodium &&
-    !srFilters.vegan && !srFilters.vegetarian && !srFilters.halal && !srFilters.gluten_free;
+    !srFilters.vegan && !srFilters.vegetarian && !srFilters.halal;
   if (isDefault && !searchInteracted) {
     const rlblEl = document.getElementById('rlbl'); if (rlblEl) { rlblEl.textContent = ''; rlblEl.style.display = 'none'; }
     const scEl = document.getElementById('sort-controls'); if (scEl) scEl.style.display = 'none';
@@ -9278,7 +9895,7 @@ function openRmenuFilterSheet() {
 }
 function syncFilterSheetToCtx() {
   const f = filterCtx === 'rmenu' ? rmFilters : srFilters;
-  ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].forEach(k => {
+  ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].forEach(k => {
     const el = document.getElementById('fsh-' + k);
     if (el) el.classList.toggle('on', f[k]);
   });
@@ -9297,7 +9914,7 @@ function updateFilterUI() {
     if (el) el.classList.toggle('on', srFilters.sort === v);
   });
   /* Search filter badge — sort not counted here, only nutrition filters */
-  const srCount = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].filter(k => srFilters[k]).length;
+  const srCount = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].filter(k => srFilters[k]).length;
   const badge = document.getElementById('filter-badge');
   const btn = document.getElementById('filter-btn');
   if (badge) { badge.textContent = srCount; badge.classList.toggle('visible', srCount > 0); }
@@ -9322,7 +9939,7 @@ function updateFilterUI() {
 }
 
 const NUT_LABELS = { protein:'High protein', sugar:'Low sugar', fat:'Low fat', balanced:'Balanced', sodium:'Low sodium' };
-const DIET_LABELS = { vegan:'Vegan', vegetarian:'Vegetarian', halal:'Halal', gluten_free:'Gluten-free' };
+const DIET_LABELS = { vegan:'Vegan', vegetarian:'Vegetarian', halal:'Halal' };
 const DIET_TOOLTIPS = {
   vegan:          { label:'🌿 Vegan',            desc:'No animal products — entirely plant-based.' },
   vegetarian:     { label:'🥬 Vegetarian',        desc:'No meat or fish. May contain dairy or eggs.' },
@@ -9388,20 +10005,20 @@ function syncFilterPill() {
   const headerHidden = hdr && hdr.classList.contains('hidden');
   /* Any filter or sort active? */
   const hasSort = srFilters.sort !== 'def';
-  const hasNut  = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].some(k => srFilters[k]);
+  const hasNut  = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].some(k => srFilters[k]);
   if (!headerHidden || (!hasSort && !hasNut)) { pill.classList.remove('visible'); return; }
   /* Build summary label */
   const parts = [];
   if (hasSort) parts.push(SORT_LABELS[srFilters.sort]);
   ['protein','sugar','fat','balanced','sodium'].forEach(k => { if (srFilters[k]) parts.push(NUT_LABELS[k]); });
-  ['vegan','vegetarian','halal','gluten_free'].forEach(k => { if (srFilters[k]) parts.push(DIET_LABELS[k]); });
+  ['vegan','vegetarian','halal'].forEach(k => { if (srFilters[k]) parts.push(DIET_LABELS[k]); });
   lbl.textContent = parts.length <= 2 ? parts.join(' · ') : parts.slice(0,2).join(' · ') + ' +' + (parts.length - 2);
   pill.classList.add('visible');
 }
 
 /* Opens sort sheet if only sort active, filter sheet if nutrition filters active */
 function openActiveFilterSheet() {
-  const hasNut = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal','gluten_free'].some(k => srFilters[k]);
+  const hasNut = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].some(k => srFilters[k]);
   if (hasNut) openFilterSheet();
   else openSortSheet();
 }
@@ -9434,10 +10051,10 @@ function toggleFilter(key) {
 
 function clearFilters() {
   if (filterCtx === 'rmenu') {
-    rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+    rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
     updateFilterUI(); renderMenu();
   } else {
-    srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+    srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
     searchInteracted = false;
     catSel = 'all';
     document.querySelectorAll('#cats .pill').forEach(p => p.classList.toggle('on', p.getAttribute('onclick') === "setCat('all',this)"));
@@ -9802,7 +10419,7 @@ function goSearchCat(cat) {
 
 function goSearchLowCal() {
   /* Reset all filters, then pre-apply: lowest cal sort + high protein */
-  srFilters = { sort:'lo', protein:true, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+  srFilters = { sort:'lo', protein:true, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
   catSel = 'all';
   searchInteracted = true;
   const si = document.getElementById('si'); if (si) si.value = '';
@@ -9815,7 +10432,7 @@ function goSearchLowCal() {
 
 function goSearchHighProtein() {
   /* Reset all filters, then pre-apply: highest protein sort + high protein filter */
-  srFilters = { sort:'protein', protein:true, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+  srFilters = { sort:'protein', protein:true, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
   catSel = 'all';
   searchInteracted = true;
   const si = document.getElementById('si'); if (si) si.value = '';
@@ -9865,11 +10482,12 @@ function openRest(name) {
   /* name may come from this.dataset.name (DOM element) or direct string call */
   if (typeof name !== 'string') name = String(name);
   closeDietTooltip();
+  _cmpRestBannerDismissed = false; /* reset per restaurant visit */
   const activePg = document.querySelector('.page.active');
   prevRestPage = activePg ? activePg.id.replace('pg-','') : 'restaurants';
   savedPrevPage = prevPage;
   curRest = name; mSL = true;
-  rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false, gluten_free:false };
+  rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
   showSkel('rmenu');
   updateFilterUI();
   document.getElementById('msi').value = '';
@@ -9949,7 +10567,6 @@ function renderMenu() {
   if (rmFilters.vegan)       it = it.filter(f => getFoodFlags(f).includes('vegan'));
   if (rmFilters.vegetarian)  it = it.filter(f => getFoodFlags(f).includes('vegetarian'));
   if (rmFilters.halal)       it = it.filter(f => getFoodFlags(f).includes('halal'));
-  if (rmFilters.gluten_free) it = it.filter(f => getFoodFlags(f).includes('gluten_free'));
   const CAT_ORDER = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','drinks','other'];
   if (rmFilters.sort === 'lo') it.sort((a, b) => a.kj - b.kj);
   else if (rmFilters.sort === 'hi') it.sort((a, b) => b.kj - a.kj);
@@ -10249,71 +10866,135 @@ function openDetail(id, fromRest, overridePrevPage) {
 function _renderFavesGrid() {
   const wrap = document.getElementById('faves-grid-wrap');
   if (!wrap) return;
-  const ids   = loadFaves();
-  const names = loadRestFaves();
+  const ids       = loadFaves();
+  const names     = loadRestFaves();
+  const meals     = loadMeals();
   const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
   const favRests  = names.map(n => rests.find(r => r.name === n)).filter(Boolean);
+  const hasItems  = faveItems.length > 0 || favRests.length > 0;
 
-  if (faveItems.length === 0 && favRests.length === 0) {
-    wrap.innerHTML = `<div class="faves-empty">
-      <div class="faves-empty-icon"><span class="ms" style="font-size:48px;opacity:0.35">favorite_border</span></div>
-      <div class="faves-empty-title">No favourites yet</div>
-      <div class="faves-empty-sub">Tap the heart icon on any food, restaurant card or detail page to save it here.</div>
+  /* ── Section 1: Saved Items ── */
+  let itemsHtml;
+  if (!hasItems) {
+    itemsHtml = `<div class="faves-empty-inline">
+      <span class="ms" style="font-size:32px;opacity:0.3;display:block;margin-bottom:6px">favorite_border</span>
+      <div style="font-size:13px;color:var(--md-on-surface-variant)">Tap ♡ on any food or restaurant to save it here</div>
     </div>`;
-    return;
+  } else {
+    const restCards = favRests.map(r => {
+      const s = SC(r.score), sc = r.score.toLowerCase();
+      const safeName = r.name.replace(/'/g, "\\'");
+      const itemCount = foods.filter(f => f.chain === r.name).length;
+      return `<div class="fv-card score-${sc}" onclick="openRest('${safeName}')">
+        <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveRest('${safeName}')" aria-label="Remove from favourites">
+          <span class="ms filled" style="font-size:15px">favorite</span>
+        </button>
+        <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${r.score}</span>
+        <span class="fv-emoji">${emojiImg(r.emoji, EMO.sm)}</span>
+        <div class="fv-name">${r.name}</div>
+        <div class="fv-chain">${itemCount} item${itemCount !== 1 ? 's' : ''}</div>
+        <div class="fv-kj">${r.avg_kj}<span>kJ avg</span></div>
+      </div>`;
+    }).join('');
+    const foodCards = faveItems.map(f => {
+      const exf = effectiveScore(f); const s = SC(exf), sc = exf.toLowerCase();
+      return `<div class="fv-card score-${sc}" onclick="openDetail(${f.id},false,'faves')">
+        <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveCard(${f.id})" aria-label="Remove from favourites">
+          <span class="ms filled" style="font-size:15px">favorite</span>
+        </button>
+        <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exf}</span>
+        <span class="fv-emoji">${emojiImg(f.emoji, EMO.sm)}</span>
+        <div class="fv-name">${f.name}</div>
+        <div class="fv-chain">${f.chain}</div>
+        <div class="fv-kj">${kc(f.kj)}<span>cal / ${f.kj}kJ</span></div>
+      </div>`;
+    }).join('');
+    itemsHtml = `<div class="faves-grid">${restCards}${foodCards}</div>`;
   }
 
-  /* Restaurant cards first, then food items */
-  const restCards = favRests.map(r => {
-    const s = SC(r.score), sc = r.score.toLowerCase();
-    const safeName = r.name.replace(/'/g, "\\'");
-    const itemCount = foods.filter(f => f.chain === r.name).length;
-    return `<div class="fv-card score-${sc}" onclick="openRest('${safeName}')">
-      <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveRest('${safeName}')" aria-label="Remove from favourites">
-        <span class="ms filled" style="font-size:15px">favorite</span>
-      </button>
-      <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${r.score}</span>
-      <span class="fv-emoji">${emojiImg(r.emoji, EMO.sm)}</span>
-      <div class="fv-name">${r.name}</div>
-      <div class="fv-chain">${itemCount} item${itemCount !== 1 ? 's' : ''}</div>
-      <div class="fv-kj">${r.avg_kj}<span>kJ avg</span></div>
+  /* ── Section 2: Saved Meals ── */
+  let mealsHtml;
+  if (!meals.length) {
+    mealsHtml = `<div class="faves-empty-inline">
+      <span class="ms" style="font-size:32px;opacity:0.3;display:block;margin-bottom:6px">restaurant_menu</span>
+      <div style="font-size:13px;color:var(--md-on-surface-variant)">Build a meal and tap <span class="ms" style="font-size:13px;vertical-align:middle">bookmark_add</span> to save it</div>
     </div>`;
-  }).join('');
+  } else {
+    mealsHtml = `<div class="faves-meals-list">${meals.map((m, idx) => {
+      const gradeS = SC(m.grade || 'C');
+      const ago = _mealAgo(m.ts);
+      const preview = (m.itemNames || []).slice(0, 3).join(', ') + (m.itemNames && m.itemNames.length > 3 ? ' +' + (m.itemNames.length - 3) : '');
+      return `<div class="faves-meal-row" onclick="_reloadSavedMeal(${idx})">
+        <span class="fv-badge" style="background:${gradeS.b};color:${gradeS.t};border-color:${gradeS.br};margin-right:10px;flex-shrink:0">${m.grade || '?'}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:var(--md-on-surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name}</div>
+          <div style="font-size:11px;color:var(--md-on-surface-variant);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${preview}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;margin-left:8px">
+          <div style="font-size:13px;font-weight:600;color:var(--md-on-surface)">${(m.kj || 0).toLocaleString()} kJ</div>
+          <div style="font-size:11px;color:var(--md-on-surface-variant)">${ago}</div>
+        </div>
+        <button onclick="event.stopPropagation();deleteMeal(${idx});_renderFavesGrid()" style="background:none;border:none;padding:4px 0 4px 8px;cursor:pointer;color:var(--md-on-surface-variant)" aria-label="Delete meal">
+          <span class="ms" style="font-size:18px">delete_outline</span>
+        </button>
+      </div>`;
+    }).join('')}</div>`;
+  }
 
-  const foodCards = faveItems.map(f => {
-    const exf = effectiveScore(f); const s = SC(exf), sc = exf.toLowerCase();
-    return `<div class="fv-card score-${sc}" onclick="openDetail(${f.id},false,'faves')">
-      <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveCard(${f.id})" aria-label="Remove from favourites">
-        <span class="ms filled" style="font-size:15px">favorite</span>
-      </button>
-      <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exf}</span>
-      <span class="fv-emoji">${emojiImg(f.emoji, EMO.sm)}</span>
-      <div class="fv-name">${f.name}</div>
-      <div class="fv-chain">${f.chain}</div>
-      <div class="fv-kj">${kc(f.kj)}<span>cal / ${f.kj}kJ</span></div>
-    </div>`;
-  }).join('');
+  /* ── Section 3: Learn / Insights ── */
+  const insightsHtml = `<div class="faves-insights-card" onclick="nav('insights')" style="cursor:pointer">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="ms" style="font-size:28px;color:var(--md-primary)">insights</span>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700;color:var(--md-on-surface)">Tips &amp; Rankings</div>
+        <div style="font-size:12px;color:var(--md-on-surface-variant);margin-top:2px">Healthiest picks, NZ recipes, chain comparisons</div>
+      </div>
+      <span class="ms" style="font-size:18px;color:var(--md-on-surface-variant)">chevron_right</span>
+    </div>
+  </div>`;
 
-  wrap.innerHTML = `<div class="faves-grid">${restCards}${foodCards}</div>`;
+  wrap.innerHTML = `
+    <div class="faves-section">
+      <div class="faves-section-hdr">Saved items</div>
+      ${itemsHtml}
+    </div>
+    <div class="faves-section">
+      <div class="faves-section-hdr">Saved meals</div>
+      ${mealsHtml}
+    </div>
+    <div class="faves-section">
+      <div class="faves-section-hdr">Learn</div>
+      ${insightsHtml}
+    </div>
+    <div style="height:24px"></div>`;
 }
 
-function openFaves() {
-  showSkel('faves');
-  document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-  document.getElementById('pg-faves').classList.add('active');
-  /* Sync nav highlight — Home stays highlighted (faves is a sub-page of Home) */
-  document.querySelectorAll('.nav-item').forEach(item => {
-    const isHome = item.getAttribute('onclick') === "nav('home')";
-    item.classList.toggle('on', isHome);
-    const ico = item.querySelector('.ms');
-    if (ico) ico.classList.toggle('filled', isHome);
-  });
-  _renderFavesGrid();
-  hideSkel('faves');
+function openFaves() { nav('faves'); }
+
+function _mealAgo(ts) {
+  if (!ts) return '';
+  const mins = Math.floor((Date.now() - ts) / 60000);
+  if (mins < 2) return 'just now';
+  if (mins < 60) return mins + 'm ago';
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return hrs + 'h ago';
+  return Math.floor(hrs / 24) + 'd ago';
+}
+
+function _reloadSavedMeal(idx) {
+  const meals = loadMeals();
+  const m = meals[idx];
+  if (!m || !m.ids || !m.ids.length) return;
+  cmpList = [...m.ids];
+  cmpMode = 'meal';
+  syncCmpUI();
+  renderMeal();
+  nav('meal');
 }
 
 function detBack() {
   if (dFR && curRest) openRest(curRest);       /* came from restaurant menu */
+  else if (prevPage === 'meal') { renderMeal(); nav('meal'); } /* came from meal swap */
   else if (prevPage === 'insights') nav('insights'); /* came from insights */
   else if (prevPage === 'home') nav('home');         /* came from home picks */
   else if (prevPage === 'faves') openFaves();        /* came from faves grid */
@@ -10624,7 +11305,10 @@ function closeAllSheets() {
   document.getElementById('burn-sheet').classList.remove('open');
   document.getElementById('filter-sheet').classList.remove('open');
   document.getElementById('sort-sheet').classList.remove('open');
+  document.getElementById('quick-cmp-sheet').classList.remove('open');
+  document.getElementById('meal-builder-sheet').classList.remove('open');
   closeDietTooltip();
+  syncCmpUI(); /* re-evaluate tray visibility now that sheet is gone */
 }
 
 /* ════════════════════════════════════════════════════
@@ -10752,6 +11436,10 @@ function openShareSheet(mode) {
       </div>`;
   }
   document.getElementById('sheet-header').innerHTML = headerHtml;
+
+  /* Show image card button only on compare mode */
+  const imgBtn = document.getElementById('share-img-btn');
+  if (imgBtn) imgBtn.style.display = (shareMode === 'compare' && cmpList.length >= 2) ? '' : 'none';
 
   /* Reset toast */
   const toast = document.getElementById('sheet-toast');
@@ -10967,16 +11655,27 @@ function closeShareSheet() { closeAllSheets(); }
    ico: Material Symbol name (default 'check_circle').
    Appears above the nav bar on all pages, auto-dismisses
    after 2.5s. Re-calling resets the timer. ── */
-function showToast(msg, ico) {
+function showToast(msg, ico, actionLabel, actionFn) {
   const sb  = document.getElementById('snackbar');
   const txt = document.getElementById('snackbar-msg');
   const icn = document.getElementById('snackbar-ico');
+  const act = document.getElementById('snackbar-action');
   if (!sb) return;
   txt.textContent = msg;
   if (icn) icn.textContent = ico || 'check_circle';
+  if (act) {
+    if (actionLabel && actionFn) {
+      act.textContent = actionLabel;
+      act.style.display = '';
+      window._snackbarActionFn = actionFn;
+    } else {
+      act.style.display = 'none';
+      window._snackbarActionFn = null;
+    }
+  }
   sb.classList.add('show');
   if (shareToastTimer) clearTimeout(shareToastTimer);
-  shareToastTimer = setTimeout(() => sb.classList.remove('show'), 2500);
+  shareToastTimer = setTimeout(() => { sb.classList.remove('show'); window._snackbarActionFn = null; }, actionLabel ? 4000 : 2500);
 }
 
 /* ── Share actions ── */
@@ -11050,28 +11749,304 @@ function toggleCmp(id) {
 
 function clearCmp() {
   cmpList = [];
+  cmpGoal = 'grade';
+  cmpShowRdi = false;
   syncCmpUI();
   doSearch();
 }
 
+function setCmpGoal(g) {
+  cmpGoal = g;
+  renderCmp();
+  /* Restore scroll position — goal change re-renders but user stays near top */
+  const scr = document.getElementById('pg-compare');
+  if (scr) { const s = scr.querySelector('.page-scroll'); if (s) s.scrollTo({top:0,behavior:'instant'}); }
+}
+
+function toggleCmpRdi() {
+  cmpShowRdi = !cmpShowRdi;
+  renderCmp();
+}
+
+function dismissCmpBanner() {
+  _cmpRestBannerDismissed = true;
+  const b = document.getElementById('cmp-rest-banner');
+  if (b) b.classList.remove('visible');
+}
+
+/* ── Quick compare bottom sheet (2-item) ── */
+function openQuickCmp() {
+  const items = cmpList.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  if (items.length < 2) return;
+
+  const GOAL_DEFS = {
+    grade:   { l:'Healthiest',  lo:true,  fn: f => healthScore(f) },
+    protein: { l:'Protein',     lo:false, fn: f => f.protein },
+    cal:     { l:'Low cal',     lo:true,  fn: f => f.kj },
+    sodium:  { l:'Low sodium',  lo:true,  fn: f => f.sodium },
+    satfat:  { l:'Low sat fat', lo:true,  fn: f => f.sat_fat },
+  };
+  const gdef = GOAL_DEFS[cmpGoal] || GOAL_DEFS.grade;
+  const gvals = items.map(f => gdef.fn(f));
+  const gbest = gdef.lo ? Math.min(...gvals) : Math.max(...gvals);
+  const allSame = gvals.every(v => v === gvals[0]);
+  const goalCls = idx => allSame ? '' : (gvals[idx] === gbest ? 'goal-win' : 'goal-lose');
+
+  /* Header cards */
+  const headerCards = items.map((f, idx) => {
+    const es = effectiveScore(f), s = SC(es), cal = kc(f.kj);
+    return `<div class="cmp-crd ${goalCls(idx)}" style="flex:1">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${s.t};border-radius:var(--shape-md) var(--shape-md) 0 0"></div>
+      <div style="padding:10px 8px 12px;text-align:center">
+        <div style="font-size:26px;margin-bottom:4px">${emojiImg(f.emoji,EMO.sm)}</div>
+        <div style="display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:var(--shape-sm);
+             background:${s.b};color:${s.t};border:1px solid ${s.br};margin-bottom:6px">${es}</div>
+        <div style="font-size:12px;font-weight:600;color:var(--md-on-surface);line-height:1.3;margin-bottom:2px;
+             white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px">${f.name}</div>
+        <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
+        <div style="margin-top:6px"><span style="font-size:17px;font-weight:700;color:var(--md-primary);font-family:var(--font-display)">${cal}</span><span style="font-size:10px;color:var(--md-on-surface-variant)"> cal</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  /* Goal pills */
+  const pillsHtml = `<div class="cmp-goal-row" style="padding:8px 12px 4px">
+    ${Object.entries(GOAL_DEFS).map(([k,d]) =>
+      `<button class="cmp-goal-pill${cmpGoal===k?' on':''}" onclick="cmpGoal='${k}';openQuickCmp()">${d.l}</button>`
+    ).join('')}
+  </div>`;
+
+  /* Nutrient rows */
+  const nutRows = [
+    {l:'Protein', k:'protein', u:'g',  lo:false},
+    {l:'Energy',  k:'kj',      u:' kJ',lo:true},
+    {l:'Sodium',  k:'sodium',  u:'mg', lo:true},
+    {l:'Sat. fat',k:'sat_fat', u:'g',  lo:true},
+    {l:'Sugar',   k:'sugar',   u:'g',  lo:true},
+    {l:'Fat',     k:'fat',     u:'g',  lo:true},
+  ];
+  const nutHtml = nutRows.map(nu => {
+    const vs = items.map(f => f[nu.k]);
+    const be = nu.lo ? Math.min(...vs) : Math.max(...vs);
+    const wo = nu.lo ? Math.max(...vs) : Math.min(...vs);
+    const cells = vs.map(v => {
+      let cls = '';
+      if (v === be) cls = 'best';
+      else if (v === wo && vs.filter(x => x === wo).length < vs.length) cls = 'worst';
+      return `<div class="cmp-val ${cls}">${v}${nu.u}</div>`;
+    }).join('');
+    return `<div class="cmp-row"><div class="cmp-lbl">${nu.l}</div><div class="cmp-vals">${cells}</div></div>`;
+  }).join('');
+
+  document.getElementById('quick-cmp-content').innerHTML =
+    `${pillsHtml}
+    <div style="display:flex;gap:8px;padding:4px 12px 8px">${headerCards}</div>
+    <div style="padding:0 12px">
+      <div style="font-size:11px;font-weight:700;color:var(--md-on-surface-variant);
+           padding:8px 4px 4px;text-transform:uppercase;letter-spacing:0.8px">Nutrients</div>
+      ${nutHtml}
+    </div>
+    <div style="height:8px"></div>`;
+
+  document.getElementById('sheet-scrim').classList.add('visible');
+  document.getElementById('quick-cmp-sheet').classList.add('open');
+  /* Scroll quick sheet to top */
+  const scr = document.getElementById('quick-cmp-scroll');
+  if (scr) scr.scrollTo({top:0, behavior:'instant'});
+}
+
+function escalateToCmpPage() {
+  closeAllSheets();
+  renderCmp();
+  nav('compare');
+}
+
+/* ── Canvas-based visual share card ── */
+function generateShareCardCanvas() {
+  const items = cmpList.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  if (items.length < 2) return null;
+  const n = items.length;
+  const W = 600, PAD = 24;
+  const SCORE_CLR = { A:'#80DEEA', B:'#A8F075', C:'#FFB95A', D:'#FFB4AB' };
+  const SCORE_BG  = { A:'#003A3E', B:'#1C4A0A', C:'#3D2800', D:'#3B0007' };
+
+  /* Measure total height */
+  const HEADER_H = 54, CARD_H = 118, GAP = 12, NUT_ROW_H = 46, FOOTER_H = 38;
+  const nutRows = [
+    {l:'Protein',  k:'protein', u:'g',  lo:false},
+    {l:'Energy',   k:'kj',      u:' kJ',lo:true},
+    {l:'Sodium',   k:'sodium',  u:'mg', lo:true},
+    {l:'Sat. fat', k:'sat_fat', u:'g',  lo:true},
+  ];
+  const H = PAD + HEADER_H + GAP + CARD_H + GAP + nutRows.length * NUT_ROW_H + GAP + FOOTER_H + PAD;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = W * 2; canvas.height = H * 2;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(2, 2);
+
+  function rrect(x, y, w, h, r, fill) {
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y);
+    ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r);
+    ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h);
+    ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r);
+    ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+    ctx.fillStyle = fill; ctx.fill();
+  }
+
+  /* Background */
+  ctx.fillStyle = '#0F1510';
+  ctx.fillRect(0, 0, W, H);
+
+  let y = PAD;
+
+  /* Header: wordmark */
+  ctx.font = 'bold 20px system-ui, sans-serif';
+  ctx.fillStyle = '#7EC850';
+  ctx.textAlign = 'left';
+  ctx.fillText('KaiCheck', PAD, y + 22);
+  ctx.font = '12px system-ui, sans-serif';
+  ctx.fillStyle = '#A8B5A4';
+  ctx.fillText('Aotearoa fast food nutrition', PAD + 100, y + 22);
+  /* Divider */
+  ctx.fillStyle = '#1C2620';
+  ctx.fillRect(PAD, y + 30, W - PAD*2, 1);
+  y += HEADER_H;
+
+  /* Item cards */
+  const cardW = Math.floor((W - PAD*2 - (n-1)*10) / n);
+  items.forEach((f, i) => {
+    const es = effectiveScore(f);
+    const cx = PAD + i * (cardW + 10), cy = y;
+    rrect(cx, cy, cardW, CARD_H, 10, '#161E16');
+    /* Score stripe */
+    rrect(cx, cy, cardW, 3, 2, SCORE_CLR[es] || '#A8B5A4');
+    /* Emoji */
+    ctx.font = '26px serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(f.emoji, cx + cardW/2, cy + 36);
+    /* Score badge */
+    const bw=28, bh=17, bx=cx+cardW/2-bw/2, by=cy+44;
+    rrect(bx, by, bw, bh, 4, SCORE_BG[es] || '#1C2620');
+    ctx.font = 'bold 10px system-ui';
+    ctx.fillStyle = SCORE_CLR[es] || '#A8B5A4';
+    ctx.fillText(es, bx + bw/2, by + 12);
+    /* Name */
+    ctx.font = 'bold 11px system-ui, sans-serif';
+    ctx.fillStyle = '#ECF2E9';
+    let name = f.name;
+    while (ctx.measureText(name).width > cardW - 16 && name.length > 3) name = name.slice(0, -1);
+    if (name !== f.name) name = name.slice(0, -1) + '…';
+    ctx.fillText(name, cx + cardW/2, cy + 78);
+    /* Cal */
+    ctx.font = 'bold 14px system-ui';
+    ctx.fillStyle = '#7EC850';
+    ctx.fillText(kc(f.kj) + ' cal', cx + cardW/2, cy + 96);
+    /* Chain */
+    ctx.font = '10px system-ui';
+    ctx.fillStyle = '#A8B5A4';
+    ctx.fillText(f.chain, cx + cardW/2, cy + 112);
+    ctx.textAlign = 'left';
+  });
+  y += CARD_H + GAP;
+
+  /* Nutrient rows */
+  const LBCOL = 72;
+  const valColW = Math.floor((W - PAD*2 - LBCOL) / n);
+  nutRows.forEach((nu, ri) => {
+    const ry = y + ri * NUT_ROW_H;
+    const vs = items.map(f => f[nu.k]);
+    const be = nu.lo ? Math.min(...vs) : Math.max(...vs);
+    const wo = nu.lo ? Math.max(...vs) : Math.min(...vs);
+    const allSame = vs.every(v => v === vs[0]);
+    ctx.fillStyle = ri % 2 === 0 ? '#111A11' : '#0F1510';
+    ctx.fillRect(PAD, ry, W - PAD*2, NUT_ROW_H);
+    /* Label */
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillStyle = '#A8B5A4';
+    ctx.textAlign = 'left';
+    ctx.fillText(nu.l, PAD + 6, ry + NUT_ROW_H/2 + 4);
+    /* Value cells */
+    vs.forEach((v, vi) => {
+      const vx = PAD + LBCOL + vi * valColW, vy = ry + 6, vh = NUT_ROW_H - 12;
+      let bg = '#1C2620', fg = '#ECF2E9';
+      if (!allSame) {
+        if (v === be) { bg = '#1C4A0A'; fg = '#A8F075'; }
+        else if (v === wo) { bg = '#3B0007'; fg = '#FFB4AB'; }
+      }
+      rrect(vx + 2, vy, valColW - 4, vh, 6, bg);
+      ctx.font = 'bold 11px system-ui, sans-serif';
+      ctx.fillStyle = fg;
+      ctx.textAlign = 'center';
+      ctx.fillText(v + nu.u, vx + valColW/2, vy + vh/2 + 4);
+    });
+    ctx.textAlign = 'left';
+  });
+  y += nutRows.length * NUT_ROW_H + GAP;
+
+  /* Footer */
+  ctx.fillStyle = '#1C2620';
+  ctx.fillRect(PAD, y, W - PAD*2, 1);
+  y += 10;
+  ctx.font = '11px system-ui, sans-serif';
+  ctx.fillStyle = '#A8B5A4';
+  ctx.textAlign = 'left';
+  ctx.fillText('kaicheck.co.nz', PAD, y + 14);
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#7EC850';
+  ctx.fillText('KaiCheck — Aotearoa fast food nutrition', W - PAD, y + 14);
+
+  return canvas;
+}
+
+async function shareCompareImage() {
+  const canvas = generateShareCardCanvas();
+  if (!canvas) { shareNative(); return; }
+  closeShareSheet();
+  showToast('Generating image…', 'image');
+  canvas.toBlob(async blob => {
+    if (!blob) { showToast('Could not generate image'); return; }
+    const file = new File([blob], 'kaicheck-compare.png', { type: 'image/png' });
+    /* Web Share API with file (mobile browsers) */
+    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: 'KaiCheck Comparison', text: buildCompareShareText() }); return; }
+      catch(e) { /* fall through to download */ }
+    }
+    /* Fallback: trigger download */
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'kaicheck-compare.png';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Image saved!', 'download');
+  }, 'image/png');
+}
+
 function goCmp() {
-  /* Remember which page we came from so cmpBack returns correctly */
+  /* Remember which page we came from so back nav returns correctly */
   const activePg = document.querySelector('.page.active');
   prevPage = activePg ? activePg.id.replace('pg-', '') : 'search';
-  renderCmp(); nav('compare');
+  if (cmpMode === 'meal') {
+    renderMeal(); nav('meal');
+  } else if (cmpList.length === 2) {
+    openQuickCmp();
+  } else {
+    renderCmp(); nav('compare');
+  }
 }
 
 function cmpBack() {
-  cmpList = [];
-  syncCmpUI();
-  doSearch(); /* refresh cards to remove sel state */
-  showToast('Comparison cleared', 'compare_arrows');
-  /* Return to the page the user was on before comparing */
+  /* Keep cmpList intact — tray will show items for easy resume.
+     Navigate FIRST, then sync — pg-compare must be inactive before
+     syncCmpUI checks onCmpPage, otherwise tray stays hidden. */
   if (curRest) openRest(curRest);
   else if (prevPage === 'insights') nav('insights');
   else if (prevPage === 'home') nav('home');
   else if (prevPage === 'restaurants') nav('restaurants');
   else nav('search');
+  syncCmpUI();
 }
 
 /* ── syncCmpUI — update tray + nav badges ──
@@ -11089,10 +12064,12 @@ function syncCmpUI() {
     return;
   }
 
-  /* Show tray on all pages except the compare page itself */
-  const onCmpPage = document.getElementById('pg-compare') &&
+  /* Show tray on all pages except compare and meal pages themselves */
+  const onCmpPage  = document.getElementById('pg-compare') &&
     document.getElementById('pg-compare').classList.contains('active');
-  tray.classList.toggle('visible', !onCmpPage);
+  const onMealPage = document.getElementById('pg-meal') &&
+    document.getElementById('pg-meal').classList.contains('active');
+  tray.classList.toggle('visible', !onCmpPage && !onMealPage);
 
   /* Build chips */
   if (chips) chips.innerHTML = cmpList.map(id => {
@@ -11103,10 +12080,59 @@ function syncCmpUI() {
     </span>`;
   }).join('');
 
-  /* Enable compare button when 2+ items */
+  /* Mode toggle pills */
+  const pillCmp = document.getElementById('cmp-mode-compare');
+  const pillMeal = document.getElementById('cmp-mode-meal');
+  if (pillCmp) pillCmp.classList.toggle('on', cmpMode === 'compare');
+  if (pillMeal) pillMeal.classList.toggle('on', cmpMode === 'meal');
+
+  /* kJ total — meal mode only */
+  const kjEl = document.getElementById('cmp-tray-kj');
+  if (kjEl) {
+    if (cmpMode === 'meal' && n >= 1) {
+      const totalKj = cmpList.reduce((sum, id) => {
+        const f = foods.find(x => x.id === id);
+        return sum + (f ? (f.kj || 0) : 0);
+      }, 0);
+      const pct = (totalKj / 8000) * 100;
+      const cls = pct < 40 ? 'kj-green' : pct < 65 ? 'kj-amber' : 'kj-red';
+      kjEl.className = 'cmp-tray-kj ' + cls;
+      kjEl.textContent = totalKj.toLocaleString() + ' kJ';
+      kjEl.style.display = '';
+    } else {
+      kjEl.style.display = 'none';
+    }
+  }
+
+  /* CTA button */
   if (btn) {
-    btn.disabled = n < 2;
-    btn.textContent = n >= 2 ? 'Compare →' : n + ' selected';
+    if (cmpMode === 'meal') {
+      btn.disabled = n < 1;
+      btn.textContent = n >= 1 ? 'See meal total →' : 'Add items';
+      btn.title = '';
+    } else {
+      btn.disabled = n < 2;
+      if (n >= 2) {
+        btn.textContent = 'Compare →';
+        btn.title = '';
+      } else {
+        btn.innerHTML = '<span class="ms" style="font-size:14px">add</span>Add 1 more';
+        btn.title = 'Add one more food to enable compare';
+      }
+    }
+  }
+
+  /* In-restaurant compare banner: show when 2+ items from the current restaurant are queued */
+  const banner = document.getElementById('cmp-rest-banner');
+  if (banner) {
+    const onRmenu = document.getElementById('pg-rmenu') &&
+      document.getElementById('pg-rmenu').classList.contains('active');
+    const restItems = curRest ? cmpList.filter(id => {
+      const f = foods.find(x => x.id === id);
+      return f && f.chain === curRest;
+    }) : [];
+    const showBanner = onRmenu && restItems.length >= 2 && !_cmpRestBannerDismissed && !onCmpPage;
+    banner.classList.toggle('visible', showBanner);
   }
 }
 
@@ -11129,7 +12155,7 @@ function renderCmp() {
         </div>
         <div style="display:flex;align-items:center;gap:4px">
           <div style="font-size:12px;font-weight:600;color:var(--md-on-surface-variant);white-space:nowrap">${n} items</div>
-          <button class="det-appbar-action" onclick="openShareSheet()" title="Share">
+          <button class="det-appbar-action" onclick="openShareSheet('compare')" title="Share">
             <span class="ms">ios_share</span>
           </button>
         </div>
@@ -11189,9 +12215,24 @@ function renderCmp() {
   /* 2–3 items — full comparison */
   const so = {A:0,B:1,C:2,D:3};
 
-  const headerCards = items.map(f => {
+  /* ── Goal logic ── */
+  const GOAL_DEFS = {
+    grade:   { l:'Healthiest',  lo:true,  fn: f => so[effectiveScore(f)] },
+    protein: { l:'Protein',     lo:false, fn: f => f.protein },
+    cal:     { l:'Low cal',     lo:true,  fn: f => f.kj },
+    sodium:  { l:'Low sodium',  lo:true,  fn: f => f.sodium },
+    satfat:  { l:'Low sat fat', lo:true,  fn: f => f.sat_fat },
+  };
+  const gdef = GOAL_DEFS[cmpGoal] || GOAL_DEFS.grade;
+  const gvals = items.map(f => gdef.fn(f));
+  const gbest = gdef.lo ? Math.min(...gvals) : Math.max(...gvals);
+  /* Only apply win/lose when healthScores differ (handles same-grade ties) */
+  const allSame = gvals.every(v => v === gvals[0]);
+  const goalClass = idx => allSame ? '' : (gvals[idx] === gbest ? 'goal-win' : 'goal-lose');
+
+  const headerCards = items.map((f,idx) => {
     const es = effectiveScore(f); const s = SC(es), sc = es.toLowerCase(), cal = kc(f.kj);
-    return `<div class="cmp-crd">
+    return `<div class="cmp-crd ${goalClass(idx)}">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${s.t};border-radius:var(--shape-md) var(--shape-md) 0 0"></div>
       <button style="position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;
           color:var(--md-on-surface-variant);padding:4px;border-radius:var(--shape-full);opacity:0.6"
@@ -11209,6 +12250,13 @@ function renderCmp() {
       </div>
     </div>`;
   }).join('');
+
+  /* ── Goal pills HTML ── */
+  const goalPillsHtml = `<div class="cmp-goal-row">
+    ${Object.entries(GOAL_DEFS).map(([k,d]) =>
+      `<button class="cmp-goal-pill${cmpGoal===k?' on':''}" onclick="setCmpGoal('${k}')">${d.l}</button>`
+    ).join('')}
+  </div>`;
 
   /* Insight cards */
   const best = [...items].sort((a,b) => so[effectiveScore(a)]-so[effectiveScore(b)] || a.kj-b.kj)[0];
@@ -11233,29 +12281,34 @@ function renderCmp() {
     </div>`).join('');
 
   /* Nutrient rows */
+  const CMP_RDI = { kj:8000, cal:1912, protein:46, fat:60, sat_fat:20, carbs:275, sugar:50, sodium:2300, fibre:25 };
   const macroNus = [
-    {l:'Calories',k:'kj',     u:' cal',lo:true, tr:kc},
-    {l:'Energy',  k:'kj',     u:' kJ', lo:true},
-    {l:'Protein', k:'protein',u:'g',   lo:false},
-    {l:'Fat',     k:'fat',    u:'g',   lo:true},
-    {l:'Sat. fat',k:'sat_fat',u:'g',   lo:true},
-    {l:'Carbs',   k:'carbs',  u:'g',   lo:true},
-    {l:'Sugar',   k:'sugar',  u:'g',   lo:true},
+    {l:'Calories',k:'kj',     u:' cal',lo:true, tr:kc,  rdi:CMP_RDI.cal},
+    {l:'Energy',  k:'kj',     u:' kJ', lo:true,          rdi:CMP_RDI.kj},
+    {l:'Protein', k:'protein',u:'g',   lo:false,          rdi:CMP_RDI.protein},
+    {l:'Fat',     k:'fat',    u:'g',   lo:true,           rdi:CMP_RDI.fat},
+    {l:'Sat. fat',k:'sat_fat',u:'g',   lo:true,           rdi:CMP_RDI.sat_fat},
+    {l:'Carbs',   k:'carbs',  u:'g',   lo:true,           rdi:CMP_RDI.carbs},
+    {l:'Sugar',   k:'sugar',  u:'g',   lo:true,           rdi:CMP_RDI.sugar},
   ];
   const mineralNus = [
-    {l:'Sodium',k:'sodium',u:'mg',lo:true},
-    {l:'Fibre', k:'fibre', u:'g', lo:false},
+    {l:'Sodium',k:'sodium',u:'mg',lo:true,  rdi:CMP_RDI.sodium},
+    {l:'Fibre', k:'fibre', u:'g', lo:false, rdi:CMP_RDI.fibre},
   ];
   function buildRows(arr) {
     return arr.map(nu => {
-      const vs = items.map(f => nu.tr ? nu.tr(f[nu.k]) : f[nu.k]);
-      const be = nu.lo ? Math.min(...vs) : Math.max(...vs);
-      const wo = nu.lo ? Math.max(...vs) : Math.min(...vs);
-      const cells = vs.map(v => {
+      const rawVs = items.map(f => nu.tr ? nu.tr(f[nu.k]) : f[nu.k]);
+      /* For best/worst colouring always use raw values */
+      const be = nu.lo ? Math.min(...rawVs) : Math.max(...rawVs);
+      const wo = nu.lo ? Math.max(...rawVs) : Math.min(...rawVs);
+      const cells = rawVs.map(v => {
         let cls='';
         if(v===be) cls='best';
-        else if(v===wo && vs.filter(x=>x===wo).length<vs.length) cls='worst';
-        return `<div class="cmp-val ${cls}">${v}${nu.u}</div>`;
+        else if(v===wo && rawVs.filter(x=>x===wo).length<rawVs.length) cls='worst';
+        const display = cmpShowRdi && nu.rdi
+          ? Math.round(v / nu.rdi * 100) + '%'
+          : v + nu.u;
+        return `<div class="cmp-val ${cls}">${display}</div>`;
       }).join('');
       return `<div class="cmp-row"><div class="cmp-lbl">${nu.l}</div><div class="cmp-vals">${cells}</div></div>`;
     }).join('');
@@ -11263,6 +12316,9 @@ function renderCmp() {
   const legend = `<div class="cmp-legend">
     <span class="cmp-legend-chip lg-best"><span class="ms sz-20">arrow_downward</span>Best value</span>
     <span class="cmp-legend-chip lg-worst"><span class="ms sz-20">arrow_upward</span>Highest value</span>
+    <button class="cmp-rdi-btn${cmpShowRdi?' on':''}" onclick="toggleCmpRdi()" title="Toggle % of daily intake">
+      <span class="ms" style="font-size:14px">percent</span>${cmpShowRdi?'Raw values':'% Daily'}
+    </button>
   </div>`;
   const addSlot = n < 3 ? `<div style="padding:0 16px 8px">
     <button style="width:100%;height:40px;border-radius:var(--shape-full);
@@ -11275,7 +12331,8 @@ function renderCmp() {
 
   const cols = n;
   document.getElementById('cmp-content').innerHTML =
-    `<div class="cmp-grid" style="grid-template-columns:repeat(${cols},1fr)">${headerCards}</div>
+    `${goalPillsHtml}
+    <div class="cmp-grid" style="grid-template-columns:repeat(${cols},1fr)">${headerCards}</div>
     ${addSlot}
     <div style="padding:0 12px 8px">${insHtml}</div>
     ${legend}
@@ -11518,6 +12575,476 @@ if ('ontouchstart' in window && window.innerWidth < 500) {
     ob.observe(fl, { childList: true });
   }
 })();
+
+/* ══════════════════════════════════════════
+   MEAL BUILDER SHEET
+   ══════════════════════════════════════════ */
+
+const MB_SLOT_DEFS = [
+  { label:'Main',  icon:'lunch_dining',     cats:['burgers','chicken','pizza','wraps','subs','tacos','burritos','pies','sushi','pho','rice','bowls','salads','freshrolls','bao','bun','platters','fishnchips','com','kids'] },
+  { label:'Side',  icon:'fastfood',          cats:['sides'] },
+  { label:'Drink', icon:'local_drink',       cats:['drinks','smoothies','juices'] },
+];
+
+let mealSlots = [];
+let activeMealSlot = -1;
+
+function openMealBuilder() {
+  mealSlots = MB_SLOT_DEFS.map(d => ({ ...d, foodId: null }));
+  activeMealSlot = -1;
+  renderMealBuilder();
+  document.getElementById('sheet-scrim').classList.add('visible');
+  document.getElementById('meal-builder-sheet').classList.add('open');
+}
+
+function mbResultsHtml(slotIdx, q) {
+  const slot = mealSlots[slotIdx];
+  if (!slot) return '';
+  const lq = q.toLowerCase().trim();
+  // Determine chain of filled main slot for prioritisation
+  const mainSlot = mealSlots[0];
+  const mainChain = mainSlot && mainSlot.foodId ? (foods.find(x => x.id === mainSlot.foodId) || {}).chain : null;
+  let results = foods.filter(f => {
+    if (lq) return f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq);
+    return slot.cats.length === 0 ? true : slot.cats.includes(f.cat);
+  });
+  // Sort: same chain as main first (when no query)
+  if (!lq && mainChain) {
+    results = results.sort((a, b) => {
+      const aMatch = a.chain === mainChain ? 0 : 1;
+      const bMatch = b.chain === mainChain ? 0 : 1;
+      return aMatch - bMatch;
+    });
+  }
+  results = results.slice(0, 25);
+  if (!results.length) return `<div style="padding:16px;text-align:center;font-size:13px;color:var(--md-on-surface-variant)">No results — try a different search</div>`;
+  return results.map(f => `
+    <div class="mb-result-row" onclick="mbPickFood(${slotIdx},${f.id})">
+      <div style="font-size:20px;flex-shrink:0">${emojiImg(f.emoji, EMO.xs)}</div>
+      <div class="mb-result-info">
+        <div class="mb-result-name">${f.name}</div>
+        <div class="mb-result-chain">${f.chain}</div>
+      </div>
+      <div class="mb-result-right">
+        <span class="fc-score score-${f.score.toLowerCase()}" style="font-size:11px;padding:2px 6px">${f.score}</span>
+        <span class="mb-result-kj">${kc(f.kj)} cal</span>
+      </div>
+    </div>`).join('');
+}
+
+function renderMealBuilder() {
+  const body   = document.getElementById('mb-body');
+  const footer = document.getElementById('mb-footer');
+  if (!body || !footer) return;
+
+  const filledIds = mealSlots.filter(s => s.foodId).map(s => s.foodId);
+  const totalKj   = filledIds.reduce((sum, id) => {
+    const f = foods.find(x => x.id === id);
+    return sum + (f ? (f.kj || 0) : 0);
+  }, 0);
+  const kjPct = (totalKj / 8000) * 100;
+  const kjCls = totalKj === 0 ? 'kj-zero' : kjPct < 40 ? 'kj-green' : kjPct < 65 ? 'kj-amber' : 'kj-red';
+  const calDisp = totalKj > 0 ? kc(totalKj).toLocaleString() + ' cal' : '—';
+
+  body.innerHTML = `<div style="height:8px"></div>` + mealSlots.map((slot, i) => {
+    if (i === activeMealSlot) {
+      return `<div class="mb-slot-search">
+        <div class="mb-search-row">
+          <span class="ms" style="color:var(--md-primary);font-size:18px">search</span>
+          <input class="mb-search-input" id="mb-input-${i}"
+            placeholder="Search for a ${slot.label.toLowerCase()}…"
+            oninput="mbSearch(${i},this.value)" autocomplete="off" />
+          <button onclick="mbCancelSlot()" style="background:none;border:none;cursor:pointer;color:var(--md-on-surface-variant);padding:4px;border-radius:var(--shape-full)">
+            <span class="ms" style="font-size:18px">close</span>
+          </button>
+        </div>
+        <div class="mb-results" id="mb-results-${i}">${mbResultsHtml(i,'')}</div>
+      </div>`;
+    }
+    if (slot.foodId) {
+      const f = foods.find(x => x.id === slot.foodId);
+      if (!f) return '';
+      return `<div class="mb-slot-filled" onclick="mbTapSlot(${i})">
+        <div style="font-size:20px;flex-shrink:0">${emojiImg(f.emoji, EMO.sm)}</div>
+        <div class="mb-slot-filled-info">
+          <div style="font-size:10px;font-weight:700;color:var(--md-primary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:2px">${slot.label}</div>
+          <div class="mb-slot-filled-name">${f.name}</div>
+          <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
+          <span class="fc-score score-${f.score.toLowerCase()}" style="font-size:11px;padding:2px 6px">${f.score}</span>
+          <div style="font-size:13px;font-weight:700;color:var(--md-on-surface-variant)">${kc(f.kj)} cal</div>
+          <button class="mb-slot-rm" onclick="event.stopPropagation();mbRemoveSlot(${i})" title="Remove">
+            <span class="ms" style="font-size:16px">remove_circle_outline</span>
+          </button>
+        </div>
+      </div>`;
+    }
+    return `<div class="mb-slot-empty" onclick="mbTapSlot(${i})">
+      <span class="ms" style="color:var(--md-on-surface-variant);font-size:20px">${slot.icon}</span>
+      <span style="font-size:14px;font-weight:600;color:var(--md-on-surface-variant);flex:1">Add ${slot.label}</span>
+      <span class="ms" style="color:var(--md-primary);font-size:22px">add_circle</span>
+    </div>`;
+  }).join('') + `
+    <button class="mb-add-slot-btn" onclick="mbAddSlot()">
+      <span class="ms" style="font-size:18px">add</span> Add another item
+    </button>`;
+
+  footer.innerHTML = `
+    <div class="mb-kj-row">
+      <span class="mb-kj-label">Total</span>
+      <span class="mb-kj-val ${kjCls}">${calDisp}</span>
+    </div>
+    <button class="mb-cta" ${filledIds.length === 0 ? 'disabled' : ''} onclick="mbConfirm()">
+      See meal total →
+    </button>`;
+}
+
+function mbTapSlot(i) {
+  activeMealSlot = i;
+  renderMealBuilder();
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('mb-input-' + i);
+    if (inp) inp.focus();
+  });
+}
+
+function mbSearch(i, q) {
+  const el = document.getElementById('mb-results-' + i);
+  if (el) el.innerHTML = mbResultsHtml(i, q);
+}
+
+function mbCancelSlot() {
+  activeMealSlot = -1;
+  renderMealBuilder();
+}
+
+function mbPickFood(slotIdx, foodId) {
+  if (mealSlots[slotIdx]) mealSlots[slotIdx].foodId = foodId;
+  activeMealSlot = -1;
+  renderMealBuilder();
+}
+
+function mbRemoveSlot(i) {
+  if (i < MB_SLOT_DEFS.length) {
+    mealSlots[i].foodId = null; /* preset slot — clear food only */
+  } else {
+    mealSlots.splice(i, 1);    /* extra slot — remove entirely */
+    if (activeMealSlot >= i) activeMealSlot = -1;
+  }
+  renderMealBuilder();
+}
+
+function mbAddSlot() {
+  mealSlots.push({ label:'Item', icon:'add_circle_outline', cats:[], foodId: null });
+  activeMealSlot = mealSlots.length - 1;
+  renderMealBuilder();
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('mb-input-' + activeMealSlot);
+    if (inp) inp.focus();
+  });
+}
+
+function mbConfirm() {
+  cmpList = mealSlots.filter(s => s.foodId).map(s => s.foodId);
+  cmpMode = 'meal';
+  closeAllSheets();
+  const activePg = document.querySelector('.page.active');
+  prevPage = activePg ? activePg.id.replace('pg-', '') : 'home';
+  renderMeal();
+  nav('meal');
+}
+
+/* ══════════════════════════════════════════
+   MEAL BUILDER — Phase 2
+   ══════════════════════════════════════════ */
+
+function setCmpMode(m) {
+  cmpMode = m;
+  syncCmpUI();
+  if (m === 'meal') showToast('Meal mode — see your total', 'restaurant_menu');
+  else showToast('Compare mode — side by side', 'compare_arrows');
+}
+
+function mealGrade(items) {
+  const sn = { A:1, B:2, C:3, D:4 };
+  let totalKj = 0, weighted = 0;
+  items.forEach(f => {
+    const kj = f.kj || 1;
+    totalKj += kj;
+    weighted += kj * (sn[f.score] || 3);
+  });
+  const avg = totalKj > 0 ? weighted / totalKj : 3;
+  if (avg <= 1.5) return 'A';
+  if (avg <= 2.5) return 'B';
+  if (avg <= 3.5) return 'C';
+  return 'D';
+}
+
+function renderMeal() {
+  const items = cmpList.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  syncCmpUI();
+
+  const MEAL_RDI = { kj:8000, protein:46, fat:60, sat_fat:20, carbs:275, sugar:50, sodium:2300, fibre:25 };
+  const totals   = { kj:0, protein:0, fat:0, sat_fat:0, carbs:0, sugar:0, sodium:0, fibre:0 };
+  items.forEach(f => Object.keys(totals).forEach(k => { totals[k] += (f[k] || 0); }));
+
+  const grade      = mealGrade(items);
+  const gradeLabel = { A:'Healthy meal', B:'Reasonable meal', C:'Eat occasionally', D:'Treat meal' }[grade];
+  const kjPct      = Math.min((totals.kj / 8000) * 100, 100);
+  const kjCls      = kjPct < 40 ? 'kj-green' : kjPct < 65 ? 'kj-amber' : 'kj-red';
+  const barColor   = kjPct < 40 ? '#7EC850' : kjPct < 65 ? '#FFB95A' : '#FFB4AB';
+
+  const scoreOrder = { A:0, B:1, C:2, D:3 };
+  const worstItem  = items.length ? [...items].sort((a,b) => (scoreOrder[b.score]||0) - (scoreOrder[a.score]||0))[0] : null;
+
+  /* Gender-split RDIs for men/women tabs */
+  const MEAL_RDI_G = {
+    f: { kj:8000,  protein:46, fat:60, sat_fat:20, carbs:275, sugar:50, sodium:2300, fibre:25 },
+    m: { kj:10500, protein:64, fat:80, sat_fat:24, carbs:375, sugar:50, sodium:2300, fibre:30 }
+  };
+  const mealNutDefs = [
+    { key:'e',  l:'Energy',     k:'kj',      unit:'kJ', refKey:'kj',      display: kc(totals.kj) + ' cal' },
+    { key:'pr', l:'Protein',    k:'protein', unit:'g',  refKey:'protein' },
+    { key:'fa', l:'Fat, total', k:'fat',     unit:'g',  refKey:'fat' },
+    { key:'sf', l:'Sat. fat',   k:'sat_fat', unit:'g',  refKey:'sat_fat' },
+    { key:'ca', l:'Carbs',      k:'carbs',   unit:'g',  refKey:'carbs' },
+    { key:'su', l:'Sugar',      k:'sugar',   unit:'g',  refKey:'sugar' },
+    { key:'na', l:'Sodium',     k:'sodium',  unit:'mg', refKey:'sodium' },
+    { key:'fi', l:'Fibre',      k:'fibre',   unit:'g',  refKey:'fibre' },
+  ];
+  const _mealBarCol = (pct, key, over) => {
+    if (key === 'pr' || key === 'fi') return '#2A7B6F';
+    if (key === 'e'  || key === 'fa') return over ? '#C8A84B' : pct > 35 ? '#C8A84B' : '#2A7B6F';
+    if (over || pct > 75) return 'var(--md-error)';
+    if (pct > 40) return '#C8A84B';
+    return '#2A7B6F';
+  };
+  const _buildMealTab = (gender) => {
+    const ref = MEAL_RDI_G[gender];
+    return mealNutDefs.map(n => {
+      const val    = totals[n.k] || 0;
+      const valStr = n.display ? n.display : (val == null ? 'N/A' : (n.k === 'sodium' ? Math.round(val) : val.toFixed(1)) + n.unit);
+      const pct    = ref[n.refKey] ? Math.round(val / ref[n.refKey] * 100) : null;
+      const fill   = pct !== null ? Math.min(pct, 100) : 0;
+      const over   = pct !== null && pct > 100;
+      const col    = pct !== null ? _mealBarCol(pct, n.key, over) : '';
+      const isGoodOver = over && (n.key === 'pr' || n.key === 'fi');
+      const pctHTML = pct !== null ? `<span class="nut-rdi-pct${over && !isGoodOver ? ' nut-rdi-over' : ''}">${Math.min(pct,999)}% of daily</span>` : '';
+      const barHTML = pct !== null ? `<div class="nut-rdi-bar-track"><div class="nut-rdi-bar-fill" style="width:${fill}%;background:${col}"></div>${over ? '<div class="nut-rdi-bar-over" style="background:'+col+'"></div>' : ''}</div>` : '';
+      return `<div class="nut-row"><div class="nut-row-inner"><div class="nut-row-top"><div style="display:flex;align-items:center;gap:6px"><span class="nut-l">${n.l}</span><span class="nut-v-sub">${valStr}</span></div>${pctHTML}</div>${barHTML}</div></div>`;
+    }).join('');
+  };
+  const mealTabF = _buildMealTab('f');
+  const mealTabM = _buildMealTab('m');
+
+  const chains    = [...new Set(items.map(f => f.chain))];
+  const mixedSpan = chains.length > 1
+    ? `<span style="font-size:11px;color:var(--md-on-surface-variant);margin-left:8px;font-weight:400">Mixed chains</span>`
+    : '';
+
+  /* Swap suggestion: best alternative for worst item */
+  let swapHtml = '';
+  if (worstItem && worstItem.score !== 'A') {
+    const alts = foods.filter(f =>
+      f.chain === worstItem.chain &&
+      f.cat   === worstItem.cat &&
+      f.id    !== worstItem.id &&
+      ['A','B'].includes(f.score) &&
+      f.kj    <= worstItem.kj           /* never recommend higher-cal item */
+    ).sort((a,b) => {
+      const sd = (scoreOrder[a.score]||0) - (scoreOrder[b.score]||0);
+      return sd !== 0 ? sd : a.kj - b.kj;
+    });
+    const best = alts[0];
+    if (best) {
+      const kjSave = worstItem.kj - best.kj;
+      swapHtml = `
+        <div class="meal-section">
+          <div class="meal-section-title">Healthier swap</div>
+          <div class="meal-swap-card">
+            <span class="ms meal-swap-icon" style="font-size:20px">tips_and_updates</span>
+            <div style="flex:1">
+              <div class="meal-swap-title">Swap the ${worstItem.name.split(' ').slice(0,3).join(' ')}</div>
+              <div class="meal-swap-desc">Try <strong>${best.name}</strong> instead${kjSave > 0 ? ' — saves ' + Math.abs(kjSave) + ' kJ (' + Math.abs(Math.round(kjSave/4.184)) + ' cal)' : ''}</div>
+              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+                <button class="meal-swap-btn" onclick="applyMealSwap(${worstItem.id},${best.id})">Swap it</button>
+                <button class="meal-swap-see-btn" onclick="prevPage='meal';openDetail(${best.id},false)">See details</button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+  }
+
+  const mealSaved = isMealCurrentlySaved();
+  const saveIco   = mealSaved ? 'favorite' : 'favorite_border';
+  const saveCls   = mealSaved ? 'meal-save-btn saved' : 'meal-save-btn';
+
+  document.getElementById('meal-header').innerHTML = `
+    <div class="det-appbar">
+      <button class="det-appbar-back" onclick="mealBack()"><span class="ms">arrow_back</span></button>
+      <div class="det-appbar-titles">
+        <div class="det-appbar-sub">Total nutrition</div>
+        <div class="det-appbar-title">My Meal${mixedSpan}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0">
+        ${items.length > 0 ? `<button class="${saveCls}" id="meal-save-btn" onclick="onMealFave()" title="Save meal to favourites"><span class="ms">${saveIco}</span></button>` : ''}
+
+      </div>
+    </div>`;
+
+  document.getElementById('meal-content').innerHTML = items.length === 0 ? `
+    <div style="padding:48px 24px;text-align:center;color:var(--md-on-surface-variant)">
+      <span class="ms" style="font-size:48px;display:block;margin-bottom:12px">restaurant_menu</span>
+      <div style="font-size:16px;font-weight:600;margin-bottom:6px">No items yet</div>
+      <div style="font-size:13px">Add items from Search or a restaurant menu</div>
+    </div>` : `
+    <div class="meal-section" style="margin-top:16px">
+      <div class="meal-section-title">Items</div>
+      ${items.map(f => `
+        <div class="meal-item-row">
+          <div class="meal-item-emo">${emojiImg(f.emoji, EMO.sm)}</div>
+          <div class="meal-item-info">
+            <div class="meal-item-name">${f.name}</div>
+            <div class="meal-item-chain">${f.chain}</div>
+          </div>
+          <div class="meal-item-kj">${kc(f.kj)} cal</div>
+          <button class="meal-item-rm" onclick="toggleCmp(${f.id});renderMeal()" title="Remove">
+            <span class="ms" style="font-size:16px">remove_circle_outline</span>
+          </button>
+        </div>`).join('')}
+    </div>
+
+    <div class="meal-hero">
+      <div style="font-size:12px;font-weight:600;color:var(--md-on-surface-variant);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Total energy</div>
+      <div class="meal-energy-row">
+        <div>
+          <div class="meal-cal-total">${kc(totals.kj).toLocaleString()} <span class="det-cal-unit">cal<span class="det-kj-secondary"> / ${totals.kj.toLocaleString()} kJ</span></span></div>
+        </div>
+        <span class="meal-grade-letter score-${grade.toLowerCase()}" onclick="openScoreSheet('${grade}')" title="${gradeLabel}">${grade}</span>
+      </div>
+
+    </div>
+
+    <div class="meal-section" style="margin-bottom:4px">
+      <div class="meal-section-title">Nutrition breakdown</div>
+    </div>
+    <div class="meal-nut-tabs">
+      <div class="meal-nut-tab on" onclick="mealSwTab('f',this)">Women</div>
+      <div class="meal-nut-tab" onclick="mealSwTab('m',this)">Men</div>
+    </div>
+    <div id="meal-tab-f" class="nut-rows">${mealTabF}</div>
+    <div id="meal-tab-m" class="nut-rows" style="display:none">${mealTabM}</div>
+
+    ${swapHtml}
+    <div style="height:24px"></div>`;
+}
+
+function mealBack() {
+  /* Return to builder sheet with slots intact */
+  if (prevPage === 'faves')            nav('faves');
+  else if (prevPage === 'insights')    nav('insights');
+  else if (prevPage === 'restaurants') nav('restaurants');
+  else                                 nav('home');
+  activeMealSlot = -1;
+  renderMealBuilder();
+  document.getElementById('sheet-scrim').classList.add('visible');
+  document.getElementById('meal-builder-sheet').classList.add('open');
+  syncCmpUI();
+}
+
+/* Switch Women/Men tab on meal nutrition breakdown */
+function mealSwTab(t, el) {
+  document.querySelectorAll('.meal-nut-tab').forEach(x => x.classList.remove('on'));
+  el.classList.add('on');
+  const tf = document.getElementById('meal-tab-f');
+  const tm = document.getElementById('meal-tab-m');
+  if (tf) tf.style.display = t === 'f' ? 'block' : 'none';
+  if (tm) tm.style.display = t === 'm' ? 'block' : 'none';
+}
+
+/* Apply healthier swap — replaces worstItem in cmpList with best, shows undo */
+function applyMealSwap(worstId, bestId) {
+  const idx = cmpList.indexOf(worstId);
+  if (idx === -1) return;
+  const worstF = foods.find(f => f.id === worstId);
+  const bestF  = foods.find(f => f.id === bestId);
+  const calSaved = worstF && bestF ? kc(worstF.kj) - kc(bestF.kj) : 0;
+  cmpList[idx] = bestId;
+  renderMeal();
+  const sc = document.querySelector('#pg-meal .page-scroll');
+  if (sc) sc.scrollTo({ top: 0, behavior: 'smooth' });
+  const toastMsg = calSaved > 0 ? 'Saved ' + calSaved + ' cal!' : 'Swap applied';
+  showToast(toastMsg, 'swap_horiz', 'Undo', () => {
+    cmpList[idx] = worstId;
+    renderMeal();
+    showToast('Swap undone', 'undo');
+  });
+}
+
+function promptSaveMeal() {
+  const items = cmpList.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  if (!items.length) return;
+  const MEAL_RDI = { kj:8000 };
+  const totKj = items.reduce((s,f) => s + (f.kj||0), 0);
+  const grade = mealGrade(items);
+  const chains = [...new Set(items.map(f => f.chain))];
+  const defaultName = chains.length === 1 ? chains[0] + ' Meal' : 'My Meal';
+
+  /* Inline prompt via sheet-style overlay inside meal-content */
+  const existing = document.getElementById('meal-save-prompt');
+  if (existing) { existing.remove(); return; }
+
+  const wrap = document.createElement('div');
+  wrap.id = 'meal-save-prompt';
+  wrap.style.cssText = 'position:absolute;bottom:102px;left:16px;right:16px;background:var(--md-surface-container-high);border-radius:var(--shape-lg);padding:16px;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.5)';
+  wrap.innerHTML = `
+    <div style="font-size:14px;font-weight:700;color:var(--md-on-surface);margin-bottom:12px">Save this meal</div>
+    <input id="meal-save-input" type="text" value=""
+      style="width:100%;box-sizing:border-box;background:var(--md-surface);border:1px solid var(--md-outline-variant);border-radius:var(--shape-md);padding:10px 12px;font-size:14px;color:var(--md-on-surface);outline:none;font-family:inherit"
+      placeholder="Name this meal" maxlength="40" />
+    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+      <button onclick="document.getElementById('meal-save-prompt').remove()"
+        style="padding:8px 16px;border-radius:var(--shape-full);border:1px solid var(--md-outline-variant);background:transparent;color:var(--md-on-surface-variant);font-size:13px;cursor:pointer;font-family:inherit">Cancel</button>
+      <button onclick="_doSaveMeal()"
+        style="padding:8px 16px;border-radius:var(--shape-full);border:none;background:var(--md-primary);color:#0A1A04;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">Save</button>
+    </div>`;
+  /* App-relative position */
+  const app = document.getElementById('APP');
+  if (app) app.appendChild(wrap);
+  else document.body.appendChild(wrap);
+  const inp = document.getElementById('meal-save-input');
+  if (inp) { inp.focus(); inp.select(); }
+}
+
+function _doSaveMeal() {
+  const inp = document.getElementById('meal-save-input');
+  const name = inp ? inp.value.trim() : '';
+  if (!name) { if (inp) inp.focus(); return; }
+  const items = cmpList.map(id => foods.find(f => f.id === id)).filter(Boolean);
+  if (!items.length) return;
+  const totKj = items.reduce((s,f) => s + (f.kj||0), 0);
+  const grade = mealGrade(items);
+  saveMeal({
+    name,
+    ids: [...cmpList],
+    kj: totKj,
+    grade,
+    ts: Date.now(),
+    itemNames: items.map(f => f.name)
+  });
+  const prompt = document.getElementById('meal-save-prompt');
+  if (prompt) prompt.remove();
+  showToast('Meal saved to Faves', 'bookmark');
+  /* Flip heart to filled */
+  const saveBtn = document.getElementById('meal-save-btn');
+  if (saveBtn) {
+    saveBtn.classList.add('saved');
+    const ico = saveBtn.querySelector('.ms');
+    if (ico) ico.textContent = 'favorite';
+  }
+}
 </script>
 
 </body></html>
