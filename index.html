@@ -2,7 +2,7 @@
 <!-- saved from url=(0061)file:///Users/ranitanand/Downloads/kaicheck-prototype_36.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>KāiCheck Prototype — v2.0 (Material Design 3)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
@@ -1526,9 +1526,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   pointer-events: auto;
 }
 .diet-tooltip-label {
-  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
-  color: var(--md-on-surface); margin-bottom: 3px;
-  display: flex; align-items: center; gap: 5px;
+  display: none;
 }
 .diet-tooltip-desc {
   font-family: var(--font-ui); font-size: 11.5px; font-weight: 400;
@@ -1830,11 +1828,11 @@ body.native #filter-float-pill {
 }
 .fc-kj {
   font-size: 11px; color: var(--md-on-surface-variant);
-  margin-top: 3px; font-weight: 400;
+  font-weight: 400; margin-left: 2px;
 }
-/* Macro pills — right-aligned, 3 key values */
+/* Macro pills — right-aligned, 2 key values inline */
 .fc-macros {
-  display: flex; flex-direction: column; align-items: flex-end; gap: 3px;
+  display: flex; flex-direction: row; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end;
 }
 .fc-macro-row {
   display: flex; gap: 5px;
@@ -3456,9 +3454,9 @@ body.native #filter-float-pill {
   border: 2px solid var(--md-primary);
   box-shadow: 0 0 0 3px rgba(126,200,80,0.15);
 }
-/* Loser card(s): dimmed */
+/* Loser card(s): no dimming — all cards remain fully visible */
 .cmp-crd.goal-lose {
-  opacity: 0.45;
+  opacity: 1;
 }
 
 /* ════════════════════════════════════════════════════
@@ -4275,8 +4273,8 @@ body.native #filter-float-pill {
 /* ── Per-item swap icon button — subtle tonal pill ── */
 .meal-swap-icon-btn {
   flex-shrink: 0;
-  display: inline-flex; align-items: center; gap: 3px;
-  height: 22px; padding: 0 7px 0 5px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px;
+  height: 24px; padding: 0 10px;
   background: var(--md-primary-container);
   border: none;
   border-radius: var(--shape-full);
@@ -4285,13 +4283,14 @@ body.native #filter-float-pill {
   position: relative; overflow: visible;
   transition: filter 0.15s;
   white-space: nowrap;
+  align-self: center;
 }
 .meal-swap-icon-btn:active { filter: brightness(0.92); }
 /* Swap tooltip — floats below the icon, right-anchored */
 .meal-swap-tooltip {
   position: absolute;
   top: calc(100% + 10px);
-  right: -8px;
+  left: 0;
   background: var(--md-surface-container-highest);
   border: 1px solid var(--md-outline-variant);
   border-radius: var(--shape-lg);
@@ -4308,7 +4307,7 @@ body.native #filter-float-pill {
 .meal-swap-tooltip::after {
   content: '';
   position: absolute;
-  top: -6px; right: 14px;
+  top: -6px; left: 14px;
   width: 10px; height: 10px;
   background: var(--md-surface-container-highest);
   border-left: 1px solid var(--md-outline-variant);
@@ -4370,11 +4369,11 @@ body.native #filter-float-pill {
 }
 .cs-carousel::-webkit-scrollbar { display: none; }
 .cs-card {
-  flex-shrink: 0; width: 106px;
+  flex-shrink: 0; width: 136px;
   background: var(--md-surface-container);
   border: 1.5px solid var(--md-outline-variant);
   border-radius: var(--shape-md);
-  padding: 10px 8px 9px; cursor: pointer;
+  padding: 12px 10px 11px; cursor: pointer;
   position: relative; text-align: center;
   transition: border-color 0.15s;
 }
@@ -4389,14 +4388,14 @@ body.native #filter-float-pill {
   border-radius: 4px; border: 1px solid;
 }
 .cs-card-name {
-  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
-  color: var(--md-on-surface); margin-top: 5px; line-height: 1.3;
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  color: var(--md-on-surface); margin-top: 6px; line-height: 1.35;
   display: -webkit-box; -webkit-line-clamp: 2;
   -webkit-box-orient: vertical; overflow: hidden;
 }
 .cs-card-chain {
-  font-family: var(--font-ui); font-size: 10px;
-  color: var(--md-on-surface-variant); margin-top: 2px;
+  font-family: var(--font-ui); font-size: 11px;
+  color: var(--md-on-surface-variant); margin-top: 3px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .cs-benefit-chips {
@@ -4490,6 +4489,7 @@ body.native #filter-float-pill {
   border-top: 1px solid var(--md-surface-container);
 }
 .mb-result-row:active { background: var(--md-surface-container); }
+.mb-result-row--added { opacity: 0.5; pointer-events: none; }
 .mb-result-info { flex: 1; min-width: 0; }
 .mb-result-name { font-size: 13px; font-weight: 600; color: var(--md-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mb-result-chain { font-size: 11px; color: var(--md-on-surface-variant); }
@@ -4546,23 +4546,6 @@ body.native #filter-float-pill {
     <div class="island"></div>
     <div class="app" id="APP">
 
-    <div class="cmp-tray" id="cmp-tray">
-      <div class="cmp-tray-inner">
-        <div class="cmp-tray-mode">
-          <button class="cmp-mode-pill on" id="cmp-mode-compare" onclick="setCmpMode('compare')">Compare</button>
-          <button class="cmp-mode-pill"    id="cmp-mode-meal"    onclick="setCmpMode('meal')">Meal</button>
-        </div>
-        <div class="cmp-tray-chips" id="cmp-tray-chips"></div>
-        <div class="cmp-tray-kj" id="cmp-tray-kj" style="display:none"></div>
-        <button class="cmp-tray-btn" id="cmp-tray-btn" onclick="goCmp()" disabled="">
-          Compare →
-        </button>
-        <button onclick="clearCmp()" title="Clear all" style="background:none;border:none;cursor:pointer;color:var(--md-on-surface-variant);
-                 padding:4px;border-radius:var(--shape-full);flex-shrink:0">
-          <span class="ms" style="font-size:18px">close</span>
-        </button>
-      </div>
-    </div>
 
       <!-- ═══════════════════════════════════════════
            PAGE: HOME
@@ -4690,7 +4673,7 @@ body.native #filter-float-pill {
           </div>
 
           <!-- Compare your kai quick-action -->
-          <div class="home-compare-card" onclick="openCmpSheet(null)" id="home-compare-card">
+          <div class="home-compare-card home-meal-card" onclick="openCmpSheet(null)" id="home-compare-card">
             <div class="home-meal-card-icon">⚖️</div>
             <div class="home-meal-card-text">
               <div class="home-meal-card-title">Compare your kai</div>
@@ -4908,7 +4891,7 @@ body.native #filter-float-pill {
       <div class="page" id="pg-faves">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
         <div class="faves-topbar">
-          <div class="faves-title">Saved</div>
+          <div class="faves-title">My Faves</div>
 
         </div>
         <div class="page-scroll">
@@ -5583,7 +5566,6 @@ body.native #filter-float-pill {
           <div class="nav-item on" onclick="nav(&#39;home&#39;)"><div class="nav-ico"><span class="ms filled">home</span></div><div class="nav-lbl">Home</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;search&#39;)"><div class="nav-ico"><span class="ms">search</span></div><div class="nav-lbl">Search</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;restaurants&#39;)"><div class="nav-ico"><span class="ms">storefront</span></div><div class="nav-lbl">Restaurants</div><div class="nav-dot"></div></div>
-          <div class="nav-item" onclick="nav(&#39;compare&#39;)"><div class="nav-ico"><span class="ms">compare_arrows</span></div><div class="nav-lbl">Compare</div><div class="nav-dot"></div></div>
           <div class="nav-item" onclick="nav(&#39;faves&#39;)"><div class="nav-ico"><span class="ms">favorite</span></div><div class="nav-lbl">Faves</div><div class="nav-dot"></div></div>
         </div>
         <div class="hi"><div class="hi-bar"></div>
@@ -6602,7 +6584,7 @@ body.native #filter-float-pill {
           <span class="mb-kj-label">Total</span>
           <span class="mb-kj-val kj-zero">—</span>
         </div>
-        <button class="mb-cta" disabled>See meal total →</button>
+        <button class="mb-cta" disabled>See meal total</button>
       </div>
     </div>
 
@@ -8974,73 +8956,73 @@ const foods = [
      drinks exceed 40g sugar/1000kJ → 7 pts → D). Diet/zero drinks score A–B.
      Next ID after this block: 1170 ── */
   /* Coca-Cola Classic */
-  {id:1119, name:"Coca-Cola 300ml",              chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:540,  protein:0, fat:0, carbs:31.8, sugar:31.8, sodium:30,  sat_fat:0, fibre:0, score:"D"},
-  {id:1120, name:"Coca-Cola 330ml",              chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:594,  protein:0, fat:0, carbs:35.0, sugar:35.0, sodium:33,  sat_fat:0, fibre:0, score:"D"},
-  {id:1121, name:"Coca-Cola 500ml",              chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:900,  protein:0, fat:0, carbs:53.0, sugar:53.0, sodium:50,  sat_fat:0, fibre:0, score:"D"},
+  {id:1119, name:"Coca-Cola 300ml",              chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:540,  protein:0, fat:0, carbs:31.8, sugar:31.8, sodium:30,  sat_fat:0, fibre:0, score:"D"},
+  {id:1120, name:"Coca-Cola 330ml",              chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:594,  protein:0, fat:0, carbs:35.0, sugar:35.0, sodium:33,  sat_fat:0, fibre:0, score:"D"},
+  {id:1121, name:"Coca-Cola 500ml",              chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:900,  protein:0, fat:0, carbs:53.0, sugar:53.0, sodium:50,  sat_fat:0, fibre:0, score:"D"},
   /* Coke Zero Sugar */
-  {id:1122, name:"Coke Zero Sugar 300ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:4,    protein:0, fat:0, carbs:0.1,  sugar:0,    sodium:12,  sat_fat:0, fibre:0, score:"B"},
-  {id:1123, name:"Coke Zero Sugar 330ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:4,    protein:0, fat:0, carbs:0.1,  sugar:0,    sodium:14,  sat_fat:0, fibre:0, score:"B"},
-  {id:1124, name:"Coke Zero Sugar 500ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:6,    protein:0, fat:0, carbs:0.2,  sugar:0,    sodium:21,  sat_fat:0, fibre:0, score:"B"},
+  {id:1122, name:"Coke Zero Sugar 300ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:4,    protein:0, fat:0, carbs:0.1,  sugar:0,    sodium:12,  sat_fat:0, fibre:0, score:"B"},
+  {id:1123, name:"Coke Zero Sugar 330ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:4,    protein:0, fat:0, carbs:0.1,  sugar:0,    sodium:14,  sat_fat:0, fibre:0, score:"B"},
+  {id:1124, name:"Coke Zero Sugar 500ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:6,    protein:0, fat:0, carbs:0.2,  sugar:0,    sodium:21,  sat_fat:0, fibre:0, score:"B"},
   /* Diet Coke */
-  {id:1125, name:"Diet Coke 300ml",              chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:6,    protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:3,   sat_fat:0, fibre:0, score:"B"},
-  {id:1126, name:"Diet Coke 330ml",              chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:6,    protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:3,   sat_fat:0, fibre:0, score:"B"},
-  {id:1127, name:"Diet Coke 500ml",              chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:10,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:5,   sat_fat:0, fibre:0, score:"B"},
+  {id:1125, name:"Diet Coke 300ml",              chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:6,    protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:3,   sat_fat:0, fibre:0, score:"B"},
+  {id:1126, name:"Diet Coke 330ml",              chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:6,    protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:3,   sat_fat:0, fibre:0, score:"B"},
+  {id:1127, name:"Diet Coke 500ml",              chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:10,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:5,   sat_fat:0, fibre:0, score:"B"},
   /* Sprite */
-  {id:1128, name:"Sprite 300ml",                 chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:516,  protein:0, fat:0, carbs:29.7, sugar:29.7, sodium:42,  sat_fat:0, fibre:0, score:"D"},
-  {id:1129, name:"Sprite 330ml",                 chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:568,  protein:0, fat:0, carbs:32.7, sugar:32.7, sodium:46,  sat_fat:0, fibre:0, score:"D"},
-  {id:1130, name:"Sprite 500ml",                 chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:860,  protein:0, fat:0, carbs:49.5, sugar:49.5, sodium:70,  sat_fat:0, fibre:0, score:"D"},
+  {id:1128, name:"Sprite 300ml",                 chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:516,  protein:0, fat:0, carbs:29.7, sugar:29.7, sodium:42,  sat_fat:0, fibre:0, score:"D"},
+  {id:1129, name:"Sprite 330ml",                 chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:568,  protein:0, fat:0, carbs:32.7, sugar:32.7, sodium:46,  sat_fat:0, fibre:0, score:"D"},
+  {id:1130, name:"Sprite 500ml",                 chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:860,  protein:0, fat:0, carbs:49.5, sugar:49.5, sodium:70,  sat_fat:0, fibre:0, score:"D"},
   /* Sprite Zero Sugar */
-  {id:1131, name:"Sprite Zero Sugar 300ml",      chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:13,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:40,  sat_fat:0, fibre:0, score:"B"},
-  {id:1132, name:"Sprite Zero Sugar 330ml",      chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:14,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:44,  sat_fat:0, fibre:0, score:"B"},
-  {id:1133, name:"Sprite Zero Sugar 500ml",      chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:21,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:67,  sat_fat:0, fibre:0, score:"B"},
+  {id:1131, name:"Sprite Zero Sugar 300ml",      chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:13,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:40,  sat_fat:0, fibre:0, score:"B"},
+  {id:1132, name:"Sprite Zero Sugar 330ml",      chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:14,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:44,  sat_fat:0, fibre:0, score:"B"},
+  {id:1133, name:"Sprite Zero Sugar 500ml",      chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:21,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:67,  sat_fat:0, fibre:0, score:"B"},
   /* L&P Lemon & Paeroa */
-  {id:1134, name:"L&P 300ml",                    chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:570,  protein:0, fat:0, carbs:32.4, sugar:32.4, sodium:24,  sat_fat:0, fibre:0, score:"D"},
-  {id:1135, name:"L&P 330ml",                    chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:627,  protein:0, fat:0, carbs:35.6, sugar:35.6, sodium:26,  sat_fat:0, fibre:0, score:"D"},
-  {id:1136, name:"L&P 500ml",                    chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:950,  protein:0, fat:0, carbs:54.0, sugar:54.0, sodium:40,  sat_fat:0, fibre:0, score:"D"},
+  {id:1134, name:"L&P 300ml",                    chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:570,  protein:0, fat:0, carbs:32.4, sugar:32.4, sodium:24,  sat_fat:0, fibre:0, score:"D"},
+  {id:1135, name:"L&P 330ml",                    chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:627,  protein:0, fat:0, carbs:35.6, sugar:35.6, sodium:26,  sat_fat:0, fibre:0, score:"D"},
+  {id:1136, name:"L&P 500ml",                    chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:950,  protein:0, fat:0, carbs:54.0, sugar:54.0, sodium:40,  sat_fat:0, fibre:0, score:"D"},
   /* L&P Zero Sugar */
-  {id:1137, name:"L&P Zero Sugar 300ml",         chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:19,   protein:0, fat:0, carbs:0,    sugar:0,    sodium:38,  sat_fat:0, fibre:0, score:"B"},
-  {id:1138, name:"L&P Zero Sugar 330ml",         chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:21,   protein:0, fat:0, carbs:0,    sugar:0,    sodium:42,  sat_fat:0, fibre:0, score:"B"},
-  {id:1139, name:"L&P Zero Sugar 500ml",         chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:32,   protein:0, fat:0, carbs:0.1,  sugar:0,    sodium:64,  sat_fat:0, fibre:0, score:"B"},
+  {id:1137, name:"L&P Zero Sugar 300ml",         chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:19,   protein:0, fat:0, carbs:0,    sugar:0,    sodium:38,  sat_fat:0, fibre:0, score:"B"},
+  {id:1138, name:"L&P Zero Sugar 330ml",         chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:21,   protein:0, fat:0, carbs:0,    sugar:0,    sodium:42,  sat_fat:0, fibre:0, score:"B"},
+  {id:1139, name:"L&P Zero Sugar 500ml",         chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:32,   protein:0, fat:0, carbs:0.1,  sugar:0,    sodium:64,  sat_fat:0, fibre:0, score:"B"},
   /* L&P Ginger Beer */
-  {id:1140, name:"L&P Ginger Beer 300ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:564,  protein:0, fat:0, carbs:32.1, sugar:32.1, sodium:3,   sat_fat:0, fibre:0, score:"D"},
-  {id:1141, name:"L&P Ginger Beer 330ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:620,  protein:0, fat:0, carbs:35.3, sugar:35.3, sodium:3,   sat_fat:0, fibre:0, score:"D"},
-  {id:1142, name:"L&P Ginger Beer 500ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:940,  protein:0, fat:0, carbs:53.5, sugar:53.5, sodium:5,   sat_fat:0, fibre:0, score:"D"},
+  {id:1140, name:"L&P Ginger Beer 300ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:564,  protein:0, fat:0, carbs:32.1, sugar:32.1, sodium:3,   sat_fat:0, fibre:0, score:"D"},
+  {id:1141, name:"L&P Ginger Beer 330ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:620,  protein:0, fat:0, carbs:35.3, sugar:35.3, sodium:3,   sat_fat:0, fibre:0, score:"D"},
+  {id:1142, name:"L&P Ginger Beer 500ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:940,  protein:0, fat:0, carbs:53.5, sugar:53.5, sodium:5,   sat_fat:0, fibre:0, score:"D"},
   /* Fanta Orange */
-  {id:1143, name:"Fanta Orange 300ml",           chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:411,  protein:0, fat:0, carbs:23.7, sugar:23.7, sodium:20,  sat_fat:0, fibre:0, score:"D"},
-  {id:1144, name:"Fanta Orange 330ml",           chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:452,  protein:0, fat:0, carbs:26.1, sugar:26.1, sodium:22,  sat_fat:0, fibre:0, score:"D"},
-  {id:1145, name:"Fanta Orange 500ml",           chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:685,  protein:0, fat:0, carbs:39.5, sugar:39.5, sodium:34,  sat_fat:0, fibre:0, score:"D"},
+  {id:1143, name:"Fanta Orange 300ml",           chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:411,  protein:0, fat:0, carbs:23.7, sugar:23.7, sodium:20,  sat_fat:0, fibre:0, score:"D"},
+  {id:1144, name:"Fanta Orange 330ml",           chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:452,  protein:0, fat:0, carbs:26.1, sugar:26.1, sodium:22,  sat_fat:0, fibre:0, score:"D"},
+  {id:1145, name:"Fanta Orange 500ml",           chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:685,  protein:0, fat:0, carbs:39.5, sugar:39.5, sodium:34,  sat_fat:0, fibre:0, score:"D"},
   /* Fanta Raspberry */
-  {id:1146, name:"Fanta Raspberry 300ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:411,  protein:0, fat:0, carbs:23.7, sugar:23.7, sodium:3,   sat_fat:0, fibre:0, score:"D"},
-  {id:1147, name:"Fanta Raspberry 330ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:452,  protein:0, fat:0, carbs:26.1, sugar:26.1, sodium:3,   sat_fat:0, fibre:0, score:"D"},
-  {id:1148, name:"Fanta Raspberry 500ml",        chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:685,  protein:0, fat:0, carbs:39.5, sugar:39.5, sodium:5,   sat_fat:0, fibre:0, score:"D"},
+  {id:1146, name:"Fanta Raspberry 300ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:411,  protein:0, fat:0, carbs:23.7, sugar:23.7, sodium:3,   sat_fat:0, fibre:0, score:"D"},
+  {id:1147, name:"Fanta Raspberry 330ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:452,  protein:0, fat:0, carbs:26.1, sugar:26.1, sodium:3,   sat_fat:0, fibre:0, score:"D"},
+  {id:1148, name:"Fanta Raspberry 500ml",        chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:685,  protein:0, fat:0, carbs:39.5, sugar:39.5, sodium:5,   sat_fat:0, fibre:0, score:"D"},
   /* Fanta Zero (Orange) */
-  {id:1149, name:"Fanta Zero 300ml",             chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:12,   protein:0, fat:0, carbs:0.2,  sugar:0,    sodium:4,   sat_fat:0, fibre:0, score:"A"},
-  {id:1150, name:"Fanta Zero 330ml",             chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:13,   protein:0, fat:0, carbs:0.2,  sugar:0,    sodium:4,   sat_fat:0, fibre:0, score:"A"},
-  {id:1151, name:"Fanta Zero 500ml",             chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:20,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:6,   sat_fat:0, fibre:0, score:"A"},
+  {id:1149, name:"Fanta Zero 300ml",             chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:12,   protein:0, fat:0, carbs:0.2,  sugar:0,    sodium:4,   sat_fat:0, fibre:0, score:"A"},
+  {id:1150, name:"Fanta Zero 330ml",             chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:13,   protein:0, fat:0, carbs:0.2,  sugar:0,    sodium:4,   sat_fat:0, fibre:0, score:"A"},
+  {id:1151, name:"Fanta Zero 500ml",             chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:20,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:6,   sat_fat:0, fibre:0, score:"A"},
   /* Schweppes Indian Tonic Water */
-  {id:1152, name:"Schweppes Tonic Water 300ml",  chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:468,  protein:0, fat:0, carbs:27.6, sugar:26.7, sodium:14,  sat_fat:0, fibre:0, score:"D"},
-  {id:1153, name:"Schweppes Tonic Water 330ml",  chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:515,  protein:0, fat:0, carbs:30.4, sugar:29.4, sodium:16,  sat_fat:0, fibre:0, score:"D"},
-  {id:1154, name:"Schweppes Tonic Water 500ml",  chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:780,  protein:0, fat:0, carbs:46.0, sugar:44.5, sodium:24,  sat_fat:0, fibre:0, score:"D"},
+  {id:1152, name:"Schweppes Tonic Water 300ml",  chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:468,  protein:0, fat:0, carbs:27.6, sugar:26.7, sodium:14,  sat_fat:0, fibre:0, score:"D"},
+  {id:1153, name:"Schweppes Tonic Water 330ml",  chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:515,  protein:0, fat:0, carbs:30.4, sugar:29.4, sodium:16,  sat_fat:0, fibre:0, score:"D"},
+  {id:1154, name:"Schweppes Tonic Water 500ml",  chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:780,  protein:0, fat:0, carbs:46.0, sugar:44.5, sodium:24,  sat_fat:0, fibre:0, score:"D"},
   /* Schweppes Diet Indian Tonic Water */
-  {id:1155, name:"Schweppes Diet Tonic Water 300ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:18,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:54,  sat_fat:0, fibre:0, score:"B"},
-  {id:1156, name:"Schweppes Diet Tonic Water 330ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:19,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:59,  sat_fat:0, fibre:0, score:"B"},
-  {id:1157, name:"Schweppes Diet Tonic Water 500ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:30,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:90,  sat_fat:0, fibre:0, score:"B"},
+  {id:1155, name:"Schweppes Diet Tonic Water 300ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:18,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:54,  sat_fat:0, fibre:0, score:"B"},
+  {id:1156, name:"Schweppes Diet Tonic Water 330ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:19,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:59,  sat_fat:0, fibre:0, score:"B"},
+  {id:1157, name:"Schweppes Diet Tonic Water 500ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:30,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:90,  sat_fat:0, fibre:0, score:"B"},
   /* Schweppes Dry Ginger Ale */
-  {id:1158, name:"Schweppes Dry Ginger Ale 300ml",   chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:513,  protein:0, fat:0, carbs:29.4, sugar:29.4, sodium:15,  sat_fat:0, fibre:0, score:"D"},
-  {id:1159, name:"Schweppes Dry Ginger Ale 330ml",   chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:564,  protein:0, fat:0, carbs:32.3, sugar:32.3, sodium:17,  sat_fat:0, fibre:0, score:"D"},
-  {id:1160, name:"Schweppes Dry Ginger Ale 500ml",   chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:855,  protein:0, fat:0, carbs:49.0, sugar:49.0, sodium:25,  sat_fat:0, fibre:0, score:"D"},
+  {id:1158, name:"Schweppes Dry Ginger Ale 300ml",   chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:513,  protein:0, fat:0, carbs:29.4, sugar:29.4, sodium:15,  sat_fat:0, fibre:0, score:"D"},
+  {id:1159, name:"Schweppes Dry Ginger Ale 330ml",   chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:564,  protein:0, fat:0, carbs:32.3, sugar:32.3, sodium:17,  sat_fat:0, fibre:0, score:"D"},
+  {id:1160, name:"Schweppes Dry Ginger Ale 500ml",   chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:855,  protein:0, fat:0, carbs:49.0, sugar:49.0, sodium:25,  sat_fat:0, fibre:0, score:"D"},
   /* Schweppes Diet Dry Ginger Ale */
-  {id:1161, name:"Schweppes Diet Dry Ginger Ale 300ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:17,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:54,  sat_fat:0, fibre:0, score:"B"},
-  {id:1162, name:"Schweppes Diet Dry Ginger Ale 330ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:18,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:59,  sat_fat:0, fibre:0, score:"B"},
-  {id:1163, name:"Schweppes Diet Dry Ginger Ale 500ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:28,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:90,  sat_fat:0, fibre:0, score:"B"},
+  {id:1161, name:"Schweppes Diet Dry Ginger Ale 300ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:17,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:54,  sat_fat:0, fibre:0, score:"B"},
+  {id:1162, name:"Schweppes Diet Dry Ginger Ale 330ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:18,   protein:0, fat:0, carbs:0.3,  sugar:0,    sodium:59,  sat_fat:0, fibre:0, score:"B"},
+  {id:1163, name:"Schweppes Diet Dry Ginger Ale 500ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:28,   protein:0, fat:0, carbs:0.5,  sugar:0,    sodium:90,  sat_fat:0, fibre:0, score:"B"},
   /* Bundaberg Ginger Beer */
-  {id:1164, name:"Bundaberg Ginger Beer 300ml",  chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:546,  protein:0, fat:0, carbs:32.1, sugar:32.1, sodium:33,  sat_fat:0, fibre:0, score:"D"},
-  {id:1165, name:"Bundaberg Ginger Beer 330ml",  chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:601,  protein:0, fat:0, carbs:35.3, sugar:35.3, sodium:36,  sat_fat:0, fibre:0, score:"D"},
-  {id:1166, name:"Bundaberg Ginger Beer 500ml",  chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:910,  protein:0, fat:0, carbs:53.5, sugar:53.5, sodium:55,  sat_fat:0, fibre:0, score:"D"},
+  {id:1164, name:"Bundaberg Ginger Beer 300ml",  chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:546,  protein:0, fat:0, carbs:32.1, sugar:32.1, sodium:33,  sat_fat:0, fibre:0, score:"D"},
+  {id:1165, name:"Bundaberg Ginger Beer 330ml",  chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:601,  protein:0, fat:0, carbs:35.3, sugar:35.3, sodium:36,  sat_fat:0, fibre:0, score:"D"},
+  {id:1166, name:"Bundaberg Ginger Beer 500ml",  chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:910,  protein:0, fat:0, carbs:53.5, sugar:53.5, sodium:55,  sat_fat:0, fibre:0, score:"D"},
   /* Bundaberg Diet Ginger Beer */
-  {id:1167, name:"Bundaberg Diet Ginger Beer 300ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:102,  protein:0, fat:0, carbs:3.6,  sugar:3.6,  sodium:33,  sat_fat:0, fibre:0, score:"C"},
-  {id:1168, name:"Bundaberg Diet Ginger Beer 330ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:112,  protein:0, fat:0, carbs:4.0,  sugar:4.0,  sodium:36,  sat_fat:0, fibre:0, score:"C"},
-  {id:1169, name:"Bundaberg Diet Ginger Beer 500ml", chain:"Soft Drinks", cat:"drinks", emoji:"🥤", kj:170,  protein:0, fat:0, carbs:6.0,  sugar:6.0,  sodium:55,  sat_fat:0, fibre:0, score:"C"},
+  {id:1167, name:"Bundaberg Diet Ginger Beer 300ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:102,  protein:0, fat:0, carbs:3.6,  sugar:3.6,  sodium:33,  sat_fat:0, fibre:0, score:"C"},
+  {id:1168, name:"Bundaberg Diet Ginger Beer 330ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:112,  protein:0, fat:0, carbs:4.0,  sugar:4.0,  sodium:36,  sat_fat:0, fibre:0, score:"C"},
+  {id:1169, name:"Bundaberg Diet Ginger Beer 500ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:170,  protein:0, fat:0, carbs:6.0,  sugar:6.0,  sodium:55,  sat_fat:0, fibre:0, score:"C"},
 
 ];
 
@@ -9313,7 +9295,7 @@ const rests = [
   {name:"Roll'd",       emoji:"🌿", score:"A", avg_kj:1868, brand:"#B5121B", desc:"Fresh Vietnamese kai — rice paper rolls, bánh mì, phở, bún and rice bowls. One of the healthiest fast food menus in the app."},
   {name:"Takeaways",    emoji:"🐟", score:"A", avg_kj:1556, brand:"#1B6CA8", desc:"Your local NZ fish and chip shop. Classic Kiwi takeaways — battered fish, chips, fritters, hot dogs and more. Numbers are typical averages."},
   {name:"Taco Bell",    emoji:"🌮", score:"C", avg_kj:2114, brand:"#702082", desc:"The US Tex-Mex chain, now in Aotearoa. Tacos, burritos, crunchwraps and more — big flavour, big kJs. Vegan range available."},
-  {name:"Soft Drinks",  emoji:"🥤", score:"D", avg_kj:306,  brand:"#E8001B", desc:"Popular NZ soft drinks in 300ml, 330ml and 500ml serves. Full-sugar versions are high in added sugar — all major brands offer zero-sugar alternatives that score significantly better."}
+  {name:"NZ Soft Drinks",  emoji:"🥤", score:"D", avg_kj:306,  brand:"#E8001B", desc:"Popular NZ soft drinks in 300ml, 330ml and 500ml serves. Full-sugar versions are high in added sugar — all major brands offer zero-sugar alternatives that score significantly better."}
 ];
 
 </script>
@@ -9394,7 +9376,7 @@ const BW  = s  => ({A:'90%',B:'70%',C:'45%',D:'18%'}[s]);
 let catSel='all', cmpList=[], cmpGoal='grade', cmpShowRdi=false, cmpMode='compare', sortLo=true, rsfSel='all', rSB=true;
 let _cmpRestBannerDismissed = false;
 let lastSearch = null; // { q: '', cat: 'all', label: 'Burgers' } | null — most recent meaningful search
-let curRest=null, mSL=true, mCatSel='all', dFR=false, curFood=null, prevPage='search';
+let curRest=null, mSL=true, mCatSel='all', dFR=false, curFood=null, prevPage='search', mealFromFaves=false;
 let _srScrollTop = 0; /* saved scroll position for search → detail → back */
 let srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
 let searchInteracted = false;
@@ -9667,7 +9649,7 @@ function makeCard(f, fromRest) {
       const _BC={'vegan':'vegan','vegetarian':'vegetarian','halal':'halal','gluten_free':'gf','contains_dairy':'dairy','contains_nuts':'nuts'};
       const _badges=['vegan','vegetarian','halal','gluten_free','contains_dairy','contains_nuts']
         .filter(k=>_fl.includes(k))
-        .map(k=>'<span class="diet-badge '+_BC[k]+'">'+_DB[k]+'</span>').join('');
+        .map(k=>'<span class="diet-badge '+_BC[k]+'" onclick="event.stopPropagation();openDietTooltip(\''+k+'\',this)" role="button">'+_DB[k]+'</span>').join('');
       return _badges ? '<div class="diet-badges">'+_badges+'</div>' : '';
     })()}
 
@@ -9677,8 +9659,8 @@ function makeCard(f, fromRest) {
         <div class="fc-energy">
           <span class="fc-cal-num">${cal}</span>
           <span class="fc-cal-unit">cal</span>
+          <span class="fc-kj">${f.kj} kJ</span>
         </div>
-        <div class="fc-kj">${f.kj} kJ</div>
       </div>
       <div class="fc-macros">${(()=>{
         const pills=[];
@@ -9687,10 +9669,8 @@ function makeCard(f, fromRest) {
         else               pills.push('<span class="fc-macro">'+f.sodium+'mg salt</span>');
         if(f.sat_fat>=8)   pills.push('<span class="fc-macro satfat-warn">'+f.sat_fat+'g sat fat</span>');
         else               pills.push('<span class="fc-macro">'+f.fat+'g fat</span>');
-        if(pills.length<3 && f.sugar>=15) pills.push('<span class="fc-macro sugar-warn">'+f.sugar+'g sugar</span>');
-        const top=pills.slice(0,1).join('');
-        const bot=pills.slice(1,3).join('');
-        return '<div class="fc-macro-row">'+top+'</div><div class="fc-macro-row">'+bot+'</div>';
+        if(pills.length<2 && f.sugar>=15) pills.push('<span class="fc-macro sugar-warn">'+f.sugar+'g sugar</span>');
+        return pills.slice(0,2).join('');
       })()}</div>
     </div>
 
@@ -9705,7 +9685,7 @@ function makeCard(f, fromRest) {
         ${cmpIcon}<span>${cmpLabel}</span>
       </button>
       <button class="fc-fave${isFaved(f.id) ? ' faved' : ''}" id="fcfv${f.id}" onclick="event.stopPropagation();onFaveCard(${f.id})" aria-label="Save to favourites">
-        <span class="ms">${isFaved(f.id) ? 'favorite' : 'favorite_border'}</span>
+        <span class="ms${isFaved(f.id) ? ' filled' : ''}">${isFaved(f.id) ? 'favorite' : 'favorite_border'}</span>
       </button>
     </div>
 
@@ -9740,17 +9720,12 @@ function setSizeForCard(id, size, btn) {
         <div class="fc-energy">
           <span class="fc-cal-num">${kc(s.kj)}</span>
           <span class="fc-cal-unit">cal</span>
+          <span class="fc-kj">${s.kj} kJ</span>
         </div>
-        <div class="fc-kj">${s.kj} kJ</div>
       </div>
       <div class="fc-macros">
-        <div class="fc-macro-row">
-          <span class="fc-macro prot">${s.protein}g protein</span>
-        </div>
-        <div class="fc-macro-row">
-          <span class="fc-macro">${s.fat}g fat</span>
-          <span class="fc-macro">${s.sodium}mg sodium</span>
-        </div>
+        <span class="fc-macro prot">${s.protein}g protein</span>
+        <span class="fc-macro">${s.fat}g fat</span>
       </div>`;
   }
 
@@ -9807,6 +9782,7 @@ function loadRecentQueries() {
 const FAVES_KEY = 'kc_faves';
 const REST_FAVES_KEY = 'kc_rest_faves';
 const MEALS_KEY = 'kc_saved_meals';
+let _mealDeleteConfirmIdx = -1;
 
 /* ── Saved meals ── */
 function loadMeals() {
@@ -9866,14 +9842,14 @@ function syncFaveUI(id, faved) {
   if (cardBtn) {
     const ico = cardBtn.querySelector('.ms');
     cardBtn.classList.toggle('faved', faved);
-    if (ico) ico.textContent = faved ? 'favorite' : 'favorite_border';
+    if (ico) { ico.textContent = faved ? 'favorite' : 'favorite_border'; ico.classList.toggle('filled', faved); }
   }
   /* Detail topbar heart — only if this food is currently open */
   if (curFood && curFood.id === id) {
     const detBtn = document.getElementById('det-fave-btn');
     const detIco = document.getElementById('det-fave-ico');
     if (detBtn) detBtn.classList.toggle('faved', faved);
-    if (detIco) detIco.textContent = faved ? 'favorite' : 'favorite_border';
+    if (detIco) { detIco.textContent = faved ? 'favorite' : 'favorite_border'; detIco.classList.toggle('filled', faved); }
   }
 }
 
@@ -9977,14 +9953,14 @@ function syncRestFaveUI(name, faved) {
   if (cardBtn) {
     const ico = cardBtn.querySelector('.ms');
     cardBtn.classList.toggle('faved', faved);
-    if (ico) ico.textContent = faved ? 'favorite' : 'favorite_border';
+    if (ico) { ico.textContent = faved ? 'favorite' : 'favorite_border'; ico.classList.toggle('filled', faved); }
   }
   /* Hero heart in rmenu page */
   const heroBtn = document.getElementById('rest-hero-fave-btn');
   if (heroBtn && curRest === name) {
     const ico = heroBtn.querySelector('.ms');
     heroBtn.classList.toggle('faved', faved);
-    if (ico) ico.textContent = faved ? 'favorite' : 'favorite_border';
+    if (ico) { ico.textContent = faved ? 'favorite' : 'favorite_border'; ico.classList.toggle('filled', faved); }
   }
 }
 
@@ -10049,6 +10025,7 @@ function hideRecentChipsDelayed() {
 /* ── Search name suggestions ── */
 let _sugHideTimer = null;
 let _sugJustSelected = false;
+let _sugSelectedName = null; /* exact name selected from dropdown — pin to top in doSearch */
 function renderSearchSuggestions(raw) {
   if (_sugJustSelected) { _sugJustSelected = false; return; }
   const el = document.getElementById('search-suggestions');
@@ -10083,6 +10060,7 @@ function hideSearchSuggestionsDelayed() {
 function selectSearchSuggestion(name) {
   clearTimeout(_sugHideTimer);
   _sugJustSelected = true;
+  _sugSelectedName = name; /* remember exact selection to pin to top */
   const si = document.getElementById('si');
   if (si) { si.value = name; }
   hideSearchSuggestions();
@@ -10210,6 +10188,13 @@ function doSearch() {
     const cb = CAT_ORDER_S.indexOf(b.cat) === -1 ? 99 : CAT_ORDER_S.indexOf(b.cat);
     return ca - cb || b.kj - a.kj;
   });
+  /* Pin exact suggestion match to top */
+  if (_sugSelectedName) {
+    const normSel = _sugSelectedName.toLowerCase();
+    const exactIdx = fx.findIndex(f => f.name.toLowerCase() === normSel);
+    if (exactIdx > 0) { const [exact] = fx.splice(exactIdx, 1); fx.unshift(exact); }
+    _sugSelectedName = null;
+  }
   const isDefault = !q && catSel === 'all' && srFilters.sort === 'def' &&
     !srFilters.protein && !srFilters.sugar && !srFilters.fat && !srFilters.balanced && !srFilters.sodium &&
     !srFilters.vegan && !srFilters.vegetarian && !srFilters.halal;
@@ -10867,7 +10852,7 @@ function renderRests() {
         <button class="rc-fave-btn${faved ? ' faved' : ''}" id="${safeId}"
             onclick="event.stopPropagation();onFaveRest('${safeName}')"
             aria-label="Save ${r.name} to favourites">
-          <span class="ms">${faved ? 'favorite' : 'favorite_border'}</span>
+          <span class="ms${faved ? ' filled' : ''}">${faved ? 'favorite' : 'favorite_border'}</span>
         </button>
         <span class="ms sz-20" style="color:var(--md-on-surface-variant)">chevron_right</span>
       </div>
@@ -10928,7 +10913,7 @@ function openRest(name) {
     const heroFaveIco = heroFaveBtn.querySelector('.ms');
     const fv = isRestFaved(name);
     heroFaveBtn.classList.toggle('faved', fv);
-    if (heroFaveIco) heroFaveIco.textContent = fv ? 'favorite' : 'favorite_border';
+    if (heroFaveIco) { heroFaveIco.textContent = fv ? 'favorite' : 'favorite_border'; heroFaveIco.classList.toggle('filled', fv); }
   }
   document.getElementById('rh-desc').textContent = r.desc || '';
   /* Build category pills from this chain's actual items */
@@ -11037,7 +11022,7 @@ function openDetail(id, fromRest, overridePrevPage) {
   const detFaveBtn = document.getElementById('det-fave-btn');
   const detFaveIco = document.getElementById('det-fave-ico');
   if (detFaveBtn) detFaveBtn.classList.toggle('faved', fvd);
-  if (detFaveIco) detFaveIco.textContent = fvd ? 'favorite' : 'favorite_border';
+  if (detFaveIco) { detFaveIco.textContent = fvd ? 'favorite' : 'favorite_border'; detFaveIco.classList.toggle('filled', fvd); }
 
   /* ── Sticky compact appbar — reset to hidden, scroll listener reveals it ── */
   const detAppbar = document.getElementById('det-appbar');
@@ -11324,6 +11309,22 @@ function _renderFavesGrid() {
       const gradeS = SC(m.grade || 'C');
       const ago = _mealAgo(m.ts);
       const preview = (m.itemNames || []).slice(0, 3).join(', ') + (m.itemNames && m.itemNames.length > 3 ? ' +' + (m.itemNames.length - 3) : '');
+      if (_mealDeleteConfirmIdx === idx) {
+        return `<div class="faves-meal-row" style="gap:8px">
+          <span class="fv-badge" style="background:${gradeS.b};color:${gradeS.t};border-color:${gradeS.br};flex-shrink:0">${m.grade || '?'}</span>
+          <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:var(--md-on-surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Delete "${m.name}"?</div>
+          <button onclick="event.stopPropagation();deleteMeal(${idx});_mealDeleteConfirmIdx=-1;_renderFavesGrid()"
+            title="Confirm delete"
+            style="width:32px;height:32px;border-radius:50%;border:none;background:var(--md-error,#F08A6A);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span class="ms" style="font-size:18px">check</span>
+          </button>
+          <button onclick="event.stopPropagation();_mealDeleteConfirmIdx=-1;_renderFavesGrid()"
+            title="Cancel"
+            style="width:32px;height:32px;border-radius:50%;border:1px solid var(--md-outline-variant);background:transparent;color:var(--md-on-surface-variant);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span class="ms" style="font-size:18px">close</span>
+          </button>
+        </div>`;
+      }
       return `<div class="faves-meal-row" onclick="_reloadSavedMeal(${idx})">
         <span class="fv-badge" style="background:${gradeS.b};color:${gradeS.t};border-color:${gradeS.br};margin-right:10px;flex-shrink:0">${m.grade || '?'}</span>
         <div style="flex:1;min-width:0">
@@ -11331,10 +11332,10 @@ function _renderFavesGrid() {
           <div style="font-size:11px;color:var(--md-on-surface-variant);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${preview}</div>
         </div>
         <div style="text-align:right;flex-shrink:0;margin-left:8px">
-          <div style="font-size:13px;font-weight:600;color:var(--md-on-surface)">${(m.kj || 0).toLocaleString()} kJ</div>
+          <div style="font-size:13px;font-weight:600;color:var(--md-on-surface)">${kc(m.kj || 0).toLocaleString()} cal</div>
           <div style="font-size:11px;color:var(--md-on-surface-variant)">${ago}</div>
         </div>
-        <button onclick="event.stopPropagation();deleteMeal(${idx});_renderFavesGrid()" style="background:none;border:none;padding:4px 0 4px 8px;cursor:pointer;color:var(--md-on-surface-variant)" aria-label="Delete meal">
+        <button onclick="event.stopPropagation();_mealDeleteConfirmIdx=${idx};_renderFavesGrid()" style="background:none;border:none;padding:4px 0 4px 8px;cursor:pointer;color:var(--md-on-surface-variant)" aria-label="Delete meal">
           <span class="ms" style="font-size:18px">delete_outline</span>
         </button>
       </div>`;
@@ -11387,6 +11388,8 @@ function _reloadSavedMeal(idx) {
   if (!m || !m.ids || !m.ids.length) return;
   cmpList = [...m.ids];
   cmpMode = 'meal';
+  prevPage = 'faves';  /* so mealBack() returns to faves */
+  mealFromFaves = true;
   syncCmpUI();
   renderMeal();
   nav('meal');
@@ -11394,6 +11397,7 @@ function _reloadSavedMeal(idx) {
 
 function detBack() {
   if (dFR && curRest) openRest(curRest);       /* came from restaurant menu */
+  else if (prevPage === 'compare') { nav('compare'); renderCmp(); } /* came from compare screen */
   else if (prevPage === 'meal') { renderMeal(); nav('meal'); } /* came from meal swap */
   else if (prevPage === 'insights') nav('insights'); /* came from insights */
   else if (prevPage === 'home') nav('home');         /* came from home picks */
@@ -12181,12 +12185,13 @@ function dismissCmpBanner() {
 
 
 /* ── Compare Select Sheet ── */
-let csSlots = [null, null, null];
+let csSlots = [null, null];
 let csActiveSlot = -1;
 let csSuggestions = [];
+let cmpViaSheet = false;  /* true when compare page reached via cmp-select-sheet */
 
 function openCmpSheet(anchorId) {
-  csSlots = [null, null, null];
+  csSlots = [null, null];
   csActiveSlot = -1;
   if (anchorId) csSlots[0] = anchorId;
   csRefreshSuggestions();
@@ -12235,18 +12240,21 @@ function csResultsHtml(slotIdx, q) {
     : foods.slice(0, 30);
   results = results.slice(0, 25);
   if (!results.length) return `<div style="padding:16px;text-align:center;font-size:13px;color:var(--md-on-surface-variant)">No results — try different terms</div>`;
-  return results.map(f => `
-    <div class="mb-result-row" onclick="csPickFood(${slotIdx},${f.id})">
+  return results.map(f => {
+    const alreadyAdded = csSlots.includes(f.id);
+    return `
+    <div class="mb-result-row${alreadyAdded ? ' mb-result-row--added' : ''}" onclick="csPickFood(${slotIdx},${f.id})" ${alreadyAdded ? 'aria-disabled="true"' : ''}>
       <div style="font-size:20px;flex-shrink:0">${emojiImg(f.emoji, EMO.xs)}</div>
       <div class="mb-result-info">
         <div class="mb-result-name">${f.name}</div>
         <div class="mb-result-chain">${f.chain}</div>
       </div>
       <div class="mb-result-right">
-        <span class="fc-score score-${f.score.toLowerCase()}" style="font-size:11px;padding:2px 6px">${f.score}</span>
+        ${alreadyAdded ? `<span style="font-size:11px;color:var(--md-primary);font-weight:600">Added</span>` : ''}
         <span class="mb-result-kj">${kc(f.kj)} cal</span>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderCmpSheet() {
@@ -12292,7 +12300,6 @@ function renderCmpSheet() {
           <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-          <span class="fc-score score-${f.score.toLowerCase()}" style="font-size:11px;padding:2px 6px">${f.score}</span>
           <div style="font-size:13px;font-weight:700;color:var(--md-on-surface-variant)">${kc(f.kj)} cal</div>
           <button class="mb-slot-rm" onclick="event.stopPropagation();csRemoveSlot(${i})" title="Remove">
             <span class="ms" style="font-size:16px">remove_circle_outline</span>
@@ -12302,14 +12309,14 @@ function renderCmpSheet() {
     }
     return `<div class="mb-slot-empty" onclick="csTapSlot(${i})">
       <span class="ms" style="color:var(--md-on-surface-variant);font-size:20px">restaurant_menu</span>
-      <span style="font-size:14px;font-weight:600;color:var(--md-on-surface-variant);flex:1">Add Item ${i+1}</span>
+      <span style="font-size:14px;font-weight:600;color:var(--md-on-surface-variant);flex:1">Add</span>
       <span class="ms" style="color:var(--md-primary);font-size:22px">add_circle</span>
     </div>`;
   }).join('');
 
   /* Carousel */
   const hasItems = filledIds.length > 0;
-  const carouselLabel = hasItems ? '💚 Healthier swaps' : '⭐ Popular in NZ';
+  const carouselLabel = hasItems ? '💚 Healthier options' : '⭐ Popular in NZ';
   const carouselSub   = hasItems ? 'Similar kai · better nutrition' : 'Foods people love to compare';
   const carouselCards = csSuggestions.map(f => {
     const es = effectiveScore(f); const sc = SC[es] || SC['C'];
@@ -12317,7 +12324,6 @@ function renderCmpSheet() {
     const benefits = anchor ? getCmpBenefits(anchor, f) : [];
     const benefitHtml = benefits.map(b => `<span class="cs-benefit">${b}</span>`).join('');
     return `<div class="cs-card${isAdded ? ' added' : ''}" onclick="csPickFromCarousel(${f.id})">
-      <span class="cs-card-score" style="background:${sc.b};color:${sc.t};border-color:${sc.br}">${es}</span>
       <div style="font-size:28px;line-height:1">${f.emoji}</div>
       <div class="cs-card-name">${f.name}</div>
       <div class="cs-card-chain">${f.chain}</div>
@@ -12332,13 +12338,18 @@ function renderCmpSheet() {
       <div class="cs-carousel">${carouselCards}</div>
     </div>` : '';
 
-  body.innerHTML = `<div style="height:8px"></div>${slotsHtml}${carouselHtml}<div style="height:16px"></div>`;
+  const addAnotherHtml = csSlots.length < 3 ? `<div style="padding:0 16px 8px">
+    <button class="mb-add-slot-btn" onclick="csAddSlot()">
+      <span class="ms" style="font-size:18px">add</span> Add another item
+    </button></div>` : '';
+
+  body.innerHTML = `<div style="height:8px"></div>${slotsHtml}${addAnotherHtml}${carouselHtml}<div style="height:16px"></div>`;
 
   /* Footer CTA */
   const cta = document.getElementById('cs-cta');
   if (cta) {
     cta.disabled = filledIds.length < 2;
-    cta.textContent = filledIds.length >= 2 ? `Compare ${filledIds.length} items →` : 'Select at least 2 items';
+    cta.textContent = filledIds.length >= 2 ? `Compare ${filledIds.length} items` : 'Select at least 2 items';
   }
   /* Subtitle */
   const sub = document.getElementById('cs-subtitle');
@@ -12373,6 +12384,12 @@ function csCancelSlot() {
 }
 
 function csPickFood(slotIdx, foodId) {
+  /* Prevent adding the same item twice */
+  if (csSlots.includes(foodId)) {
+    const f = foods.find(x => x.id === foodId);
+    showToast((f ? f.name : 'That item') + ' is already in your comparison', 'info');
+    return;
+  }
   csSlots[slotIdx] = foodId;
   csActiveSlot = -1;
   csRefreshSuggestions();
@@ -12395,9 +12412,24 @@ function csPickFromCarousel(foodId) {
 }
 
 function csRemoveSlot(i) {
-  csSlots[i] = null;
+  if (i < 2) {
+    csSlots[i] = null; /* preset slot — clear only */
+  } else {
+    csSlots.splice(i, 1); /* extra slot — remove entirely */
+    if (csActiveSlot >= i) csActiveSlot = -1;
+  }
   csRefreshSuggestions();
   renderCmpSheet();
+}
+
+function csAddSlot() {
+  csSlots.push(null);
+  csActiveSlot = csSlots.length - 1;
+  renderCmpSheet();
+  requestAnimationFrame(() => {
+    const inp = document.getElementById('cs-input-' + csActiveSlot);
+    if (inp) inp.focus();
+  });
 }
 
 function findHealthierOptions(anchor) {
@@ -12425,6 +12457,10 @@ function getCmpBenefits(anchor, candidate) {
 function goFullCompare() {
   cmpList = csSlots.filter(Boolean);
   cmpMode = 'compare';
+  /* Capture prevPage before closing sheets (active page is still the one behind the sheet) */
+  const activePg = document.querySelector('.page.active');
+  prevPage = activePg ? activePg.id.replace('pg-', '') : 'home';
+  cmpViaSheet = true;
   closeAllSheets();
   renderCmp();
   nav('compare');
@@ -12685,9 +12721,8 @@ function goCmp() {
   /* Remember which page we came from so back nav returns correctly */
   const activePg = document.querySelector('.page.active');
   prevPage = activePg ? activePg.id.replace('pg-', '') : 'search';
-  if (cmpMode === 'meal') {
-    renderMeal(); nav('meal');
-  } else if (cmpList.length === 2) {
+  cmpViaSheet = false;  /* came from tray, not compare sheet */
+  if (cmpList.length === 2) {
     openQuickCmp();
   } else {
     renderCmp(); nav('compare');
@@ -12696,88 +12731,43 @@ function goCmp() {
 
 function cmpBack() {
   /* Keep cmpList intact — tray will show items for easy resume.
+     Exception: returning to search clears the list so the floating
+     compare box doesn't persist on the search screen.
      Navigate FIRST, then sync — pg-compare must be inactive before
      syncCmpUI checks onCmpPage, otherwise tray stays hidden. */
+  if (!cmpViaSheet && prevPage === 'search') {
+    cmpList = [];  /* hide tray on return to search */
+  }
   if (curRest) openRest(curRest);
   else if (prevPage === 'insights') nav('insights');
   else if (prevPage === 'home') nav('home');
   else if (prevPage === 'restaurants') nav('restaurants');
   else nav('search');
   syncCmpUI();
+
+  /* If we got here via the compare-select sheet (and NOT from home),
+     reopen the sheet on the original page so user can adjust selections.
+     When entry was from home, just land on home — no sheet reopen. */
+  if (cmpViaSheet && prevPage !== 'home') {
+    cmpViaSheet = false;
+    /* Restore csSlots from cmpList so user sees their selections */
+    csSlots = [...cmpList];
+    while (csSlots.length < 2) csSlots.push(null);
+    csRefreshSuggestions();
+    renderCmpSheet();
+    document.getElementById('sheet-scrim').classList.add('visible');
+    document.getElementById('cmp-select-sheet').classList.add('open');
+  } else {
+    cmpViaSheet = false;
+  }
 }
 
-/* ── syncCmpUI — update tray + nav badges ──
-   Called after every nav change and every cmpList mutation. ── */
+/* ── syncCmpUI — update restaurant compare banner ──
+   Floating tray removed. This now only manages the in-restaurant banner. ── */
 function syncCmpUI() {
   const n = cmpList.length;
-  const tray = document.getElementById('cmp-tray');
-  const chips = document.getElementById('cmp-tray-chips');
-  const btn   = document.getElementById('cmp-tray-btn');
-
-  if (!tray) return;
-
-  if (n === 0) {
-    tray.classList.remove('visible');
-    return;
-  }
-
-  /* Show tray on all pages except compare and meal pages themselves */
   const onCmpPage  = document.getElementById('pg-compare') &&
     document.getElementById('pg-compare').classList.contains('active');
-  const onMealPage = document.getElementById('pg-meal') &&
-    document.getElementById('pg-meal').classList.contains('active');
-  tray.classList.toggle('visible', !onCmpPage && !onMealPage);
-
-  /* Build chips */
-  if (chips) chips.innerHTML = cmpList.map(id => {
-    const f = foods.find(x => x.id === id);
-    if (!f) return '';
-    return `<span class="cmp-tray-chip" onclick="toggleCmp(${f.id})" title="Tap to remove">
-      <span class="chip-emo">${emojiImg(f.emoji,EMO.xs)}</span>${f.name.split(' ').slice(0,2).join(' ')}
-    </span>`;
-  }).join('');
-
-  /* Mode toggle pills */
-  const pillCmp = document.getElementById('cmp-mode-compare');
-  const pillMeal = document.getElementById('cmp-mode-meal');
-  if (pillCmp) pillCmp.classList.toggle('on', cmpMode === 'compare');
-  if (pillMeal) pillMeal.classList.toggle('on', cmpMode === 'meal');
-
-  /* kJ total — meal mode only */
-  const kjEl = document.getElementById('cmp-tray-kj');
-  if (kjEl) {
-    if (cmpMode === 'meal' && n >= 1) {
-      const totalKj = cmpList.reduce((sum, id) => {
-        const f = foods.find(x => x.id === id);
-        return sum + (f ? (f.kj || 0) : 0);
-      }, 0);
-      const pct = (totalKj / 8000) * 100;
-      const cls = pct < 40 ? 'kj-green' : pct < 65 ? 'kj-amber' : 'kj-red';
-      kjEl.className = 'cmp-tray-kj ' + cls;
-      kjEl.textContent = totalKj.toLocaleString() + ' kJ';
-      kjEl.style.display = '';
-    } else {
-      kjEl.style.display = 'none';
-    }
-  }
-
-  /* CTA button */
-  if (btn) {
-    if (cmpMode === 'meal') {
-      btn.disabled = n < 1;
-      btn.textContent = n >= 1 ? 'See meal total →' : 'Add items';
-      btn.title = '';
-    } else {
-      btn.disabled = n < 2;
-      if (n >= 2) {
-        btn.textContent = 'Compare →';
-        btn.title = '';
-      } else {
-        btn.innerHTML = '<span class="ms" style="font-size:14px">add</span>Add 1 more';
-        btn.title = 'Add one more food to enable compare';
-      }
-    }
-  }
 
   /* In-restaurant compare banner: show when 2+ items from the current restaurant are queued */
   const banner = document.getElementById('cmp-rest-banner');
@@ -12889,21 +12879,16 @@ function renderCmp() {
 
   const headerCards = items.map((f,idx) => {
     const es = effectiveScore(f); const s = SC(es), sc = es.toLowerCase(), cal = kc(f.kj);
-    return `<div class="cmp-crd ${goalClass(idx)}">
+    return `<div class="cmp-crd ${goalClass(idx)}" onclick="prevPage='compare';openDetail(${f.id},false)" style="cursor:pointer">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${s.t};border-radius:var(--shape-md) var(--shape-md) 0 0"></div>
-      <button style="position:absolute;top:6px;right:6px;background:none;border:none;cursor:pointer;
-          color:var(--md-on-surface-variant);padding:4px;border-radius:var(--shape-full);opacity:0.6"
-          onclick="toggleCmp(${f.id})">
-        <span class="ms" style="font-size:14px">close</span>
-      </button>
       <div style="padding:8px 6px 10px;text-align:center">
         <div style="font-size:24px;margin-bottom:4px">${emojiImg(f.emoji,EMO.sm)}</div>
-        <div style="display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;
-             border-radius:var(--shape-sm);background:${s.b};color:${s.t};border:1px solid ${s.br};
-             margin-bottom:6px;cursor:pointer" onclick="openScoreSheet('${es}',${f.id})">${es}</div>
         <div style="font-size:12px;font-weight:600;color:var(--md-on-surface);line-height:1.3;margin-bottom:2px">${f.name}</div>
         <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
-        <div style="margin-top:6px"><span style="font-size:18px;font-weight:700;color:var(--md-primary);font-family:var(--font-display)">${cal}</span><span style="font-size:11px;color:var(--md-on-surface-variant)"> cal</span></div>
+        <div style="margin-top:6px;display:flex;align-items:center;justify-content:center;gap:5px">
+          <span style="font-size:18px;font-weight:700;color:var(--md-primary);font-family:var(--font-display)">${cal}</span><span style="font-size:11px;color:var(--md-on-surface-variant)">cal</span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:${s.b};color:${s.t};font-size:10px;font-weight:800;border:1px solid ${s.br};cursor:pointer;flex-shrink:0" onclick="event.stopPropagation();openScoreSheet('${es}',${f.id})">${es}</span>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -12971,34 +12956,19 @@ function renderCmp() {
     }).join('');
   }
   const legend = `<div class="cmp-legend">
-    <span class="cmp-legend-chip lg-best"><span class="ms sz-20">arrow_downward</span>Best value</span>
-    <span class="cmp-legend-chip lg-worst"><span class="ms sz-20">arrow_upward</span>Highest value</span>
     <button class="cmp-rdi-btn${cmpShowRdi?' on':''}" onclick="toggleCmpRdi()" title="Toggle % of daily intake">
       <span class="ms" style="font-size:14px">percent</span>${cmpShowRdi?'Raw values':'% Daily'}
     </button>
   </div>`;
-  const addSlot = n < 3 ? `<div style="padding:0 16px 8px">
-    <button style="width:100%;height:40px;border-radius:var(--shape-full);
-        background:var(--md-surface-container);border:1px dashed var(--md-outline-variant);
-        color:var(--md-on-surface-variant);font-size:13px;cursor:pointer;
-        display:flex;align-items:center;justify-content:center;gap:6px"
-        onclick="nav('search')">
-      <span class="ms ">add_circle</span> Add a third item
-    </button></div>` : '';
 
   const cols = n;
   document.getElementById('cmp-content').innerHTML =
     `${goalPillsHtml}
     <div class="cmp-grid" style="grid-template-columns:repeat(${cols},1fr)">${headerCards}</div>
-    ${addSlot}
     <div style="padding:0 12px 8px">${insHtml}</div>
     ${legend}
     <div style="padding:0 12px">
-      <div style="font-size:12px;font-weight:600;color:var(--md-on-surface-variant);
-           padding:8px 4px 4px;text-transform:uppercase;letter-spacing:0.8px">Macronutrients</div>
       ${buildRows(macroNus)}
-      <div style="font-size:12px;font-weight:600;color:var(--md-on-surface-variant);
-           padding:12px 4px 4px;text-transform:uppercase;letter-spacing:0.8px">Minerals & Fibre</div>
       ${buildRows(mineralNus)}
     </div>
     <div style="height:16px"></div>`;
@@ -13283,7 +13253,6 @@ function mbResultsHtml(slotIdx, q) {
         <div class="mb-result-chain">${f.chain}</div>
       </div>
       <div class="mb-result-right">
-        <span class="fc-score score-${f.score.toLowerCase()}" style="font-size:11px;padding:2px 6px">${f.score}</span>
         <span class="mb-result-kj">${kc(f.kj)} cal</span>
       </div>
     </div>`).join('');
@@ -13329,7 +13298,6 @@ function renderMealBuilder() {
           <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
         </div>
         <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-          <span class="fc-score score-${f.score.toLowerCase()}" style="font-size:11px;padding:2px 6px">${f.score}</span>
           <div style="font-size:13px;font-weight:700;color:var(--md-on-surface-variant)">${kc(f.kj)} cal</div>
           <button class="mb-slot-rm" onclick="event.stopPropagation();mbRemoveSlot(${i})" title="Remove">
             <span class="ms" style="font-size:16px">remove_circle_outline</span>
@@ -13353,7 +13321,7 @@ function renderMealBuilder() {
       <span class="mb-kj-val ${kjCls}">${calDisp}</span>
     </div>
     <button class="mb-cta" ${filledIds.length === 0 ? 'disabled' : ''} onclick="mbConfirm()">
-      See meal total →
+      See meal total
     </button>`;
 }
 
@@ -13405,6 +13373,7 @@ function mbAddSlot() {
 function mbConfirm() {
   cmpList = mealSlots.filter(s => s.foodId).map(s => s.foodId);
   cmpMode = 'meal';
+  mealFromFaves = false;
   closeAllSheets();
   const activePg = document.querySelector('.page.active');
   prevPage = activePg ? activePg.id.replace('pg-', '') : 'home';
@@ -13529,6 +13498,7 @@ function renderMeal() {
         <div class="det-appbar-title">My Meal${mixedSpan}</div>
       </div>
       <div style="display:flex;align-items:center;gap:4px">
+        ${mealFromFaves && items.length > 0 ? `<button onclick="editSavedMeal()" title="Edit meal" style="background:none;border:none;cursor:pointer;color:var(--md-on-surface-variant);padding:6px;border-radius:var(--shape-full);display:inline-flex;align-items:center"><span class="ms" style="font-size:22px">edit</span></button>` : ''}
         ${items.length > 0 ? `<span class="meal-grade-letter meal-grade-letter-sm score-${grade.toLowerCase()}" onclick="openScoreSheet('${grade}')" title="${gradeLabel}">${grade}</span>` : ''}
         ${items.length > 0 ? `<button class="${saveCls}" id="meal-save-btn" onclick="onMealFave()" title="Save meal to favourites"><span class="ms">${saveIco}</span></button>` : ''}
       </div>
@@ -13549,7 +13519,7 @@ function renderMeal() {
             onclick="showMealSwapTooltip(${f.id},${best.id},this);event.stopPropagation()"
             title="Healthier swap available"
             aria-label="Swap ${f.name} for a healthier option">
-            <span class="ms" style="font-size:14px;font-variation-settings:'FILL' 1,'wght' 500">new_releases</span><span style="font-size:11px;font-weight:700;font-family:var(--font-ui);letter-spacing:0.1px">Swap</span>
+            <span style="font-size:13px;font-weight:700;font-family:var(--font-ui);letter-spacing:0.1px;line-height:1">Swap</span>
           </button>` : '';
         return `
         <div class="meal-item-row">
@@ -13576,7 +13546,6 @@ function renderMeal() {
           <div class="meal-cal-total">${kc(totals.kj).toLocaleString()} <span class="det-cal-unit">cal<span class="det-kj-secondary"> / ${totals.kj.toLocaleString()} kJ</span></span></div>
         </div>
         <button class="meal-breakdown-btn" onclick="openMealBreakdown()">
-          <span class="ms">pie_chart</span>
           Breakdown
         </button>
       </div>
@@ -13598,14 +13567,39 @@ function mealBack() {
      the builder showing the same items the user is already editing
      above — the builder owns its own state via mealSlots, and the tray
      is redundant once the user is back in edit mode. mbConfirm() will
-     rebuild cmpList from mealSlots when the user re-confirms. */
+     rebuild cmpList from mealSlots when the user re-confirms.
+     Exception: when coming from Faves (saved meal view), just go back
+     to Faves — don't reopen the meal builder sheet. */
   cmpList = [];
   cmpMode = 'compare';
-  if (prevPage === 'faves')            nav('faves');
-  else if (prevPage === 'insights')    nav('insights');
+  if (prevPage === 'faves') {
+    mealFromFaves = false;
+    nav('faves');
+    syncCmpUI();
+    return;
+  }
+  if (prevPage === 'insights')    nav('insights');
   else if (prevPage === 'restaurants') nav('restaurants');
   else                                 nav('home');
   activeMealSlot = -1;
+  renderMealBuilder();
+  document.getElementById('sheet-scrim').classList.add('visible');
+  document.getElementById('meal-builder-sheet').classList.add('open');
+  syncCmpUI();
+}
+
+/* editSavedMeal — open meal builder pre-loaded with current cmpList items */
+function editSavedMeal() {
+  const ids = [...cmpList];
+  /* Populate mealSlots from saved ids */
+  mealSlots = MB_SLOT_DEFS.map((d, i) => ({ ...d, foodId: ids[i] || null }));
+  for (let i = MB_SLOT_DEFS.length; i < ids.length; i++) {
+    mealSlots.push({ label: 'Item', icon: 'add_circle_outline', cats: [], foodId: ids[i] });
+  }
+  activeMealSlot = -1;
+  cmpList = [];
+  cmpMode = 'compare';
+  mealFromFaves = false;
   renderMealBuilder();
   document.getElementById('sheet-scrim').classList.add('visible');
   document.getElementById('meal-builder-sheet').classList.add('open');
@@ -13650,7 +13644,6 @@ function showMealSwapTooltip(worstId, bestId, btn) {
         <div style="font-size:13px;font-weight:700;color:var(--md-on-surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${bestF.name}</div>
         <div style="display:flex;align-items:center;gap:5px;margin-top:2px">
           <span style="font-size:11px;color:var(--md-on-surface-variant)">${bestF.chain}</span>
-          <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:${scoreColor};color:#0A1A04;font-size:9px;font-weight:800;flex-shrink:0">${bestF.score}</span>
         </div>
       </div>
       ${kjSave > 0 ? `<div style="text-align:right;flex-shrink:0">
@@ -13764,8 +13757,7 @@ function openMealBreakdown() {
     <div style="font-size:17px;font-weight:700;color:var(--md-on-surface);margin-bottom:2px">Calorie Breakdown</div>
     <div style="font-size:12px;color:var(--md-on-surface-variant);margin-bottom:22px">${totKcal.toLocaleString()} cal total · ${items.length} item${items.length !== 1 ? 's' : ''}</div>
 
-    <div style="font-size:11px;font-weight:700;color:var(--md-on-surface-variant);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:14px">By Item</div>
-    <div style="display:flex;align-items:center;gap:18px;margin-bottom:28px">
+    <div style="display:flex;align-items:flex-start;gap:18px;margin-bottom:28px">
       <svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="flex-shrink:0;overflow:visible">
         ${buildDonut(itemData, sz)}
         <text x="${sz/2}" y="${sz/2}" text-anchor="middle" dominant-baseline="central"
@@ -13774,12 +13766,12 @@ function openMealBreakdown() {
           style="font-size:9px;fill:var(--md-on-surface-variant)">cal</text>
       </svg>
       <div style="flex:1;min-width:0">
+        <div style="font-size:11px;font-weight:700;color:var(--md-on-surface-variant);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px">By Item</div>
         ${itemData.map(legendRow).join('')}
       </div>
     </div>
 
-    <div style="font-size:11px;font-weight:700;color:var(--md-on-surface-variant);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:14px">By Macro</div>
-    <div style="display:flex;align-items:center;gap:18px">
+    <div style="display:flex;align-items:flex-start;gap:18px">
       <svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="flex-shrink:0;overflow:visible">
         ${buildDonut(macroData, sz)}
         <text x="${sz/2}" y="${sz/2}" text-anchor="middle" dominant-baseline="central"
@@ -13788,6 +13780,7 @@ function openMealBreakdown() {
           style="font-size:9px;fill:var(--md-on-surface-variant)">cal</text>
       </svg>
       <div style="flex:1;min-width:0">
+        <div style="font-size:11px;font-weight:700;color:var(--md-on-surface-variant);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px">By Macro</div>
         ${macroData.map(legendRow).join('')}
         <div style="font-size:10px;color:var(--md-on-surface-variant);opacity:0.6;margin-top:8px;line-height:1.4">
           Based on macros only. Other nutrients (fibre, alcohol, etc.) may contribute additional calories.
