@@ -1807,6 +1807,20 @@ body.native #filter-float-pill {
 .fc-score.score-c { background: var(--score-C-bg); color: var(--score-C-text); border-color: var(--score-C-border); }
 .fc-score.score-d { background: var(--score-D-bg); color: var(--score-D-text); border-color: var(--score-D-border); }
 
+/* ── Search card subtle score badge — top-right corner ── */
+.fc-score-micro {
+  position: absolute; top: 10px; right: 10px;
+  font-family: var(--font-display); font-size: 10px; font-weight: 700;
+  width: 20px; height: 20px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid; opacity: 0.55;
+  pointer-events: none;
+}
+.fc-score-micro.score-a { background: var(--score-A-bg); color: var(--score-A-text); border-color: var(--score-A-border); }
+.fc-score-micro.score-b { background: var(--score-B-bg); color: var(--score-B-text); border-color: var(--score-B-border); }
+.fc-score-micro.score-c { background: var(--score-C-bg); color: var(--score-C-text); border-color: var(--score-C-border); }
+.fc-score-micro.score-d { background: var(--score-D-bg); color: var(--score-D-text); border-color: var(--score-D-border); }
+
 /* ── Zone 2: Stats ──
    Calories primary / kJ secondary + key macro row ── */
 .fc-stats {
@@ -2252,10 +2266,7 @@ body.native #filter-float-pill {
   transition: opacity 0.1s;
 }
 .fv-card:active::after { opacity: 0.12; }
-.fv-card.score-a { border-top: 2px solid #004E3C; }
-.fv-card.score-b { border-top: 2px solid #1A3A26; }
-.fv-card.score-c { border-top: 2px solid #4A3800; }
-.fv-card.score-d { border-top: 2px solid #7A2818; }
+/* top colour strokes removed per design update */
 
 /* Unfave button — absolute top-right, 30px circle */
 .fv-unfave-btn {
@@ -2747,20 +2758,22 @@ body.native #filter-float-pill {
   padding: 14px 20px 0; line-height: 1.5; text-align: center;
 }
 .burn-gender-toggle {
-  display: flex; gap: 8px; margin: 0 20px 16px;
+  display: flex; margin: 0 0 16px;
+  border-bottom: 1px solid var(--md-outline-variant);
 }
 .burn-gender-btn {
-  flex: 1; height: 36px; border-radius: var(--shape-full);
-  border: 1.5px solid var(--md-outline-variant);
+  flex: 1; height: 40px; border-radius: 0;
+  border: none; border-bottom: 2px solid transparent;
   background: transparent; color: var(--md-on-surface-variant);
   font-family: var(--font-ui); font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s;
+  cursor: pointer; letter-spacing: 0.03em;
+  transition: color 0.15s, border-bottom-color 0.15s;
   display: flex; align-items: center; justify-content: center;
+  margin-bottom: -1px; /* sit on top of toggle border */
 }
 .burn-gender-btn.on {
-  background: var(--md-primary-container);
-  border-color: var(--md-primary);
   color: var(--md-primary);
+  border-bottom-color: var(--md-primary);
 }
 .det-rdi-badge {
   display: inline-flex; align-items: center; gap: 4px;
@@ -2861,10 +2874,7 @@ body.native #filter-float-pill {
 .ho-card:active::after { opacity: 0.12; }
 
 /* Score accent — subtle tonal top border, M3 tertiary colour indicator */
-.ho-card.score-a { border-top: 2px solid #004E3C; }
-.ho-card.score-b { border-top: 2px solid #1A3A26; }
-.ho-card.score-c { border-top: 2px solid #4A3800; }
-.ho-card.score-d { border-top: 2px solid #7A2818; }
+/* top colour strokes removed per design update */
 
 /* Emoji — large leading element, M3 24dp touch area minimum */
 .ho-emoji {
@@ -3459,6 +3469,196 @@ body.native #filter-float-pill {
   opacity: 1;
 }
 
+/* ── New ranked-card compare v2 ── */
+.cmp-verdict {
+  margin: 0 16px 12px; padding: 12px 14px;
+  background: var(--md-primary-container);
+  border-radius: var(--shape-lg);
+  font-size: 13px; font-weight: 600;
+  color: var(--md-on-primary-container);
+  display: flex; align-items: center; gap: 8px; line-height: 1.4;
+}
+.cmp-verdict .ms { font-size: 20px; color: var(--md-primary); flex-shrink: 0; }
+
+/* ── Compare table: CSS Grid — guarantees row alignment across all columns ──
+   grid-template-rows locks every row to the same height for all columns,
+   solving the flexbox-column misalignment problem entirely. ── */
+.cmp-v2-grid {
+  display: grid;
+  column-gap: 5px;
+  padding: 0 16px;
+  /* hdr row: auto-height (tallest card hdr wins, shared by all)
+     8 macro rows: 44px each
+     steps row: 58px */
+  grid-template-rows: auto repeat(8, 44px) 58px;
+}
+.cmp-v2-grid.n2 { grid-template-columns: 44px 1fr 1fr; }
+.cmp-v2-grid.n3 { grid-template-columns: 44px 1fr 1fr 1fr; }
+
+/* Label column */
+.cmp-v2-lbl-hdr { /* empty — header row spacer, auto-sized by grid */ }
+.cmp-v2-label {
+  display: flex; align-items: center;
+  font-size: 12px; font-weight: 500;
+  color: var(--md-on-surface-variant);
+  border-bottom: 1px solid var(--md-outline-variant);
+  padding-right: 4px; line-height: 1.2;
+}
+.cmp-v2-steps-label {
+  display: flex; flex-direction: column;
+  align-items: flex-start; justify-content: center;
+  font-size: 12px; font-weight: 500;
+  color: var(--md-on-surface-variant);
+  gap: 2px; padding-right: 4px;
+}
+
+/* Card header — top cell of each column */
+.cmp-v2-card-hdr {
+  padding: 10px 5px; text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+  border-radius: var(--shape-md) var(--shape-md) 0 0;
+}
+.cmp-v2-rank {
+  display: inline-flex; align-items: center; justify-content: center; gap: 2px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+  padding: 3px 7px; border-radius: var(--shape-full); margin-bottom: 5px;
+  white-space: nowrap;
+}
+.cmp-v2-rank.best   { background: var(--md-primary-container); color: var(--md-primary); }
+.cmp-v2-rank.runner { background: var(--md-surface-container-high); color: var(--md-on-surface-variant); }
+.cmp-v2-rank.worst  { background: var(--md-error-container); color: var(--md-error); }
+.cmp-v2-name {
+  font-size: 12px; font-weight: 700; color: var(--md-on-surface);
+  line-height: 1.25; margin-bottom: 2px;
+  overflow: hidden; text-overflow: ellipsis;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  padding: 0 3px;
+}
+.cmp-v2-chain {
+  font-size: 11px; color: var(--md-on-surface-variant);
+  margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; padding: 0 3px;
+}
+/* "See why" button on best card header */
+.cmp-v2-see-why {
+  margin-top: 6px;
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--shape-full);
+  background: var(--md-primary-container);
+  color: var(--md-primary);
+  font-size: 11px; font-weight: 700;
+  font-family: var(--font-ui);
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+
+/* Macro cells — middle rows */
+.cmp-v2-cell {
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px;
+  border-top: 1px solid var(--md-outline-variant);
+}
+.cmp-v2-chip {
+  display: flex; align-items: center; justify-content: center; gap: 2px;
+  width: 100%; padding: 5px 3px; border-radius: var(--shape-xs);
+  font-size: 12px; font-weight: 700; font-family: var(--font-mono);
+  background: var(--md-surface-container-high); color: var(--md-on-surface);
+  line-height: 1; cursor: default;
+}
+.cmp-v2-chip.best  { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+.cmp-v2-chip.worst { background: var(--md-error-container); color: var(--md-on-error-container); }
+.cmp-v2-chip.warn  { background: var(--score-C-bg); color: var(--score-C-text); cursor: pointer; }
+.cmp-v2-chip.worst.warn { background: var(--md-error-container); color: var(--md-on-error-container); cursor: pointer; }
+
+/* Steps row — bottom cell of each column */
+.cmp-v2-steps {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 6px 3px; text-align: center; gap: 2px;
+  border-top: 1px solid var(--md-outline-variant);
+  border-radius: 0 0 var(--shape-md) var(--shape-md);
+}
+.cmp-v2-steps-num {
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  color: var(--md-on-surface); line-height: 1;
+}
+.cmp-v2-steps-lbl { font-size: 11px; color: var(--md-on-surface-variant); line-height: 1.3; text-align: center; }
+
+/* ── Column backgrounds and borders, applied per cell by rank ── */
+/* BEST */
+.cmp-v2-card-hdr.rank-best {
+  background: var(--md-surface-container);
+  border: 1px solid var(--md-primary); border-bottom: none;
+  cursor: pointer;
+}
+.cmp-v2-card-hdr.rank-best:active { opacity: 0.7; }
+.cmp-v2-cell.rank-best {
+  background: var(--md-surface-container);
+  border-left: 1px solid var(--md-primary); border-right: 1px solid var(--md-primary);
+  border-top: 1px solid var(--md-outline-variant);
+}
+.cmp-v2-steps.rank-best {
+  background: var(--md-surface-container);
+  border: 1px solid var(--md-primary); border-top: 1px solid var(--md-outline-variant);
+}
+/* RUNNER */
+.cmp-v2-card-hdr.rank-runner {
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline); border-bottom: none;
+}
+.cmp-v2-cell.rank-runner {
+  background: var(--md-surface-container-high);
+  border-left: 1px solid var(--md-outline); border-right: 1px solid var(--md-outline);
+  border-top: 1px solid var(--md-outline-variant);
+}
+.cmp-v2-steps.rank-runner {
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline); border-top: 1px solid var(--md-outline-variant);
+}
+/* WORST */
+.cmp-v2-card-hdr.rank-worst {
+  background: color-mix(in srgb, var(--md-error-container) 15%, var(--md-surface-container));
+  border: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
+  border-bottom: none; opacity: 0.88;
+}
+.cmp-v2-cell.rank-worst {
+  background: color-mix(in srgb, var(--md-error-container) 15%, var(--md-surface-container));
+  border-left: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
+  border-right: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
+  border-top: 1px solid var(--md-outline-variant); opacity: 0.88;
+}
+.cmp-v2-steps.rank-worst {
+  background: color-mix(in srgb, var(--md-error-container) 15%, var(--md-surface-container));
+  border: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
+  border-top: 1px solid var(--md-outline-variant); opacity: 0.88;
+}
+
+/* Best pick bottom sheet */
+.best-pick-reason {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 14px; border-radius: var(--shape-md);
+  background: var(--md-surface-container-high);
+  margin-bottom: 8px; font-size: 13px; line-height: 1.55;
+  color: var(--md-on-surface);
+}
+.best-pick-reason .ms { font-size: 18px; color: var(--md-primary); flex-shrink: 0; margin-top: 1px; }
+
+/* Macro detail sheet */
+.cmp-macro-sheet-ico {
+  width: 44px; height: 44px; border-radius: var(--shape-md);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 10px; font-size: 24px;
+}
+.cmp-macro-sheet-title {
+  font-family: var(--font-display); font-size: 18px; font-weight: 700;
+  color: var(--md-on-surface); margin-bottom: 4px;
+}
+.cmp-macro-sheet-sub { font-size: 13px; color: var(--md-on-surface-variant); line-height: 1.5; margin-bottom: 2px; }
+.cmp-macro-fact {
+  padding: 12px 14px; border-radius: var(--shape-md);
+  margin-bottom: 8px; font-size: 13px; line-height: 1.55;
+}
+
 /* ════════════════════════════════════════════════════
    M3 MODAL BOTTOM SHEET — Share feature
    Used by: Food Detail page, Compare page
@@ -3486,7 +3686,7 @@ body.native #filter-float-pill {
   position: absolute;
   bottom: 0; left: 0; right: 0;
   transform: translateY(100%);
-  background: var(--md-surface-container);
+  background: var(--md-surface);
   border-radius: 28px 28px 0 0;
   z-index: 101;
   transition: transform 0.35s cubic-bezier(0.2,0,0,1);
@@ -4356,12 +4556,12 @@ body.native #filter-float-pill {
 /* ── Compare Select Sheet (.cs-) ─────────────────────────────── */
 .cs-carousel-section { padding: 12px 16px 8px; }
 .cs-carousel-label {
-  font-family: var(--font-ui); font-size: 12px; font-weight: 700;
-  color: var(--md-on-surface); letter-spacing: 0.2px;
+  font-family: var(--font-ui); font-size: 16px; font-weight: 500;
+  color: var(--md-on-surface); letter-spacing: 0.15px;
 }
 .cs-carousel-sub {
-  font-family: var(--font-ui); font-size: 11px;
-  color: var(--md-on-surface-variant); margin-top: 2px;
+  font-family: var(--font-ui); font-size: 12px; font-weight: 400;
+  color: var(--md-on-surface-variant); margin-top: 2px; letter-spacing: 0.4px;
 }
 .cs-carousel {
   display: flex; gap: 10px; overflow-x: auto;
@@ -4399,14 +4599,30 @@ body.native #filter-float-pill {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .cs-benefit-chips {
-  display: flex; flex-wrap: wrap; gap: 3px;
-  margin-top: 5px; justify-content: center;
+  display: flex; flex-wrap: wrap; gap: 4px;
+  margin-top: 6px; justify-content: flex-start;
 }
 .cs-benefit {
   font-family: var(--font-ui); font-size: 9px; font-weight: 600;
   padding: 2px 5px; border-radius: 8px;
   background: color-mix(in srgb, #7DECC8 18%, transparent);
   color: #7DECC8;
+}
+/* Benefit pills styled like cal number: bold display number + small label unit */
+.cs-benefit-lg {
+  display: inline-flex; align-items: baseline; gap: 1px;
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  color: var(--md-primary); letter-spacing: -0.2px;
+  background: none; padding: 0;
+}
+.cs-benefit-lg .ben-unit {
+  font-family: var(--font-ui); font-size: 10px; font-weight: 400;
+  color: var(--md-on-surface-variant); letter-spacing: 0; margin-left: 1px;
+}
+/* ho-card selected state when used inside compare sheet carousel */
+.ho-card.cs-added {
+  border: 2px solid var(--md-primary);
+  background: var(--md-primary-container);
 }
 
 
@@ -4626,7 +4842,7 @@ body.native #filter-float-pill {
           <div class="wh-sub">Start the day right — search a dish, pick a category, or check out today's low cal finds below.</div>
         </div>
         <div class="wh-focal">
-          <img class="wh-focal-emoji" src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f305/512.webp" alt="🌅" aria-hidden="true">
+          <img class="wh-focal-emoji" src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f971/512.webp" alt="🥱" aria-hidden="true">
         </div>
       </div>
       <div class="wh-meta">
@@ -4674,7 +4890,7 @@ body.native #filter-float-pill {
 
           <!-- Compare your kai quick-action -->
           <div class="home-compare-card home-meal-card" onclick="openCmpSheet(null)" id="home-compare-card">
-            <div class="home-meal-card-icon">⚖️</div>
+            <div class="home-meal-card-icon">🧐</div>
             <div class="home-meal-card-text">
               <div class="home-meal-card-title">Compare your kai</div>
               <div class="home-meal-card-sub">See how foods stack up side by side</div>
@@ -5063,7 +5279,7 @@ body.native #filter-float-pill {
            ═══════════════════════════════════════════ -->
       <div class="page" id="pg-restaurants">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
-        <div class="page-scroll">
+        <div class="page-scroll" id="rl-scroll">
           <!-- ─── RESTAURANTS SKELETON ─── -->
           <div class="skel-layer" id="skel-restaurants" aria-hidden="true" style="padding-top:16px">
             <!-- topbar -->
@@ -6757,6 +6973,18 @@ body.native #filter-float-pill {
           <div class="fsh-diet-note">Flags based on menu labelling &amp; chain certifications. Always confirm with staff for allergens.</div>
         </div>
       <button class="fsh-clear" id="fsh-clear" onclick="clearFilters()">Clear all</button>
+    </div>
+
+    <!-- Compare macro detail sheet -->
+    <div class="bottom-sheet" id="cmp-macro-sheet">
+      <div class="sheet-handle"></div>
+      <div id="cmp-macro-sheet-content"></div>
+    </div>
+
+    <!-- Best pick detail sheet -->
+    <div class="bottom-sheet" id="best-pick-sheet">
+      <div class="sheet-handle"></div>
+      <div id="best-pick-sheet-content" style="padding:4px 16px 24px"></div>
     </div>
 
     <!-- Sort action sheet -->
@@ -9482,6 +9710,7 @@ function nav(p) {
     lastY = y;
     if (typeof syncFilterPill === 'function') syncFilterPill();
     hideSearchSuggestions();
+    closeDietTooltip();
   }, true);
 })();
 
@@ -9524,6 +9753,15 @@ function nav(p) {
     lastY = y;
     /* Virtual list update on restaurant scroll */
     if (_vl) _vlRender();
+    closeDietTooltip();
+  }, true);
+})();
+
+/* ── Restaurant list page: dismiss diet tooltip on scroll ── */
+(function() {
+  document.addEventListener('scroll', function(e) {
+    if (e.target.id !== 'rl-scroll') return;
+    closeDietTooltip();
   }, true);
 })();
 
@@ -9633,6 +9871,9 @@ function makeCard(f, fromRest) {
 
   return `<div class="food-card score-${sc}${inC ? ' sel' : ''}" id="fc${f.id}" onclick="${df}" style="cursor:pointer">
 
+    <!-- Subtle score badge — top right -->
+    <div class="fc-score-micro score-${sc}">${esc}</div>
+
     <!-- Zone 1: Header — emoji + name + chain + score -->
     <div class="fc-header">
       <div class="fc-emoji-wrap score-${sc}">${emojiImg(f.emoji,EMO.md)}</div>
@@ -9640,7 +9881,6 @@ function makeCard(f, fromRest) {
         <div class="fc-chain">${f.chain}${f.pcs ? ' · ' + f.pcs : ''}${f.size ? ' · ' + f.size : ''}</div>
         <div class="fc-name">${f.name}</div>
       </div>
-      <div class="fc-score score-${sc}" onclick="event.stopPropagation();openScoreSheet('${esc}',${f.id})" style="cursor:pointer" title="What does score ${esc} mean?">${esc}</div>
     </div>
 
     <!-- Diet badges — only rendered when item has flags -->
@@ -9649,7 +9889,7 @@ function makeCard(f, fromRest) {
       const _BC={'vegan':'vegan','vegetarian':'vegetarian','halal':'halal','gluten_free':'gf','contains_dairy':'dairy','contains_nuts':'nuts'};
       const _badges=['vegan','vegetarian','halal','gluten_free','contains_dairy','contains_nuts']
         .filter(k=>_fl.includes(k))
-        .map(k=>'<span class="diet-badge '+_BC[k]+'" onclick="event.stopPropagation();openDietTooltip(\''+k+'\',this)" role="button">'+_DB[k]+'</span>').join('');
+        .map(k=>'<span class="diet-badge '+_BC[k]+'" data-chain="'+f.chain+'" onclick="event.stopPropagation();openDietTooltip(\''+k+'\',this)" role="button">'+_DB[k]+'</span>').join('');
       return _badges ? '<div class="diet-badges">'+_badges+'</div>' : '';
     })()}
 
@@ -9734,13 +9974,7 @@ function setSizeForCard(id, size, btn) {
     const card = document.getElementById('fc' + id);
     if (card) {
       const sc = s.score.toLowerCase();
-      /* Update score badge text + colour class */
-      const badge = card.querySelector('.fc-score');
-      if (badge) {
-        badge.textContent = s.score;
-        badge.className = `fc-score score-${sc}`;
-        badge.onclick = () => openScoreSheet(s.score, id);
-      }
+      /* Score badge removed from food cards — no-op */
       /* Update card border colour class */
       card.className = card.className.replace(/\bscore-[a-d]\b/, `score-${sc}`);
       /* Update emoji wrap colour */
@@ -10333,6 +10567,11 @@ const DIET_TOOLTIPS = {
   contains_dairy: { label:'🥛 Contains dairy',    desc:'Contains milk, cheese, or other dairy products.' },
   contains_nuts:  { label:'🥜 Contains nuts',     desc:'Contains tree nuts or peanuts. Check with staff if you have a nut allergy.' },
 };
+/* Chain-specific halal info — shown in tooltip instead of on-screen caveat */
+const HALAL_CHAIN_INFO = {
+  'KFC': 'KFC NZ is Halal certified. KFC NZ does not publish a full allergen breakdown — confirm dietary requirements with staff.',
+  "Nando's": "Nando's NZ is Halal certified. Nutritional values sourced from Nando's AU — NZ-specific allergen data unavailable.",
+};
 let _dietTooltipTimer = null;
 function openDietTooltip(key, el) {
   const tip = document.getElementById('diet-tooltip');
@@ -10342,10 +10581,14 @@ function openDietTooltip(key, el) {
   /* Populate */
   const t = DIET_TOOLTIPS[key];
   tlbl.textContent = t.label;
-  tdesc.textContent = t.desc;
+  let _desc = t.desc;
+  if (key === 'halal' && el && el.dataset && el.dataset.chain && HALAL_CHAIN_INFO[el.dataset.chain]) {
+    _desc = HALAL_CHAIN_INFO[el.dataset.chain];
+  }
+  tdesc.textContent = _desc;
   /* Position — below the badge, clamped to screen */
   const r = el.getBoundingClientRect();
-  const tipW = 220, tipH = 70;
+  const tipW = 220, tipH = _desc.length > 60 ? 100 : 70;
   let left = r.left;
   let top  = r.bottom + 6;
   /* Clamp right edge */
@@ -10471,7 +10714,7 @@ const WC_GREETINGS = {
       { greeting: 'Rise and shine!',  sub: 'Start the day right — search a dish, pick a category, or check out today\'s low cal finds below.' },
       { greeting: 'Good morning, hungry?', sub: 'Start the day right — search a dish, pick a category, or check out today\'s low cal finds below.' },
     ],
-    icon: '🌅', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f305/512.webp', anim: 'bounce',
+    icon: '🥱', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f971/512.webp', anim: 'bounce',
   },
   lunch: {
     start: 11, end: 14,
@@ -10480,7 +10723,7 @@ const WC_GREETINGS = {
       { greeting: 'Lunchtime already?', sub: 'Make your lunch break count — find something worth eating before you order.' },
       { greeting: 'Belly rumbling?',   sub: 'Make your lunch break count — find something worth eating before you order.' },
     ],
-    icon: '☀️', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/2600/512.webp', anim: 'bounce',
+    icon: '😋', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f60b/512.webp', anim: 'bounce',
   },
   arvo: {
     start: 14, end: 17,
@@ -10489,7 +10732,7 @@ const WC_GREETINGS = {
       { greeting: 'Afternoon munchies?', sub: 'That 3pm craving is real. Search what you fancy or browse a category to find something that hits the spot.' },
       { greeting: '3pm hunger hit?',     sub: 'That 3pm craving is real. Search what you fancy or browse a category to find something that hits the spot.' },
     ],
-    icon: '🌤️', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f324/512.webp', anim: 'wiggle',
+    icon: '🤤', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f924/512.webp', anim: 'wiggle',
   },
   dinner: {
     start: 17, end: 21,
@@ -10498,7 +10741,7 @@ const WC_GREETINGS = {
       { greeting: 'What\'s for tea tonight?', sub: 'Tonight\'s sorted. Browse your favourite restaurant or search a dish to find something you\'ll love.' },
       { greeting: 'Dinner o\'clock!',      sub: 'Tonight\'s sorted. Browse your favourite restaurant or search a dish to find something you\'ll love.' },
     ],
-    icon: '🌙', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f319/512.webp', anim: 'pulse',
+    icon: '🤩', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f929/512.webp', anim: 'pulse',
   },
   latenight: {
     start: 21, end: 29,
@@ -10507,7 +10750,7 @@ const WC_GREETINGS = {
       { greeting: 'Got the munchies?',    sub: 'No judgment here. Find something that hits the spot — search, browse, or check today\'s low cal hacks.' },
       { greeting: 'Midnight snack time?', sub: 'No judgment here. Find something that hits the spot — search, browse, or check today\'s low cal hacks.' },
     ],
-    icon: '🌃', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f303/512.webp', anim: 'wiggle',
+    icon: '🥸', animIcon: 'https://fonts.gstatic.com/s/e/notoemoji/latest/1f978/512.webp', anim: 'wiggle',
   },
 };
 
@@ -11054,15 +11297,10 @@ function openDetail(id, fromRest, overridePrevPage) {
     const _DB = {vegan:'🌿 Vegan', vegetarian:'🥬 Vegetarian', halal:'☾ Halal', gluten_free:'🌾 Gluten-free', contains_dairy:'🥛 Contains dairy', contains_nuts:'🥜 Contains nuts'};
     const _b = ['vegan','vegetarian','halal','gluten_free','contains_dairy','contains_nuts']
       .filter(k => _fl.includes(k))
-      .map(k => `<span class="diet-badge ${_BC[k]}" onclick="event.stopPropagation();openDietTooltip('${k}',this)" role="button" aria-label="${_DB[k]}">${_DB[k]}</span>`).join('');
-    /* Data caveat for chains without full allergen breakdown */
-    const _CAVEATS = {
-      'KFC': 'KFC NZ is Halal certified. KFC NZ does not publish a full allergen breakdown — confirm dietary requirements with staff.',
-      "Nando's": "Nando's NZ is Halal certified. Nutritional values sourced from Nando's AU — NZ-specific allergen data unavailable.",
-    };
-    const _cv = _CAVEATS[f.chain];
-    _dietBadges.innerHTML = (_b ? _b : '') + (_cv ? `<div class="det-diet-caveat">${_cv}</div>` : '');
-    _dietBadges.style.display = (_b || _cv) ? '' : 'none';
+      .map(k => `<span class="diet-badge ${_BC[k]}" data-chain="${f.chain}" onclick="event.stopPropagation();openDietTooltip('${k}',this)" role="button" aria-label="${_DB[k]}">${_DB[k]}</span>`).join('');
+    /* Chain-specific halal info now lives in the tooltip (tap the ☾ Halal badge to see it) */
+    _dietBadges.innerHTML = _b || '';
+    _dietBadges.style.display = _b ? '' : 'none';
   }
 
   const heroScore = document.getElementById('det-sring-hero');
@@ -11311,7 +11549,6 @@ function _renderFavesGrid() {
       const preview = (m.itemNames || []).slice(0, 3).join(', ') + (m.itemNames && m.itemNames.length > 3 ? ' +' + (m.itemNames.length - 3) : '');
       if (_mealDeleteConfirmIdx === idx) {
         return `<div class="faves-meal-row" style="gap:8px">
-          <span class="fv-badge" style="background:${gradeS.b};color:${gradeS.t};border-color:${gradeS.br};flex-shrink:0">${m.grade || '?'}</span>
           <div style="flex:1;min-width:0;font-size:13px;font-weight:600;color:var(--md-on-surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Delete "${m.name}"?</div>
           <button onclick="event.stopPropagation();deleteMeal(${idx});_mealDeleteConfirmIdx=-1;_renderFavesGrid()"
             title="Confirm delete"
@@ -11326,7 +11563,6 @@ function _renderFavesGrid() {
         </div>`;
       }
       return `<div class="faves-meal-row" onclick="_reloadSavedMeal(${idx})">
-        <span class="fv-badge" style="background:${gradeS.b};color:${gradeS.t};border-color:${gradeS.br};margin-right:10px;flex-shrink:0">${m.grade || '?'}</span>
         <div style="flex:1;min-width:0">
           <div style="font-size:14px;font-weight:600;color:var(--md-on-surface);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.name}</div>
           <div style="font-size:11px;color:var(--md-on-surface-variant);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${preview}</div>
@@ -11713,6 +11949,8 @@ function closeAllSheets() {
   document.getElementById('cmp-select-sheet').classList.remove('open');
   document.getElementById('meal-builder-sheet').classList.remove('open');
   document.getElementById('meal-breakdown-sheet').classList.remove('open');
+  document.getElementById('cmp-macro-sheet').classList.remove('open');
+  document.getElementById('best-pick-sheet').classList.remove('open');
   /* Dismiss any open swap tooltip */
   const tt = document.querySelector('.meal-swap-tooltip');
   if (tt) tt.remove();
@@ -12235,9 +12473,30 @@ function csRefreshSuggestions() {
 
 function csResultsHtml(slotIdx, q) {
   const lq = q.toLowerCase().trim();
-  let results = lq
-    ? foods.filter(f => f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq))
-    : foods.slice(0, 30);
+  let results;
+  if (lq) {
+    results = foods.filter(f => f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq));
+  } else {
+    /* Slot 1+ with no query → default to same restaurant as first item */
+    const firstId = csSlots[0];
+    if (slotIdx > 0 && firstId) {
+      const firstFood = foods.find(f => f.id === firstId);
+      if (firstFood) {
+        results = foods.filter(f => f.chain === firstFood.chain && !csSlots.includes(f.id));
+        if (!results.length) results = foods.filter(f => f.chain === firstFood.chain);
+      }
+    }
+    if (!results || !results.length) {
+      const NZ_CHAIN_ORDER = ["McDonald's","KFC","Burger King","Domino's","Pizza Hut","Subway","Nando's","Burger Fuel","Wendy's","Taco Bell","Hell Pizza","Better Burger","St. Pierre's","Tank","Smart Sushi","Mad Mex","Pita Pit"];
+      const _cc = {};
+      results = foods.filter(f => {
+        if (NZ_CHAIN_ORDER.indexOf(f.chain) === -1) return false;
+        _cc[f.chain] = (_cc[f.chain] || 0) + 1;
+        return _cc[f.chain] <= 2;
+      }).sort((a,b) => NZ_CHAIN_ORDER.indexOf(a.chain) - NZ_CHAIN_ORDER.indexOf(b.chain));
+      if (!results.length) results = foods.slice(0, 30);
+    }
+  }
   results = results.slice(0, 25);
   if (!results.length) return `<div style="padding:16px;text-align:center;font-size:13px;color:var(--md-on-surface-variant)">No results — try different terms</div>`;
   return results.map(f => {
@@ -12294,8 +12553,6 @@ function renderCmpSheet() {
       return `<div class="mb-slot-filled" onclick="csTapSlot(${i})">
         <div style="font-size:20px;flex-shrink:0">${emojiImg(f.emoji, EMO.sm)}</div>
         <div class="mb-slot-filled-info">
-          <div style="font-size:10px;font-weight:700;color:var(--md-primary);text-transform:uppercase;
-               letter-spacing:0.5px;margin-bottom:2px">Item ${i+1}</div>
           <div class="mb-slot-filled-name">${f.name}</div>
           <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
         </div>
@@ -12316,18 +12573,26 @@ function renderCmpSheet() {
 
   /* Carousel */
   const hasItems = filledIds.length > 0;
-  const carouselLabel = hasItems ? '💚 Healthier options' : '⭐ Popular in NZ';
+  const carouselLabel = hasItems ? 'Healthier options' : 'Popular in NZ';
   const carouselSub   = hasItems ? 'Similar kai · better nutrition' : 'Foods people love to compare';
   const carouselCards = csSuggestions.map(f => {
-    const es = effectiveScore(f); const sc = SC[es] || SC['C'];
+    const es = effectiveScore(f); const s = SC[es] || SC['C']; const scl = es.toLowerCase();
     const isAdded = csSlots.includes(f.id);
     const benefits = anchor ? getCmpBenefits(anchor, f) : [];
-    const benefitHtml = benefits.map(b => `<span class="cs-benefit">${b}</span>`).join('');
-    return `<div class="cs-card${isAdded ? ' added' : ''}" onclick="csPickFromCarousel(${f.id})">
-      <div style="font-size:28px;line-height:1">${f.emoji}</div>
-      <div class="cs-card-name">${f.name}</div>
-      <div class="cs-card-chain">${f.chain}</div>
-      ${benefitHtml ? `<div class="cs-benefit-chips">${benefitHtml}</div>` : ''}
+    const benefitHtml = benefits.map(b => {
+      /* Split into bold-number + small-unit parts for cal-number style */
+      const nm = b.match(/^([−+]?[\d.]+[a-zA-Z%]*)(.+)$/);
+      if (nm) return `<span class="cs-benefit-lg">${nm[1].trim()}<span class="ben-unit"> ${nm[2].trim()}</span></span>`;
+      const sp = b.indexOf(' ');
+      if (sp > -1) return `<span class="cs-benefit-lg">${b.slice(0,sp)}<span class="ben-unit"> ${b.slice(sp+1)}</span></span>`;
+      return `<span class="cs-benefit-lg">${b}</span>`;
+    }).join('');
+    return `<div class="ho-card score-${scl}${isAdded ? ' cs-added' : ''}" onclick="csPickFromCarousel(${f.id})">
+      <span class="ho-emoji">${emojiImg(f.emoji,EMO.sm)}</span>
+      <div class="ho-name">${f.name}</div>
+      <div class="ho-chain">${f.chain}</div>
+      <div class="ho-kj" style="margin-top:6px">${kc(f.kj)}<span>cal</span></div>
+      ${benefitHtml ? `<div class="cs-benefit-chips" style="margin-top:6px">${benefitHtml}</div>` : ''}
     </div>`;
   }).join('');
 
@@ -12497,7 +12762,7 @@ function openQuickCmp() {
         <div style="font-size:12px;font-weight:600;color:var(--md-on-surface);line-height:1.3;margin-bottom:2px;
              white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px">${f.name}</div>
         <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
-        <div style="margin-top:6px"><span style="font-size:17px;font-weight:700;color:var(--md-primary);font-family:var(--font-display)">${cal}</span><span style="font-size:10px;color:var(--md-on-surface-variant)"> cal</span></div>
+        <div style="margin-top:6px"><span style="font-size:17px;font-weight:700;color:var(--md-primary);font-family:var(--font-display)">${cal}</span><span style="font-size:10px;color:var(--md-on-surface-variant);margin-left:2px">cal</span></div>
       </div>
     </div>`;
   }).join('');
@@ -12745,10 +13010,10 @@ function cmpBack() {
   else nav('search');
   syncCmpUI();
 
-  /* If we got here via the compare-select sheet (and NOT from home),
-     reopen the sheet on the original page so user can adjust selections.
-     When entry was from home, just land on home — no sheet reopen. */
-  if (cmpViaSheet && prevPage !== 'home') {
+  /* Always reopen the compare-select sheet if we arrived via it —
+     including from home screen, so the back flow is:
+     pg-compare → cmp-select-sheet (on home) → home */
+  if (cmpViaSheet) {
     cmpViaSheet = false;
     /* Restore csSlots from cmpList so user sees their selections */
     csSlots = [...cmpList];
@@ -12820,7 +13085,7 @@ function renderCmp() {
   if (n === 0) {
     document.getElementById('cmp-content').innerHTML =
       `<div class="pol-empty-inline" style="padding-top:56px">
-        <div class="ico">⚖️</div>
+        <div class="ico">🧐</div>
         <div class="title">Nothing to compare yet</div>
         <div class="sub">Tap <b style="color:var(--md-primary)">+ Compare</b> on any food card and we'll line them up side by side here.</div>
         <button class="cta" onclick="nav('search')">
@@ -12859,119 +13124,269 @@ function renderCmp() {
     return;
   }
 
-  /* 2–3 items — full comparison */
+  /* 2–3 items — ranked card layout */
   const so = {A:0,B:1,C:2,D:3};
 
-  /* ── Goal logic ── */
-  const GOAL_DEFS = {
-    grade:   { l:'Healthiest',  lo:true,  fn: f => so[effectiveScore(f)] },
-    protein: { l:'Protein',     lo:false, fn: f => f.protein },
-    cal:     { l:'Low cal',     lo:true,  fn: f => f.kj },
-    sodium:  { l:'Low sodium',  lo:true,  fn: f => f.sodium },
-    satfat:  { l:'Low sat fat', lo:true,  fn: f => f.sat_fat },
-  };
-  const gdef = GOAL_DEFS[cmpGoal] || GOAL_DEFS.grade;
-  const gvals = items.map(f => gdef.fn(f));
-  const gbest = gdef.lo ? Math.min(...gvals) : Math.max(...gvals);
-  /* Only apply win/lose when healthScores differ (handles same-grade ties) */
-  const allSame = gvals.every(v => v === gvals[0]);
-  const goalClass = idx => allSame ? '' : (gvals[idx] === gbest ? 'goal-win' : 'goal-lose');
+  /* Sort by health score best→worst, kj ascending for ties */
+  const sorted = [...items].sort((a,b) =>
+    so[effectiveScore(a)] - so[effectiveScore(b)] || a.kj - b.kj
+  );
+  const best = sorted[0];
 
-  const headerCards = items.map((f,idx) => {
-    const es = effectiveScore(f); const s = SC(es), sc = es.toLowerCase(), cal = kc(f.kj);
-    return `<div class="cmp-crd ${goalClass(idx)}" onclick="prevPage='compare';openDetail(${f.id},false)" style="cursor:pointer">
-      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:${s.t};border-radius:var(--shape-md) var(--shape-md) 0 0"></div>
-      <div style="padding:8px 6px 10px;text-align:center">
-        <div style="font-size:24px;margin-bottom:4px">${emojiImg(f.emoji,EMO.sm)}</div>
-        <div style="font-size:12px;font-weight:600;color:var(--md-on-surface);line-height:1.3;margin-bottom:2px">${f.name}</div>
-        <div style="font-size:11px;color:var(--md-on-surface-variant)">${f.chain}</div>
-        <div style="margin-top:6px;display:flex;align-items:center;justify-content:center;gap:5px">
-          <span style="font-size:18px;font-weight:700;color:var(--md-primary);font-family:var(--font-display)">${cal}</span><span style="font-size:11px;color:var(--md-on-surface-variant)">cal</span>
-          <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:${s.b};color:${s.t};font-size:10px;font-weight:800;border:1px solid ${s.br};cursor:pointer;flex-shrink:0" onclick="event.stopPropagation();openScoreSheet('${es}',${f.id})">${es}</span>
-        </div>
-      </div>
+  /* ── NZ verdict statement ── */
+  const allTied = sorted.every(f => effectiveScore(f) === effectiveScore(sorted[0]));
+  const verdictHtml = allTied
+    ? `<div class="cmp-verdict"><span class="ms">balance</span><span>Pretty similar this time — have a squiz at the details and pick your kai.</span></div>`
+    : `<div class="cmp-verdict"><span class="ms">military_tech</span><span>Choice — <b>${best.name}</b> from ${best.chain} is the pick of the bunch.</span></div>`;
+
+  /* ── Rank helpers ── */
+  const RANK_CLS  = ['best','runner','worst'];
+  const RANK_ICO  = ['🏆','🥈',''];
+  const RANK_TXT  = ['Best','Runner up','Worst'];
+  function rankIdx(f) {
+    if (f.id === sorted[0].id) return 0;
+    if (f.id === sorted[sorted.length-1].id) return n === 2 ? 2 : (n === 3 && sorted[0].id !== sorted[2].id ? 2 : 1);
+    return 1;
+  }
+
+  /* ── Macro definitions ── */
+  const CMP_MACROS = [
+    { l:'Cal',     k:'kj',      u:' cal', lo:true,  fmt: v => kc(v) },
+    { l:'Protein', k:'protein', u:'g',    lo:false, fmt: null },
+    { l:'Fat',     k:'fat',     u:'g',    lo:true,  fmt: null },
+    { l:'Sat fat', k:'sat_fat', u:'g',    lo:true,  fmt: null },
+    { l:'Carbs',   k:'carbs',   u:'g',    lo:true,  fmt: null },
+    { l:'Sugar',   k:'sugar',   u:'g',    lo:true,  fmt: null },
+    { l:'Salt',    k:'sodium',  u:'mg',   lo:true,  fmt: null, warn: v => v >= 800 },
+    { l:'Fibre',   k:'fibre',   u:'g',    lo:false, fmt: null },
+  ];
+
+  /* Pre-compute best/worst raw value per macro across ALL items */
+  const macroBW = CMP_MACROS.map(mac => {
+    const vals = items.map(f => f[mac.k]);
+    return {
+      be: mac.lo ? Math.min(...vals) : Math.max(...vals),
+      wo: mac.lo ? Math.max(...vals) : Math.min(...vals),
+      allSame: vals.every(v => v === vals[0]),
+    };
+  });
+
+  /* Steps to walk off — ~20 steps per kcal (avg NZ woman, moderate walk) */
+  function stepsFor(f) { return Math.round(kc(f.kj) * 20).toLocaleString(); }
+
+  /* ── Build one item column ── */
+  /* ── CSS Grid layout: rows interleave label + all item cells ──
+     This guarantees pixel-perfect alignment — no JS height measurement needed.
+     Grid row heights are shared across every column automatically. ── */
+
+  /* Header row: (empty label spacer) + one card-hdr per item */
+  const hdrCells = sorted.map(f => {
+    const ri = rankIdx(f);
+    const isBest = ri === 0;
+    const bestTap = isBest ? `onclick="event.stopPropagation();openBestPickSheet(${f.id})"` : '';
+    const seeWhy  = isBest ? `<div class="cmp-v2-see-why">See why</div>` : '';
+    return `<div class="cmp-v2-card-hdr rank-${RANK_CLS[ri]}" ${bestTap}>
+      <div class="cmp-v2-rank ${RANK_CLS[ri]}">${RANK_ICO[ri]} ${RANK_TXT[ri]}</div>
+      <div style="font-size:20px;line-height:1;margin-bottom:4px">${emojiImg(f.emoji,EMO.xs)}</div>
+      <div class="cmp-v2-name">${f.name}</div>
+      <div class="cmp-v2-chain">${f.chain}</div>
+      ${seeWhy}
     </div>`;
   }).join('');
 
-  /* ── Goal pills HTML ── */
-  const goalPillsHtml = `<div class="cmp-goal-row">
-    ${Object.entries(GOAL_DEFS).map(([k,d]) =>
-      `<button class="cmp-goal-pill${cmpGoal===k?' on':''}" onclick="setCmpGoal('${k}')">${d.l}</button>`
-    ).join('')}
-  </div>`;
-
-  /* Insight cards */
-  const best = [...items].sort((a,b) => so[effectiveScore(a)]-so[effectiveScore(b)] || a.kj-b.kj)[0];
-  const ins = [];
-  ins.push({t:'g', ico:'military_tech', l:'Best pick',
-    b:`<b style="color:var(--md-primary)">${best.name}</b> is the healthiest — `
-     +`<b style="color:var(--md-primary)">${kc(best.kj)} cal</b>, ${best.protein}g protein (score ${effectiveScore(best)}).`});
-  const mx=Math.max(...items.map(f=>f.kj)), mn=Math.min(...items.map(f=>f.kj)), gap=mx-mn;
-  if (gap>=400) ins.push({t:'a', ico:'bolt', l:'Energy gap',
-    b:`There's a <b style="color:var(--md-secondary)">${kc(gap)} cal (${gap} kJ)</b> difference between the lowest and highest options.`});
-  const hn=items.filter(f=>f.sodium>1000).sort((a,b)=>b.sodium-a.sodium);
-  if (hn.length){const w=hn[0];ins.push({t:'r',ico:'warning',l:'High sodium',
-    b:`<b>${w.name}</b> has <b style="color:var(--md-error)">${w.sodium}mg sodium</b> — ${Math.round(w.sodium/2300*100)}% of your daily limit.`});}
-  const pc=[...items].sort((a,b)=>(b.protein/b.kj)-(a.protein/a.kj))[0];
-  if (pc.protein>=20) ins.push({t:'b',ico:'fitness_center',l:'Protein leader',
-    b:`<b>${pc.name}</b> has the best protein ratio — <b style="color:var(--md-tertiary)">${pc.protein}g</b> for ${kc(pc.kj)} cal.`});
-  const tm={g:'ins-g',a:'ins-a',r:'ins-r',b:'ins-b'};
-  const insHtml = ins.slice(0,4).map(i =>
-    `<div class="ins-card ${tm[i.t]}">
-      <div class="ins-lbl"><span class="ms sz-20">${i.ico}</span>${i.l}</div>
-      <div class="ins-body">${i.b}</div>
-    </div>`).join('');
-
-  /* Nutrient rows */
-  const CMP_RDI = { kj:8000, cal:1912, protein:46, fat:60, sat_fat:20, carbs:275, sugar:50, sodium:2300, fibre:25 };
-  const macroNus = [
-    {l:'Calories',k:'kj',     u:' cal',lo:true, tr:kc,  rdi:CMP_RDI.cal},
-    {l:'Energy',  k:'kj',     u:' kJ', lo:true,          rdi:CMP_RDI.kj},
-    {l:'Protein', k:'protein',u:'g',   lo:false,          rdi:CMP_RDI.protein},
-    {l:'Fat',     k:'fat',    u:'g',   lo:true,           rdi:CMP_RDI.fat},
-    {l:'Sat. fat',k:'sat_fat',u:'g',   lo:true,           rdi:CMP_RDI.sat_fat},
-    {l:'Carbs',   k:'carbs',  u:'g',   lo:true,           rdi:CMP_RDI.carbs},
-    {l:'Sugar',   k:'sugar',  u:'g',   lo:true,           rdi:CMP_RDI.sugar},
-  ];
-  const mineralNus = [
-    {l:'Sodium',k:'sodium',u:'mg',lo:true,  rdi:CMP_RDI.sodium},
-    {l:'Fibre', k:'fibre', u:'g', lo:false, rdi:CMP_RDI.fibre},
-  ];
-  function buildRows(arr) {
-    return arr.map(nu => {
-      const rawVs = items.map(f => nu.tr ? nu.tr(f[nu.k]) : f[nu.k]);
-      /* For best/worst colouring always use raw values */
-      const be = nu.lo ? Math.min(...rawVs) : Math.max(...rawVs);
-      const wo = nu.lo ? Math.max(...rawVs) : Math.min(...rawVs);
-      const cells = rawVs.map(v => {
-        let cls='';
-        if(v===be) cls='best';
-        else if(v===wo && rawVs.filter(x=>x===wo).length<rawVs.length) cls='worst';
-        const display = cmpShowRdi && nu.rdi
-          ? Math.round(v / nu.rdi * 100) + '%'
-          : v + nu.u;
-        return `<div class="cmp-val ${cls}">${display}</div>`;
-      }).join('');
-      return `<div class="cmp-row"><div class="cmp-lbl">${nu.l}</div><div class="cmp-vals">${cells}</div></div>`;
+  /* Macro rows: label + one cell per item (interleaved in grid order) */
+  const macroGridRows = CMP_MACROS.map((mac, mi) => {
+    const { be, wo, allSame } = macroBW[mi];
+    const cells = sorted.map(f => {
+      const ri = rankIdx(f);
+      const raw = f[mac.k];
+      const display = mac.fmt ? mac.fmt(raw) : raw;
+      const isWarn = mac.warn && mac.warn(raw);
+      let chipCls = allSame ? '' : (raw === be ? 'best' : (raw === wo ? 'worst' : ''));
+      if (isWarn) chipCls = chipCls ? chipCls + ' warn' : 'warn';
+      const warnIco = isWarn ? `<span class="ms" style="font-size:10px;line-height:1">warning</span>` : '';
+      const tapAttr = isWarn ? `onclick="openCmpMacroSheet('${mac.k}',${f.id})"` : '';
+      return `<div class="cmp-v2-cell rank-${RANK_CLS[ri]}"><div class="cmp-v2-chip ${chipCls}" ${tapAttr}>${display}${mac.u}${warnIco}</div></div>`;
     }).join('');
-  }
-  const legend = `<div class="cmp-legend">
-    <button class="cmp-rdi-btn${cmpShowRdi?' on':''}" onclick="toggleCmpRdi()" title="Toggle % of daily intake">
-      <span class="ms" style="font-size:14px">percent</span>${cmpShowRdi?'Raw values':'% Daily'}
-    </button>
-  </div>`;
+    return `<div class="cmp-v2-label">${mac.l}</div>${cells}`;
+  }).join('');
 
-  const cols = n;
+  /* Steps row: label + one steps cell per item */
+  const stepsCells = sorted.map(f => {
+    const ri = rankIdx(f);
+    return `<div class="cmp-v2-steps rank-${RANK_CLS[ri]}">
+      <div class="cmp-v2-steps-num">${stepsFor(f)}</div>
+      <div class="cmp-v2-steps-lbl">steps</div>
+    </div>`;
+  }).join('');
+
   document.getElementById('cmp-content').innerHTML =
-    `${goalPillsHtml}
-    <div class="cmp-grid" style="grid-template-columns:repeat(${cols},1fr)">${headerCards}</div>
-    <div style="padding:0 12px 8px">${insHtml}</div>
-    ${legend}
-    <div style="padding:0 12px">
-      ${buildRows(macroNus)}
-      ${buildRows(mineralNus)}
+    `<div style="height:12px"></div>
+    ${verdictHtml}
+    <div class="cmp-v2-grid n${n}">
+      <div class="cmp-v2-lbl-hdr"></div>
+      ${hdrCells}
+      ${macroGridRows}
+      <div class="cmp-v2-steps-label">Burn</div>
+      ${stepsCells}
     </div>
-    <div style="height:16px"></div>`;
+    <div style="height:24px"></div>`;
+}
+
+/* ── openCmpMacroSheet — tappable flagged macro detail ── */
+function openCmpMacroSheet(macro, foodId) {
+  const f = foods.find(fi => fi.id === foodId);
+  if (!f) return;
+  const defs = {
+    sodium: {
+      ico: '🧂', title: 'High sodium', icoStyle: 'background:var(--md-error-container)',
+      facts: f => {
+        const pct = Math.round(f.sodium / 2300 * 100);
+        return [
+          { bg:'var(--md-error-container)', col:'var(--md-on-error-container)',
+            txt:`<b>${f.name}</b> has <b>${f.sodium}mg sodium</b> — that's ${pct}% of the recommended daily limit in one meal.` },
+          { bg:'var(--md-surface-container-high)', col:'var(--md-on-surface)',
+            txt:'The NZ Heart Foundation recommends keeping sodium under 2,300mg per day. Most Kiwis are already over without realising it.' },
+          { bg:'var(--md-surface-container-high)', col:'var(--md-on-surface)',
+            txt:'If you go high-sodium at lunch, balance it out with low-sodium kai for the rest of the day — soups, salads, fruit.' },
+        ];
+      }
+    },
+    sat_fat: {
+      ico: '🧈', title: 'Saturated fat', icoStyle: 'background:var(--score-C-bg)',
+      facts: f => {
+        const pct = Math.round(f.sat_fat / 20 * 100);
+        return [
+          { bg:'var(--score-C-bg)', col:'var(--score-C-text)',
+            txt:`<b>${f.name}</b> has <b>${f.sat_fat}g saturated fat</b> — ${pct}% of the daily limit for women.` },
+          { bg:'var(--md-surface-container-high)', col:'var(--md-on-surface)',
+            txt:'Too much saturated fat raises LDL (bad) cholesterol. The daily limit is 20g for women, 24g for men.' },
+        ];
+      }
+    },
+    sugar: {
+      ico: '🍬', title: 'High sugar', icoStyle: 'background:var(--score-C-bg)',
+      facts: f => {
+        const pct = Math.round(f.sugar / 50 * 100);
+        return [
+          { bg:'var(--score-C-bg)', col:'var(--score-C-text)',
+            txt:`<b>${f.name}</b> has <b>${f.sugar}g sugar</b> — ${pct}% of the daily recommended limit.` },
+          { bg:'var(--md-surface-container-high)', col:'var(--md-on-surface)',
+            txt:'High sugar causes energy spikes and crashes. The WHO recommends keeping free sugars under 50g per day (ideally under 25g).' },
+        ];
+      }
+    },
+  };
+  const def = defs[macro] || defs.sodium;
+  const facts = def.facts(f);
+  const factsHtml = facts.map(fc =>
+    `<div class="cmp-macro-fact" style="background:${fc.bg};color:${fc.col}">${fc.txt}</div>`
+  ).join('');
+  document.getElementById('cmp-macro-sheet-content').innerHTML =
+    `<div style="padding:20px 20px 10px">
+      <div class="cmp-macro-sheet-ico" style="${def.icoStyle}">${def.ico}</div>
+      <div class="cmp-macro-sheet-title">${def.title}</div>
+      <div class="cmp-macro-sheet-sub">${f.name} · ${f.chain}</div>
+    </div>
+    <div style="padding:0 20px 28px">${factsHtml}</div>`;
+  document.getElementById('cmp-macro-sheet').classList.add('open');
+  document.getElementById('sheet-scrim').classList.add('visible');
+}
+
+/* ── openBestPickSheet — why the best item won ── */
+function openBestPickSheet(foodId) {
+  const best = foods.find(fi => fi.id === foodId);
+  if (!best) return;
+  const others = cmpList.filter(id => id !== foodId).map(id => foods.find(f => f.id === id)).filter(Boolean);
+  if (!others.length) return;
+
+  const sc = SC(effectiveScore(best));
+  const reasons = [];
+
+  /* Energy comparison */
+  const bestCal = kc(best.kj);
+  const worstCal = Math.max(...others.map(f => kc(f.kj)));
+  if (bestCal < worstCal) {
+    reasons.push({ ico: 'local_fire_department',
+      txt: `Lower energy — <b>${bestCal} cal</b> vs up to <b>${worstCal} cal</b>. That's a saving of <b>${worstCal - bestCal} cal</b> per meal.` });
+  }
+
+  /* Protein */
+  const bestProt = best.protein;
+  const maxProt = Math.max(...others.map(f => f.protein));
+  if (bestProt > maxProt) {
+    reasons.push({ ico: 'fitness_center',
+      txt: `More protein — <b>${bestProt}g</b> vs <b>${maxProt}g</b>. Protein keeps you fuller for longer.` });
+  }
+
+  /* Sat fat */
+  const bestSF = best.sat_fat;
+  const worstSF = Math.max(...others.map(f => f.sat_fat));
+  if (bestSF < worstSF) {
+    reasons.push({ ico: 'water_drop',
+      txt: `Less saturated fat — <b>${bestSF}g</b> vs up to <b>${worstSF}g</b>. Sat fat is linked to higher cholesterol.` });
+  }
+
+  /* Sodium / Salt */
+  const bestNa = best.sodium;
+  const worstNa = Math.max(...others.map(f => f.sodium));
+  if (bestNa < worstNa) {
+    reasons.push({ ico: 'water',
+      txt: `Less salt — <b>${bestNa}mg</b> vs up to <b>${worstNa}mg sodium</b>. Keeping sodium low is good for blood pressure.` });
+  }
+
+  /* Sugar */
+  const bestSug = best.sugar;
+  const worstSug = Math.max(...others.map(f => f.sugar));
+  if (bestSug < worstSug) {
+    reasons.push({ ico: 'cake',
+      txt: `Less sugar — <b>${bestSug}g</b> vs up to <b>${worstSug}g</b>.` });
+  }
+
+  /* Overall score label */
+  const gradeLabels = {A:'Healthy choice',B:'Reasonable choice',C:'Eat occasionally',D:'Treat food'};
+  const es = effectiveScore(best);
+  const otherScores = others.map(f => effectiveScore(f));
+  const scOrder = {A:0,B:1,C:2,D:3};
+  const allWorse = otherScores.every(s => scOrder[s] > scOrder[es]);
+  if (allWorse) {
+    reasons.push({ ico: 'military_tech',
+      txt: `Better overall score — <b>${es} (${gradeLabels[es]})</b>. The scoring weighs energy, sat fat, sodium, sugar and protein together per 1000 kJ.` });
+  }
+
+  /* Fallback */
+  if (reasons.length === 0) {
+    reasons.push({ ico: 'balance',
+      txt: `<b>${best.name}</b> edges it out on overall score across all nutrients — but it's close. Look at what matters most to you.` });
+  }
+
+  const reasonsHtml = reasons.map(r =>
+    `<div class="best-pick-reason">
+      <span class="ms">${r.ico}</span>
+      <span>${r.txt}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('best-pick-sheet-content').innerHTML =
+    `<div style="padding:20px 20px 12px;display:flex;align-items:center;gap:12px">
+      <div style="font-size:32px;line-height:1">${emojiImg(best.emoji, EMO.md)}</div>
+      <div>
+        <div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--md-on-surface);line-height:1.2">${best.name}</div>
+        <div style="font-size:13px;color:var(--md-on-surface-variant);margin-top:3px">${best.chain} · 🏆 Best pick</div>
+      </div>
+    </div>
+    <div style="padding:0 16px 4px">
+      <div style="font-size:13px;font-weight:600;color:var(--md-primary);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em">Why it came out on top</div>
+      ${reasonsHtml}
+    </div>
+    <div style="padding:0 16px 28px">
+      <button onclick="closeAllSheets()" style="width:100%;padding:14px;border:none;border-radius:var(--shape-lg);
+        background:var(--md-primary);color:var(--md-on-primary);font-family:var(--font-ui);
+        font-size:15px;font-weight:600;cursor:pointer">Got it</button>
+    </div>`;
+
+  document.getElementById('best-pick-sheet').classList.add('open');
+  document.getElementById('sheet-scrim').classList.add('visible');
 }
 
 /* ── buildCompareShareText ── */
@@ -13231,17 +13646,26 @@ function mbResultsHtml(slotIdx, q) {
   // Determine chain of filled main slot for prioritisation
   const mainSlot = mealSlots[0];
   const mainChain = mainSlot && mainSlot.foodId ? (foods.find(x => x.id === mainSlot.foodId) || {}).chain : null;
-  let results = foods.filter(f => {
-    if (lq) return f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq);
-    return slot.cats.length === 0 ? true : slot.cats.includes(f.cat);
-  });
-  // Sort: same chain as main first (when no query)
-  if (!lq && mainChain) {
-    results = results.sort((a, b) => {
-      const aMatch = a.chain === mainChain ? 0 : 1;
-      const bMatch = b.chain === mainChain ? 0 : 1;
-      return aMatch - bMatch;
-    });
+  let results;
+  if (lq) {
+    results = foods.filter(f => f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq));
+  } else {
+    const NZ_CHAIN_ORDER = ["McDonald's","KFC","Burger King","Domino's","Pizza Hut","Subway","Nando's","Burger Fuel","Wendy's","Taco Bell","Hell Pizza","Better Burger","St. Pierre's","Tank","Smart Sushi","Mad Mex","Pita Pit"];
+    const catFiltered = foods.filter(f => slot.cats.length === 0 || slot.cats.includes(f.cat));
+    const _cc = {};
+    results = catFiltered.filter(f => {
+      if (NZ_CHAIN_ORDER.indexOf(f.chain) === -1) return false;
+      _cc[f.chain] = (_cc[f.chain] || 0) + 1;
+      return _cc[f.chain] <= 2;
+    }).sort((a,b) => NZ_CHAIN_ORDER.indexOf(a.chain) - NZ_CHAIN_ORDER.indexOf(b.chain));
+    /* Fallback: same-chain first when main item selected */
+    if (!results.length) {
+      results = catFiltered.sort((a,b) => {
+        const aM = mainChain && a.chain === mainChain ? 0 : 1;
+        const bM = mainChain && b.chain === mainChain ? 0 : 1;
+        return aM - bM;
+      });
+    }
   }
   results = results.slice(0, 25);
   if (!results.length) return `<div style="padding:16px;text-align:center;font-size:13px;color:var(--md-on-surface-variant)">No results — try a different search</div>`;
