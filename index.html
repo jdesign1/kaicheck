@@ -2093,6 +2093,7 @@ body.native #filter-float-pill {
   background: none; border: none; cursor: pointer;
   color: var(--md-on-surface); flex-shrink: 0;
   transition: background 0.15s, color 0.15s;
+  position: relative; overflow: visible;
 }
 .det-fave-btn.faved { color: #F08A6A; }
 .det-fave-btn:hover { background: rgba(255,255,255,0.06); }
@@ -2106,10 +2107,57 @@ body.native #filter-float-pill {
   background: none; border: none; cursor: pointer;
   color: var(--md-on-surface); flex-shrink: 0;
   transition: background 0.15s, color 0.15s;
+  position: relative; overflow: visible;
 }
 .meal-save-btn.saved { color: #F08A6A; }
 .meal-save-btn:hover { background: rgba(255,255,255,0.06); }
 .meal-save-btn .ms { font-size: 22px; }
+
+/* ── Meal remove confirm tooltip (shown below trash icon on pg-meal when from Faves) ── */
+.meal-remove-confirm {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--md-surface-container-highest);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--shape-lg);
+  padding: 10px 12px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.36);
+  z-index: 80;
+  white-space: nowrap;
+  animation: swap-tooltip-in 0.15s cubic-bezier(0.2,0,0,1) both;
+}
+.meal-remove-confirm::before {
+  content: '';
+  position: absolute;
+  top: -6px; right: 14px;
+  width: 10px; height: 10px;
+  background: var(--md-surface-container-highest);
+  border-left: 1px solid var(--md-outline-variant);
+  border-top: 1px solid var(--md-outline-variant);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+.meal-remove-confirm-text {
+  font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+  color: var(--md-on-surface); flex: 1;
+}
+.meal-remove-confirm-ok {
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: var(--md-error, #F08A6A); color: #fff;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: transform 0.1s, opacity 0.1s;
+}
+.meal-remove-confirm-ok:active { transform: scale(0.9); opacity: 0.85; }
+.meal-remove-confirm-cancel {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--md-outline-variant); background: transparent;
+  color: var(--md-on-surface-variant);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: transform 0.1s;
+}
+.meal-remove-confirm-cancel:active { transform: scale(0.9); }
 
 /* ── Heart button on restaurant list cards ── */
 .rc-fave-btn {
@@ -2268,21 +2316,47 @@ body.native #filter-float-pill {
 .fv-card:active::after { opacity: 0.12; }
 /* top colour strokes removed per design update */
 
-/* Unfave button — absolute top-right, 30px circle */
+/* Remove button — absolute top-right, 30px circle (trash icon) */
 .fv-unfave-btn {
   position: absolute; top: 7px; right: 7px;
   width: 30px; height: 30px;
   border-radius: 50%;
-  background: rgba(255,180,171,0.12);
+  background: rgba(255,255,255,0.06);
   border: none;
-  color: #F08A6A;
+  color: var(--md-on-surface-variant);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   z-index: 2;
   transition: background 0.15s, transform 0.1s;
   flex-shrink: 0;
 }
-.fv-unfave-btn:active { background: rgba(255,180,171,0.28); transform: scale(0.9); }
+.fv-unfave-btn:active { background: rgba(255,255,255,0.14); transform: scale(0.9); }
+
+/* Confirm-state card overlay */
+.fv-card--confirm {
+  justify-content: center; align-items: center; gap: 10px; cursor: default;
+}
+.fv-card--confirm::after { display: none; }
+.fv-confirm-text {
+  font-size: 12px; font-weight: 600; color: var(--md-on-surface);
+  text-align: center; line-height: 1.4;
+}
+.fv-confirm-btns { display: flex; gap: 8px; }
+.fv-confirm-ok {
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: var(--md-error, #F08A6A); color: #fff;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.1s;
+}
+.fv-confirm-ok:active { transform: scale(0.9); }
+.fv-confirm-cancel {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--md-outline-variant); background: transparent;
+  color: var(--md-on-surface-variant);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: transform 0.1s;
+}
+.fv-confirm-cancel:active { transform: scale(0.9); }
 .fv-badge {
   display: inline-flex; align-items: center;
   font-family: var(--font-display); font-size: 10px; font-weight: 700;
@@ -2545,8 +2619,21 @@ body.native #filter-float-pill {
   background: var(--md-surface);
   gap: 4px;
   z-index: 11;
+  transition: box-shadow 0.25s;
 }
-/* ── Detail page sticky compact bar (appears once hero scrolls away) ── */
+.det-topbar.scrolled {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+/* Title area inside topbar — hidden until hero scrolls away */
+.det-topbar-titles {
+  flex: 1; min-width: 0; overflow: hidden;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.det-topbar.scrolled .det-topbar-titles {
+  opacity: 1; pointer-events: auto;
+}
+/* ── Detail page sticky compact bar (kept for compare/meal pages) ── */
 .det-appbar {
   background: var(--md-surface);
   display: flex; align-items: center;
@@ -2632,10 +2719,10 @@ body.native #filter-float-pill {
   color: var(--md-on-surface); letter-spacing: -0.2px; line-height: 1.25;
 }
 .det-hero-score {
-  flex-shrink: 0; width: 44px; height: 44px;
+  flex-shrink: 0; width: 36px; height: 36px;
   border-radius: var(--shape-md);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-size: 20px; font-weight: 800;
+  font-family: var(--font-display); font-size: 16px; font-weight: 800;
   border: 1px solid; cursor: pointer; margin-top: 2px;
 }
 .det-hero-desc {
@@ -3483,6 +3570,13 @@ body.native #filter-float-pill {
 /* ── Compare table: CSS Grid — guarantees row alignment across all columns ──
    grid-template-rows locks every row to the same height for all columns,
    solving the flexbox-column misalignment problem entirely. ── */
+/* Compare page sticky header */
+#cmp-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--md-surface);
+}
 .cmp-v2-grid {
   display: grid;
   column-gap: 5px;
@@ -4507,12 +4601,13 @@ body.native #filter-float-pill {
 .meal-swap-tooltip::after {
   content: '';
   position: absolute;
-  top: -6px; left: 14px;
+  top: -6px; left: var(--caret-x, 14px);
   width: 10px; height: 10px;
   background: var(--md-surface-container-highest);
   border-left: 1px solid var(--md-outline-variant);
   border-top: 1px solid var(--md-outline-variant);
   transform: rotate(45deg);
+  pointer-events: none;
 }
 /* Breakdown button — M3 Filled Tonal, matches burn-btn style */
 .meal-breakdown-btn {
@@ -5590,12 +5685,15 @@ body.native #filter-float-pill {
       <div class="page" id="pg-detail">
         <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
 
-        <!-- Permanent topbar: back + share always visible -->
-        <div class="det-topbar">
+        <!-- Permanent topbar: back + title (fades in on scroll) + actions -->
+        <div class="det-topbar" id="det-appbar">
           <button class="rmenu-appbar-back" id="det-back" onclick="detBack()">
             <span class="ms">arrow_back</span>
           </button>
-          <div class="flex-1"></div>
+          <div class="det-topbar-titles" id="det-topbar-titles">
+            <div class="det-appbar-sub" id="det-chain"></div>
+            <div class="det-appbar-title" id="det-name"></div>
+          </div>
           <button class="det-fave-btn" id="det-fave-btn" onclick="onFaveCard(curFood&&curFood.id)" title="Save to favourites">
             <span class="ms" id="det-fave-ico">favorite_border</span>
           </button>
@@ -5658,15 +5756,6 @@ body.native #filter-float-pill {
               </div>
             </div>
           </div>
-
-        <!-- Sticky compact bar: appears once hero scrolls away -->
-        <div class="det-appbar hidden" id="det-appbar">
-          <div style="width:4px"></div>
-          <div class="det-appbar-titles">
-            <div class="det-appbar-sub" id="det-chain"></div>
-            <div class="det-appbar-title" id="det-name"></div>
-          </div>
-        </div>
 
         <!-- Hero block: brand gradient, emoji, chain, name, desc, cal, RDI -->
         <div class="det-hero" id="det-hero">
@@ -9604,8 +9693,10 @@ const BW  = s  => ({A:'90%',B:'70%',C:'45%',D:'18%'}[s]);
 let catSel='all', cmpList=[], cmpGoal='grade', cmpShowRdi=false, cmpMode='compare', sortLo=true, rsfSel='all', rSB=true;
 let _cmpRestBannerDismissed = false;
 let lastSearch = null; // { q: '', cat: 'all', label: 'Burgers' } | null — most recent meaningful search
-let curRest=null, mSL=true, mCatSel='all', dFR=false, curFood=null, prevPage='search', mealFromFaves=false;
+let curRest=null, mSL=true, mCatSel='all', dFR=false, curFood=null, prevPage='search', mealFromFaves=false, mealFromFavesIdx=-1;
 let _srScrollTop = 0; /* saved scroll position for search → detail → back */
+let _rmScrollTop = 0; /* saved scroll position for rmenu → detail → back */
+let _faveDeleteConfirmId = null; /* fave item pending remove confirm */
 let srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
 let searchInteracted = false;
 let prevRestPage = 'restaurants';
@@ -9666,7 +9757,21 @@ function nav(p) {
   if (p === 'home') { showSkel('home'); renderHome(); hideSkel('home'); }
   if (p === 'compare') { showSkel('compare'); renderCmp(); hideSkel('compare'); }
   if (p === 'meal') { renderMeal(); }
-  if (p === 'restaurants') { showSkel('restaurants'); curRest = null; renderRests(); hideSkel('restaurants'); }
+  if (p === 'restaurants') {
+    showSkel('restaurants');
+    curRest = null;
+    /* Reset search + sort + scroll to default state every time restaurants tab entered */
+    const rsiEl = document.getElementById('rsi');
+    if (rsiEl) rsiEl.value = '';
+    rsfSel = 'all'; rSB = true;
+    const rsaEl = document.getElementById('rsa');
+    if (rsaEl) rsaEl.innerHTML = '<span class="ms sz-20">swap_vert</span> Best first';
+    document.querySelectorAll('#sfpills .pill').forEach(x => x.classList.remove('on'));
+    const rlScr = document.getElementById('rl-scroll');
+    if (rlScr) rlScr.scrollTo({ top: 0, behavior: 'instant' });
+    renderRests();
+    hideSkel('restaurants');
+  }
   if (p === 'faves') { showSkel('faves'); _renderFavesGrid(); hideSkel('faves'); }
   if (p === 'insights') { showSkel('insights'); hideSkel('insights'); }
   /* Re-evaluate tray visibility now that active page has changed */
@@ -9714,22 +9819,20 @@ function nav(p) {
   }, true);
 })();
 
-/* ── Detail page: show sticky appbar once hero scrolls away ── */
+/* ── Detail page: show title in topbar once hero scrolls away ── */
 (function() {
   document.addEventListener('scroll', function(e) {
     if (e.target.id !== 'det-scroll') return;
     closeDietTooltip();
-    var appbar = document.getElementById('det-appbar');
     var hero = document.getElementById('det-hero');
-    if (!appbar || !hero) return;
+    var detTopbar = document.querySelector('#pg-detail .det-topbar');
+    if (!hero || !detTopbar) return;
     var heroBtm = hero.getBoundingClientRect().bottom;
     var topbarH = 54; /* det-topbar height */
     if (heroBtm <= topbarH) {
-      appbar.classList.remove('hidden');
-      appbar.classList.add('scrolled');
+      detTopbar.classList.add('scrolled');
     } else {
-      appbar.classList.add('hidden');
-      appbar.classList.remove('scrolled');
+      detTopbar.classList.remove('scrolled');
     }
   }, true);
 })();
@@ -10044,6 +10147,90 @@ function isMealCurrentlySaved() {
   const key = [...cmpList].sort().join(',');
   return loadMeals().some(m => m.ids && [...m.ids].sort().join(',') === key);
 }
+/* Trash icon tap on meal total page when meal loaded from My Faves —
+   shows a confirm tooltip (Remove meal? ✓ ✕) below the button */
+function showMealRemoveConfirm(btn) {
+  /* Toggle: if confirm already open for this button, close it */
+  const existing = document.querySelector('.meal-remove-confirm');
+  if (existing) { existing.remove(); return; }
+
+  const confirm = document.createElement('div');
+  confirm.className = 'meal-remove-confirm';
+  confirm.innerHTML = `
+    <span class="meal-remove-confirm-text">Remove meal?</span>
+    <button class="meal-remove-confirm-ok" title="Remove"
+      onclick="event.stopPropagation();_confirmRemoveSavedMeal()">
+      <span class="ms" style="font-size:18px">check</span>
+    </button>
+    <button class="meal-remove-confirm-cancel" title="Cancel"
+      onclick="event.stopPropagation();this.closest('.meal-remove-confirm').remove()">
+      <span class="ms" style="font-size:18px">close</span>
+    </button>`;
+
+  confirm.addEventListener('click', e => e.stopPropagation());
+  btn.appendChild(confirm);
+
+  /* Close on outside tap */
+  const _dismiss = () => {
+    const c = document.querySelector('.meal-remove-confirm');
+    if (c) c.remove();
+    document.removeEventListener('click', _dismiss);
+  };
+  setTimeout(() => document.addEventListener('click', _dismiss), 0);
+}
+
+function _confirmRemoveSavedMeal() {
+  const c = document.querySelector('.meal-remove-confirm');
+  if (c) c.remove();
+  if (mealFromFavesIdx >= 0) deleteMeal(mealFromFavesIdx);
+  mealFromFaves = false; mealFromFavesIdx = -1;
+  cmpList = [];
+  cmpMode = 'compare';
+  showToast('Meal removed from Faves', 'delete');
+  nav('faves');
+  syncCmpUI();
+}
+
+/* Trash icon tap on food detail page when opened from My Faves —
+   shows a confirm tooltip (Remove item? ✓ ✕) below the button */
+function showFoodRemoveConfirm(btn) {
+  const existing = document.querySelector('.meal-remove-confirm');
+  if (existing) { existing.remove(); return; }
+
+  const confirm = document.createElement('div');
+  confirm.className = 'meal-remove-confirm';
+  confirm.innerHTML = `
+    <span class="meal-remove-confirm-text">Remove item?</span>
+    <button class="meal-remove-confirm-ok" title="Remove"
+      onclick="event.stopPropagation();_confirmRemoveSavedFood()">
+      <span class="ms" style="font-size:18px">check</span>
+    </button>
+    <button class="meal-remove-confirm-cancel" title="Cancel"
+      onclick="event.stopPropagation();this.closest('.meal-remove-confirm').remove()">
+      <span class="ms" style="font-size:18px">close</span>
+    </button>`;
+
+  confirm.addEventListener('click', e => e.stopPropagation());
+  btn.appendChild(confirm);
+
+  const _dismiss = () => {
+    const c = document.querySelector('.meal-remove-confirm');
+    if (c) c.remove();
+    document.removeEventListener('click', _dismiss);
+  };
+  setTimeout(() => document.addEventListener('click', _dismiss), 0);
+}
+
+function _confirmRemoveSavedFood() {
+  const c = document.querySelector('.meal-remove-confirm');
+  if (c) c.remove();
+  if (curFood && isFaved(curFood.id)) {
+    toggleFave(curFood.id);
+    showToast('Removed from Faves', 'delete');
+  }
+  detBack();
+}
+
 /* Heart tap on meal total page */
 function onMealFave() {
   if (!cmpList.length) return;
@@ -11163,10 +11350,13 @@ function openRest(name) {
   const cats = ['all', ...new Set(it.map(f => f.cat))];
   const catLabels = {all:'All', burgers:'Burgers', chicken:'Chicken', pizza:'Pizza',
     wraps:'Wraps', sides:'Sides', drinks:'Drinks', sushi:'Sushi', pies:'Pies',
-    smoothies:'Smoothies', juices:'Juices', salads:'Salads'};
+    smoothies:'Smoothies', juices:'Juices', salads:'Salads', desserts:'Desserts',
+    tacos:'Tacos', burritos:'Burritos', subs:'Subs', rice:'Rice', pho:'Pho',
+    platters:'Platters', fishnchips:'Fish & Chips', freshrolls:'Fresh Rolls',
+    kids:'Kids', bowls:'Bowls', bao:'Bao', bun:'Bun', goi:'Goi', banhmi:'Bánh Mì', com:'Cơm'};
   const mcatsEl = document.getElementById('mcats');
   if (mcatsEl) mcatsEl.innerHTML = cats.map(cat =>
-    `<div class="pill${cat === 'all' ? ' on' : ''}" onclick="setMCat('${cat}',this)">${catLabels[cat] || cat}</div>`
+    `<div class="pill${cat === 'all' ? ' on' : ''}" onclick="setMCat('${cat}',this)">${catLabels[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1))}</div>`
   ).join('');
 
   renderMenu();
@@ -11178,12 +11368,7 @@ function renderMenu() {
   const q = (document.getElementById('msi').value || '').toLowerCase();
   const mcb = document.getElementById('menu-clear-btn');
   if (mcb) mcb.classList.toggle('hidden', !q);
-  if (q && mCatSel !== 'all') {
-    mCatSel = 'all';
-    document.querySelectorAll('#mcats .pill').forEach(p => p.classList.remove('on'));
-    const allPill = document.querySelector('#mcats .pill');
-    if (allPill) allPill.classList.add('on');
-  }
+  /* Allow category + search to stack — do NOT reset category when search active */
   let it = foods.filter(f => f.chain === curRest);
   if (mCatSel !== 'all') it = it.filter(f => f.cat === mCatSel);
   if (q) it = it.filter(f => f.name.toLowerCase().includes(q));
@@ -11247,6 +11432,10 @@ function openDetail(id, fromRest, overridePrevPage) {
     const _scrEl = document.getElementById('search-scroll');
     _srScrollTop = _scrEl ? _scrEl.scrollTop : 0;
   }
+  if (fromRest) {
+    const _rmEl = document.getElementById('pg-rmenu-scroll');
+    _rmScrollTop = _rmEl ? _rmEl.scrollTop : 0;
+  }
   /* Save search query to history when tapping a result from search */
   if (!fromRest) {
     const si = document.getElementById('si');
@@ -11264,12 +11453,32 @@ function openDetail(id, fromRest, overridePrevPage) {
   const fvd = isFaved(id);
   const detFaveBtn = document.getElementById('det-fave-btn');
   const detFaveIco = document.getElementById('det-fave-ico');
-  if (detFaveBtn) detFaveBtn.classList.toggle('faved', fvd);
-  if (detFaveIco) { detFaveIco.textContent = fvd ? 'favorite' : 'favorite_border'; detFaveIco.classList.toggle('filled', fvd); }
+  const _detFromFaves = prevPage === 'faves';
+  if (detFaveBtn) {
+    if (_detFromFaves) {
+      /* Coming from My Faves — show trash + confirm pattern instead of heart */
+      detFaveBtn.setAttribute('onclick', 'showFoodRemoveConfirm(this);event.stopPropagation()');
+      detFaveBtn.title = 'Remove from Faves';
+      detFaveBtn.classList.remove('faved');
+    } else {
+      detFaveBtn.setAttribute('onclick', 'onFaveCard(curFood&&curFood.id)');
+      detFaveBtn.title = 'Save to favourites';
+      detFaveBtn.classList.toggle('faved', fvd);
+    }
+  }
+  if (detFaveIco) {
+    if (_detFromFaves) {
+      detFaveIco.textContent = 'delete_outline';
+      detFaveIco.classList.remove('filled');
+    } else {
+      detFaveIco.textContent = fvd ? 'favorite' : 'favorite_border';
+      detFaveIco.classList.toggle('filled', fvd);
+    }
+  }
 
-  /* ── Sticky compact appbar — reset to hidden, scroll listener reveals it ── */
-  const detAppbar = document.getElementById('det-appbar');
-  if (detAppbar) { detAppbar.classList.add('hidden'); detAppbar.classList.remove('scrolled'); }
+  /* ── Topbar title — reset to hidden, scroll listener reveals it ── */
+  const detTopbar = document.querySelector('#pg-detail .det-topbar');
+  if (detTopbar) detTopbar.classList.remove('scrolled');
   document.getElementById('det-chain').textContent = f.chain + (f.pcs ? ' · ' + f.pcs : '') + (f.size ? ' · ' + f.size : '');
   document.getElementById('det-name').textContent = f.name;
 
@@ -11508,9 +11717,22 @@ function _renderFavesGrid() {
       const s = SC(r.score), sc = r.score.toLowerCase();
       const safeName = r.name.replace(/'/g, "\\'");
       const itemCount = foods.filter(f => f.chain === r.name).length;
+      if (_faveDeleteConfirmId === 'rest:' + r.name) {
+        return `<div class="fv-card score-${sc} fv-card--confirm">
+          <div class="fv-confirm-text">Remove<br><b>${r.name}</b>?</div>
+          <div class="fv-confirm-btns">
+            <button class="fv-confirm-ok" onclick="event.stopPropagation();onFaveRest('${safeName}');_faveDeleteConfirmId=null;_renderFavesGrid()" title="Remove">
+              <span class="ms" style="font-size:18px">check</span>
+            </button>
+            <button class="fv-confirm-cancel" onclick="event.stopPropagation();_faveDeleteConfirmId=null;_renderFavesGrid()" title="Cancel">
+              <span class="ms" style="font-size:18px">close</span>
+            </button>
+          </div>
+        </div>`;
+      }
       return `<div class="fv-card score-${sc}" onclick="openRest('${safeName}')">
-        <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveRest('${safeName}')" aria-label="Remove from favourites">
-          <span class="ms filled" style="font-size:15px">favorite</span>
+        <button class="fv-unfave-btn" onclick="event.stopPropagation();_faveDeleteConfirmId='rest:${safeName}';_renderFavesGrid()" aria-label="Remove from favourites">
+          <span class="ms" style="font-size:15px">delete_outline</span>
         </button>
         <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${r.score}</span>
         <span class="fv-emoji">${emojiImg(r.emoji, EMO.sm)}</span>
@@ -11521,9 +11743,22 @@ function _renderFavesGrid() {
     }).join('');
     const foodCards = faveItems.map(f => {
       const exf = effectiveScore(f); const s = SC(exf), sc = exf.toLowerCase();
+      if (_faveDeleteConfirmId === f.id) {
+        return `<div class="fv-card score-${sc} fv-card--confirm">
+          <div class="fv-confirm-text">Remove<br><b>${f.name}</b>?</div>
+          <div class="fv-confirm-btns">
+            <button class="fv-confirm-ok" onclick="event.stopPropagation();onFaveCard(${f.id});_faveDeleteConfirmId=null;_renderFavesGrid()" title="Remove">
+              <span class="ms" style="font-size:18px">check</span>
+            </button>
+            <button class="fv-confirm-cancel" onclick="event.stopPropagation();_faveDeleteConfirmId=null;_renderFavesGrid()" title="Cancel">
+              <span class="ms" style="font-size:18px">close</span>
+            </button>
+          </div>
+        </div>`;
+      }
       return `<div class="fv-card score-${sc}" onclick="openDetail(${f.id},false,'faves')">
-        <button class="fv-unfave-btn" onclick="event.stopPropagation();onFaveCard(${f.id})" aria-label="Remove from favourites">
-          <span class="ms filled" style="font-size:15px">favorite</span>
+        <button class="fv-unfave-btn" onclick="event.stopPropagation();_faveDeleteConfirmId=${f.id};_renderFavesGrid()" aria-label="Remove from favourites">
+          <span class="ms" style="font-size:15px">delete_outline</span>
         </button>
         <span class="fv-badge" style="background:${s.b};color:${s.t};border-color:${s.br}">${exf}</span>
         <span class="fv-emoji">${emojiImg(f.emoji, EMO.sm)}</span>
@@ -11626,13 +11861,27 @@ function _reloadSavedMeal(idx) {
   cmpMode = 'meal';
   prevPage = 'faves';  /* so mealBack() returns to faves */
   mealFromFaves = true;
+  mealFromFavesIdx = idx;
   syncCmpUI();
   renderMeal();
   nav('meal');
 }
 
 function detBack() {
-  if (dFR && curRest) openRest(curRest);       /* came from restaurant menu */
+  if (dFR && curRest) {
+    /* Save prevRestPage before openRest overwrites it (active page is pg-detail at this point,
+       so openRest would set prevRestPage='detail', breaking the second back press) */
+    const _savedPRP = prevRestPage;
+    openRest(curRest); /* came from restaurant menu */
+    prevRestPage = _savedPRP; /* restore so restBack() navigates correctly (e.g. back to pg-restaurants) */
+    /* Restore restaurant menu scroll position */
+    if (_rmScrollTop > 0) {
+      requestAnimationFrame(() => {
+        const _rmEl = document.getElementById('pg-rmenu-scroll');
+        if (_rmEl) _rmEl.scrollTo({ top: _rmScrollTop, behavior: 'instant' });
+      });
+    }
+  }
   else if (prevPage === 'compare') { nav('compare'); renderCmp(); } /* came from compare screen */
   else if (prevPage === 'meal') { renderMeal(); nav('meal'); } /* came from meal swap */
   else if (prevPage === 'insights') nav('insights'); /* came from insights */
@@ -12662,6 +12911,7 @@ function csPickFood(slotIdx, foodId) {
 }
 
 function csPickFromCarousel(foodId) {
+  csActiveSlot = -1; /* close suggested search if open */
   if (csSlots.includes(foodId)) {
     const i = csSlots.indexOf(foodId);
     csSlots[i] = null;
@@ -12670,8 +12920,16 @@ function csPickFromCarousel(foodId) {
     return;
   }
   const emptyIdx = csSlots.indexOf(null);
-  if (emptyIdx === -1) { showToast('Remove an item first', 'info'); return; }
-  csSlots[emptyIdx] = foodId;
+  if (emptyIdx === -1) {
+    /* All slots filled — if exactly 2, replace the 2nd item (slot 1) */
+    if (csSlots.length === 2) {
+      csSlots[1] = foodId;
+    } else {
+      showToast('Remove an item first', 'info'); return;
+    }
+  } else {
+    csSlots[emptyIdx] = foodId;
+  }
   csRefreshSuggestions();
   renderCmpSheet();
 }
@@ -13646,11 +13904,47 @@ function mbResultsHtml(slotIdx, q) {
   // Determine chain of filled main slot for prioritisation
   const mainSlot = mealSlots[0];
   const mainChain = mainSlot && mainSlot.foodId ? (foods.find(x => x.id === mainSlot.foodId) || {}).chain : null;
+  const DRINK_CATS = ['drinks','smoothies','juices'];
+  const NZ_CHAIN_ORDER = ["McDonald's","KFC","Burger King","Domino's","Pizza Hut","Subway","Nando's","Burger Fuel","Wendy's","Taco Bell","Hell Pizza","Better Burger","St. Pierre's","Tank","Smart Sushi","Mad Mex","Pita Pit"];
   let results;
   if (lq) {
     results = foods.filter(f => f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq));
+  } else if (slot.label === 'Side' && mainChain) {
+    /* Side: same-restaurant items ordered by relevance (sides first, other non-main next, mains last),
+       then other restaurants' sides (2 per chain, NZ_CHAIN_ORDER). Drinks excluded — they have their own slot. */
+    const MAIN_CATS = MB_SLOT_DEFS[0].cats;
+    const sameChainSides  = foods.filter(f => f.chain === mainChain && f.cat === 'sides');
+    const sameChainOther  = foods.filter(f => f.chain === mainChain && f.cat !== 'sides' && !MAIN_CATS.includes(f.cat) && !DRINK_CATS.includes(f.cat));
+    const sameChainMains  = foods.filter(f => f.chain === mainChain && MAIN_CATS.includes(f.cat));
+    const _cc = {};
+    const otherSides = foods
+      .filter(f => f.chain !== mainChain && slot.cats.includes(f.cat))
+      .filter(f => {
+        if (NZ_CHAIN_ORDER.indexOf(f.chain) === -1) return false;
+        _cc[f.chain] = (_cc[f.chain] || 0) + 1;
+        return _cc[f.chain] <= 2;
+      })
+      .sort((a,b) => NZ_CHAIN_ORDER.indexOf(a.chain) - NZ_CHAIN_ORDER.indexOf(b.chain));
+    results = [...sameChainSides, ...sameChainOther, ...sameChainMains, ...otherSides];
+  } else if (slot.label === 'Drink' && mainChain) {
+    /* Drink: same-restaurant drinks first; if none, fall back to NZ Soft Drinks */
+    const chainDrinks = foods.filter(f => f.chain === mainChain && DRINK_CATS.includes(f.cat));
+    if (chainDrinks.length) {
+      const _cc = {};
+      const otherDrinks = foods
+        .filter(f => f.chain !== mainChain && f.chain !== 'NZ Soft Drinks' && DRINK_CATS.includes(f.cat))
+        .filter(f => {
+          if (NZ_CHAIN_ORDER.indexOf(f.chain) === -1) return false;
+          _cc[f.chain] = (_cc[f.chain] || 0) + 1;
+          return _cc[f.chain] <= 2;
+        })
+        .sort((a,b) => NZ_CHAIN_ORDER.indexOf(a.chain) - NZ_CHAIN_ORDER.indexOf(b.chain));
+      results = [...chainDrinks, ...otherDrinks];
+    } else {
+      /* Restaurant has no drinks — suggest generic NZ Soft Drinks */
+      results = foods.filter(f => f.chain === 'NZ Soft Drinks');
+    }
   } else {
-    const NZ_CHAIN_ORDER = ["McDonald's","KFC","Burger King","Domino's","Pizza Hut","Subway","Nando's","Burger Fuel","Wendy's","Taco Bell","Hell Pizza","Better Burger","St. Pierre's","Tank","Smart Sushi","Mad Mex","Pita Pit"];
     const catFiltered = foods.filter(f => slot.cats.length === 0 || slot.cats.includes(f.cat));
     const _cc = {};
     results = catFiltered.filter(f => {
@@ -13797,7 +14091,7 @@ function mbAddSlot() {
 function mbConfirm() {
   cmpList = mealSlots.filter(s => s.foodId).map(s => s.foodId);
   cmpMode = 'meal';
-  mealFromFaves = false;
+  mealFromFaves = false; mealFromFavesIdx = -1;
   closeAllSheets();
   const activePg = document.querySelector('.page.active');
   prevPage = activePg ? activePg.id.replace('pg-', '') : 'home';
@@ -13924,7 +14218,9 @@ function renderMeal() {
       <div style="display:flex;align-items:center;gap:4px">
         ${mealFromFaves && items.length > 0 ? `<button onclick="editSavedMeal()" title="Edit meal" style="background:none;border:none;cursor:pointer;color:var(--md-on-surface-variant);padding:6px;border-radius:var(--shape-full);display:inline-flex;align-items:center"><span class="ms" style="font-size:22px">edit</span></button>` : ''}
         ${items.length > 0 ? `<span class="meal-grade-letter meal-grade-letter-sm score-${grade.toLowerCase()}" onclick="openScoreSheet('${grade}')" title="${gradeLabel}">${grade}</span>` : ''}
-        ${items.length > 0 ? `<button class="${saveCls}" id="meal-save-btn" onclick="onMealFave()" title="Save meal to favourites"><span class="ms">${saveIco}</span></button>` : ''}
+        ${items.length > 0 ? (mealFromFaves
+          ? `<button class="meal-save-btn" id="meal-save-btn" onclick="showMealRemoveConfirm(this);event.stopPropagation()" title="Remove from Faves"><span class="ms" style="font-size:22px">delete_outline</span></button>`
+          : `<button class="${saveCls}" id="meal-save-btn" onclick="onMealFave()" title="Save meal to favourites"><span class="ms">${saveIco}</span></button>`) : ''}
       </div>
     </div>`;
 
@@ -13949,12 +14245,10 @@ function renderMeal() {
         <div class="meal-item-row">
           <div class="meal-item-emo">${emojiImg(f.emoji, EMO.sm)}</div>
           <div class="meal-item-info" style="min-width:0;flex:1">
-            <div style="display:flex;align-items:center;gap:4px;min-width:0">
-              <div class="meal-item-name" style="flex:1">${f.name}</div>
-              ${swapIcon}
-            </div>
+            <div class="meal-item-name">${f.name}</div>
             <div class="meal-item-chain">${f.chain}</div>
           </div>
+          ${swapIcon}
           <div class="meal-item-kj">${kc(f.kj)} cal</div>
           <button class="meal-item-rm" onclick="toggleCmp(${f.id});renderMeal()" title="Remove">
             <span class="ms" style="font-size:16px">remove_circle_outline</span>
@@ -13997,7 +14291,7 @@ function mealBack() {
   cmpList = [];
   cmpMode = 'compare';
   if (prevPage === 'faves') {
-    mealFromFaves = false;
+    mealFromFaves = false; mealFromFavesIdx = -1;
     nav('faves');
     syncCmpUI();
     return;
@@ -14023,7 +14317,7 @@ function editSavedMeal() {
   activeMealSlot = -1;
   cmpList = [];
   cmpMode = 'compare';
-  mealFromFaves = false;
+  mealFromFaves = false; mealFromFavesIdx = -1;
   renderMealBuilder();
   document.getElementById('sheet-scrim').classList.add('visible');
   document.getElementById('meal-builder-sheet').classList.add('open');
@@ -14085,6 +14379,26 @@ function showMealSwapTooltip(worstId, bestId, btn) {
   tooltip.addEventListener('click', e => e.stopPropagation());
 
   btn.appendChild(tooltip);
+
+  /* Clamp tooltip horizontally within app viewport so it never goes off-screen */
+  requestAnimationFrame(() => {
+    const appEl = document.getElementById('APP') || document.body;
+    const appRect = appEl.getBoundingClientRect();
+    const tipRect = tooltip.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    let shift = 0;
+    if (tipRect.right > appRect.right - 4) {
+      shift = appRect.right - 4 - tipRect.right; /* negative = nudge left */
+    } else if (tipRect.left < appRect.left + 4) {
+      shift = appRect.left + 4 - tipRect.left;   /* positive = nudge right */
+    }
+    if (shift !== 0) {
+      tooltip.style.left = shift + 'px';
+      /* Reposition caret to still point at button centre */
+      const caretX = (btnRect.left + btnRect.width / 2) - (tipRect.left + shift) - 5;
+      tooltip.style.setProperty('--caret-x', Math.max(8, Math.min(caretX, 202)) + 'px');
+    }
+  });
 
   /* Close on any outside tap (one-shot listener) */
   const _dismiss = () => {
