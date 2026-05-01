@@ -1062,6 +1062,18 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 }
 .home-cats::-webkit-scrollbar { display: none; }
 
+/* ── All Categories grid page ── */
+.cats-all-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 16px;
+}
+.cats-all-grid .home-cat-chip {
+  min-width: unset; /* override carousel min-width */
+  width: 100%;
+}
+
 /* M3 Filter chip — tonal surface */
 .home-cat-chip {
   flex-shrink: 0;
@@ -5031,6 +5043,7 @@ body.native #filter-float-pill {
                 <div class="home-sec-title">Categories</div>
                 <div class="home-sec-sub">Browse by food type</div>
               </div>
+              <span class="home-see-all" onclick="nav('cats-all')">See all →</span>
             </div>
             <div class="home-cats" id="home-cats"><div class="home-cat-chip" onclick="goSearchCat(&#39;burgers&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍔</span></span>
@@ -5047,7 +5060,7 @@ body.native #filter-float-pill {
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;sides&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍟</span></span>
       <span class="home-cat-label">Sides</span>
-    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;fish&#39;)">
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;fishnchips&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🐟</span></span>
       <span class="home-cat-label">Fish &amp; Chips</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;sushi&#39;)">
@@ -5227,6 +5240,112 @@ body.native #filter-float-pill {
       </div>
 
       <!-- ═══════════════════════════════════════════
+           PAGE: ALL CATEGORIES
+           ═══════════════════════════════════════════ -->
+      <div class="page" id="pg-cats-all">
+        <div class="sb"><span class="sb-t">9:41</span><span class="sb-i">▲▲▲ 100%</span></div>
+        <div class="rmenu-topbar">
+          <button class="rmenu-appbar-back" onclick="nav('home')" title="Back">
+            <span class="ms">arrow_back</span>
+          </button>
+          <div class="rmenu-topbar-title">All categories</div>
+          <div style="width:44px;flex-shrink:0"></div>
+        </div>
+        <div class="page-scroll">
+          <div class="cats-all-grid">
+            <div class="home-cat-chip" onclick="goSearchCat('burgers')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍔</span></span>
+              <span class="home-cat-label">Burgers</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('chicken')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍗</span></span>
+              <span class="home-cat-label">Chicken</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('pizza')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍕</span></span>
+              <span class="home-cat-label">Pizza</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('wraps')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🫓</span></span>
+              <span class="home-cat-label">Wraps</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('sides')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍟</span></span>
+              <span class="home-cat-label">Sides</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('fishnchips')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🐟</span></span>
+              <span class="home-cat-label">Fish &amp; Chips</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('sushi')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍣</span></span>
+              <span class="home-cat-label">Sushi</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('subs')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥖</span></span>
+              <span class="home-cat-label">Subs</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('drinks')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥤</span></span>
+              <span class="home-cat-label">Drinks</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('smoothies')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥤</span></span>
+              <span class="home-cat-label">Smoothies</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('juices')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍊</span></span>
+              <span class="home-cat-label">Juices</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('pies')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥧</span></span>
+              <span class="home-cat-label">Pies</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('salads')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥗</span></span>
+              <span class="home-cat-label">Salads</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('tacos')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌮</span></span>
+              <span class="home-cat-label">Tacos</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('burritos')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌯</span></span>
+              <span class="home-cat-label">Burritos</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('desserts')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍨</span></span>
+              <span class="home-cat-label">Desserts</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('ice cream')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍦</span></span>
+              <span class="home-cat-label">Ice Cream</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('kids')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">👶</span></span>
+              <span class="home-cat-label">Kids</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('platters')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍽️</span></span>
+              <span class="home-cat-label">Platters</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('bowls')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥣</span></span>
+              <span class="home-cat-label">Bowls</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('rice')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍚</span></span>
+              <span class="home-cat-label">Rice</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('vietnamese')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌿</span></span>
+              <span class="home-cat-label">Vietnamese</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
            PAGE: FAVES
            ═══════════════════════════════════════════ -->
       <div class="page" id="pg-faves">
@@ -5320,14 +5439,9 @@ body.native #filter-float-pill {
             <div class="pill" onclick="setCat(&#39;drinks&#39;,this)">Drinks</div>
             <div class="pill" onclick="setCat(&#39;smoothies&#39;,this)">Smoothies</div>
             <div class="pill" onclick="setCat(&#39;juices&#39;,this)">Juices</div>
-            <div class="pill" onclick="setCat(&#39;banhmi&#39;,this)">Bánh Mì</div>
-            <div class="pill" onclick="setCat(&#39;freshrolls&#39;,this)">Fresh Rolls</div>
-            <div class="pill" onclick="setCat(&#39;pho&#39;,this)">Phở</div>
-            <div class="pill" onclick="setCat(&#39;bun&#39;,this)">Bún</div>
-            <div class="pill" onclick="setCat(&#39;com&#39;,this)">Cơm</div>
-            <div class="pill" onclick="setCat(&#39;goi&#39;,this)">Gỏi</div>
-            <div class="pill" onclick="setCat(&#39;bao&#39;,this)">Bao</div>
+            <div class="pill" onclick="setCat(&#39;vietnamese&#39;,this)">Vietnamese</div>
             <div class="pill" onclick="setCat(&#39;fishnchips&#39;,this)">Fish &amp; Chips</div>
+            <div class="pill" onclick="setCat(&#39;ice cream&#39;,this)">Ice Cream</div>
           </div>
         </div>
 
@@ -9399,6 +9513,17 @@ const foods = [
   {id:1193, name:"Pork Spare Ribs", chain:"Hell Pizza", cat:"mains", emoji:"🍖", kj:3950, protein:63.6, fat:57.3, carbs:43.6, sugar:40.9, sodium:2230, sat_fat:23.4, fibre:0.0, score:"D"},
   {id:1194, name:"Lamb Shanks", chain:"Hell Pizza", cat:"mains", emoji:"🍖", kj:2440, protein:60.3, fat:20.6, carbs:35.8, sugar:13.1, sodium:1030, sat_fat:8.0, fibre:5.4, score:"B"},
 
+  /* ── Tip Top NZ — stick novelties & cones (Source: Tip Top NZ nutrition data) ── */
+  {id:1195, name:"Jelly Tip",                              chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:420,  protein:0.9, fat:5.3,  sat_fat:4.5,  carbs:12.5, sugar:12.0, sodium:14,  fibre:null, score:"D"},
+  {id:1196, name:"Rocky Road",                             chain:"Tip Top", cat:"ice cream", emoji:"🍫", kj:745,  protein:1.6, fat:10.9, sat_fat:null, carbs:18.3, sugar:null, sodium:null,fibre:null, score:"D"},
+  {id:1197, name:"Eskimo Pie",                             chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:774,  protein:1.5, fat:13.4, sat_fat:9.8,  carbs:14.4, sugar:13.5, sodium:23,  fibre:null, score:"D"},
+  {id:1198, name:"Memphis Meltdown Big Bikkie",            chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:1531, protein:4.5, fat:21.9, sat_fat:12.8, carbs:37.6, sugar:29.2, sodium:140, fibre:null, score:"D"},
+  {id:1199, name:"Trumpet - Chocolate",                    chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:1050, protein:2.6, fat:12.0, sat_fat:8.2,  carbs:31.8, sugar:22.0, sodium:23,  fibre:null, score:"C"},
+  {id:1200, name:"Trumpet - Vanilla",                      chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:975,  protein:2.5, fat:11.6, sat_fat:7.5,  carbs:29.0, sugar:17.0, sodium:29,  fibre:null, score:"C"},
+  {id:1201, name:"Trumpet - Classic Mint",                 chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:1060, protein:2.3, fat:11.0, sat_fat:7.8,  carbs:35.3, sugar:22.1, sodium:45,  fibre:null, score:"C"},
+  {id:1202, name:"Trumpet - Hokey Pokey",                  chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:1059, protein:2.1, fat:10.2, sat_fat:7.1,  carbs:37.7, sugar:23.8, sodium:55,  fibre:null, score:"C"},
+  {id:1203, name:"Trumpet Colossal Cone - Choc Almond",   chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:1390, protein:4.0, fat:16.4, sat_fat:9.1,  carbs:40.8, sugar:29.7, sodium:32,  fibre:null, score:"C"},
+
 ];
 
 const DIET_FLAGS_DATA = {
@@ -9670,7 +9795,8 @@ const rests = [
   {name:"Roll'd",       emoji:"🌿", score:"A", avg_kj:1868, brand:"#B5121B", desc:"Fresh Vietnamese kai — rice paper rolls, bánh mì, phở, bún and rice bowls. One of the healthiest fast food menus in the app."},
   {name:"Takeaways",    emoji:"🐟", score:"A", avg_kj:1556, brand:"#1B6CA8", desc:"Your local NZ fish and chip shop. Classic Kiwi takeaways — battered fish, chips, fritters, hot dogs and more. Numbers are typical averages."},
   {name:"Taco Bell",    emoji:"🌮", score:"C", avg_kj:2114, brand:"#702082", desc:"The US Tex-Mex chain, now in Aotearoa. Tacos, burritos, crunchwraps and more — big flavour, big kJs. Vegan range available."},
-  {name:"NZ Soft Drinks",  emoji:"🥤", score:"D", avg_kj:306,  brand:"#E8001B", desc:"Popular NZ soft drinks in 300ml, 330ml and 500ml serves. Full-sugar versions are high in added sugar — all major brands offer zero-sugar alternatives that score significantly better."}
+  {name:"NZ Soft Drinks",  emoji:"🥤", score:"D", avg_kj:306,  brand:"#E8001B", desc:"Popular NZ soft drinks in 300ml, 330ml and 500ml serves. Full-sugar versions are high in added sugar — all major brands offer zero-sugar alternatives that score significantly better."},
+  {name:"NZ Ice Cream",    emoji:"🍦", score:"C", avg_kj:1000, brand:"#E85D9B", desc:"Iconic NZ ice cream brands — Tip Top sticks, cones and novelties. These are treat foods: high in sugar and sat fat. Jelly Tip, Eskimo Pie and the Trumpet range are the classics."}
 ];
 
 </script>
@@ -10655,7 +10781,8 @@ function doSearch() {
       ? fx.filter(f => f.chain.toLowerCase() === tagHit)
       : fx.filter(f => f.cat === tagHit);
   } else {
-    if (catSel !== 'all') fx = fx.filter(f => f.cat === catSel);
+    if (catSel === 'vietnamese') fx = fx.filter(f => f.chain === "Roll'd");
+    else if (catSel !== 'all') fx = fx.filter(f => f.cat === catSel);
     if (q) fx = fx.filter(f => {
       /* fuzzyNorm: diacritics + apostrophes + periods → tolerant matching */
       const haystack = fuzzyNorm(f.name + ' ' + f.chain);
@@ -10673,7 +10800,7 @@ function doSearch() {
   if (srFilters.vegetarian)  fx = fx.filter(f => getFoodFlags(f).includes('vegetarian'));
   if (srFilters.halal)       fx = fx.filter(f => getFoodFlags(f).includes('halal'));
   /* Sort */
-  const CAT_ORDER_S = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','drinks','other'];
+  const CAT_ORDER_S = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','ice cream','drinks','other'];
   const GRADE_ORDER = { A:0, B:1, C:2, D:3 };
   if (srFilters.sort === 'lo') fx.sort((a, b) => a.kj - b.kj);
   else if (srFilters.sort === 'hi') fx.sort((a, b) => b.kj - a.kj);
@@ -11296,7 +11423,9 @@ function goSearchCat(cat) {
   /* Track for resume shortcut */
   const catLabels = { burgers:'Burgers', chicken:'Chicken', pizza:'Pizza', wraps:'Wraps',
     sides:'Sides', sushi:'Sushi', subs:'Subs', drinks:'Drinks', pies:'Pies',
-    smoothies:'Smoothies', juices:'Juices', salads:'Salads' };
+    smoothies:'Smoothies', juices:'Juices', salads:'Salads', fishnchips:'Fish & Chips',
+    tacos:'Tacos', burritos:'Burritos', desserts:'Desserts', 'ice cream':'Ice Cream', kids:'Kids',
+    platters:'Platters', bowls:'Bowls', rice:'Rice', vietnamese:'Vietnamese' };
   if (cat !== 'all') {
     lastSearch = { q: '', cat, label: catLabels[cat] || cat };
   }
@@ -11347,7 +11476,7 @@ function renderRests() {
   else fx.sort((a, b) => so[b.score] - so[a.score]);
   document.getElementById('rct').textContent = fx.length + ' restaurant' + (fx.length !== 1 ? 's' : '');
   document.getElementById('rl').innerHTML = fx.map(r => {
-    const s = SC(r.score), it = foods.filter(f => f.chain === r.name);
+    const s = SC(r.score), it = getRestFoods(r.name);
     const faved = isRestFaved(r.name);
     const safeId = 'rcfv-' + r.name.replace(/[^a-z0-9]/gi, '_');
     const safeName = r.name.replace(/\\/g, '\\\\').replace(/'/g, '\\x27');
@@ -11371,6 +11500,13 @@ function setSF(sc, el) { rsfSel = sc; document.querySelectorAll('#sfpills .pill'
 function toggleRS() { rSB = !rSB; document.getElementById('rsa').innerHTML = '<span class="ms sz-20">swap_vert</span> ' + (rSB ? 'Best' : 'Worst') + ' first'; renderRests(); }
 
 /* ── Restaurant menu page ── */
+/* NZ Ice Cream is an umbrella restaurant — items live under chain:"Tip Top" (etc.)
+   so filter by cat rather than chain for that page. */
+function getRestFoods(name) {
+  if (name === 'NZ Ice Cream') return foods.filter(f => f.cat === 'ice cream');
+  return foods.filter(f => f.chain === name);
+}
+
 function openRest(name) {
   /* name may come from this.dataset.name (DOM element) or direct string call */
   if (typeof name !== 'string') name = String(name);
@@ -11389,7 +11525,7 @@ function openRest(name) {
   if (rmScr) rmScr.scrollTo({ top: 0, behavior: 'instant' });
   const rmHdr = document.getElementById('rmenu-sticky-hdr');
   if (rmHdr) { rmHdr.classList.remove('hidden'); rmHdr.classList.remove('scrolled'); }
-  const r = rests.find(x => x.name === name), it = foods.filter(f => f.chain === name), s = SC(r.score);
+  const r = rests.find(x => x.name === name), it = getRestFoods(name), s = SC(r.score);
   const brand = r.brand || 'transparent';
 
   /* Apply brand colour to the hero block */
@@ -11428,7 +11564,7 @@ function openRest(name) {
   const cats = ['all', ...new Set(it.map(f => f.cat))];
   const catLabels = {all:'All', burgers:'Burgers', chicken:'Chicken', pizza:'Pizza',
     wraps:'Wraps', sides:'Sides', drinks:'Drinks', sushi:'Sushi', pies:'Pies',
-    smoothies:'Smoothies', juices:'Juices', salads:'Salads', desserts:'Desserts',
+    smoothies:'Smoothies', juices:'Juices', salads:'Salads', desserts:'Desserts', 'ice cream':'Ice Cream',
     tacos:'Tacos', burritos:'Burritos', subs:'Subs', rice:'Rice', pho:'Pho',
     platters:'Platters', fishnchips:'Fish & Chips', freshrolls:'Fresh Rolls',
     kids:'Kids', bowls:'Bowls', bao:'Bao', bun:'Bun', goi:'Goi', banhmi:'Bánh Mì', com:'Cơm'};
@@ -11447,7 +11583,7 @@ function renderMenu() {
   const mcb = document.getElementById('menu-clear-btn');
   if (mcb) mcb.classList.toggle('hidden', !q);
   /* Allow category + search to stack — do NOT reset category when search active */
-  let it = foods.filter(f => f.chain === curRest);
+  let it = getRestFoods(curRest);
   if (mCatSel !== 'all') it = it.filter(f => f.cat === mCatSel);
   if (q) it = it.filter(f => fuzzyIncludes(f.name, q));
   if (rmFilters.protein)     it = it.filter(f => f.protein >= 20);
@@ -11458,7 +11594,7 @@ function renderMenu() {
   if (rmFilters.vegan)       it = it.filter(f => getFoodFlags(f).includes('vegan'));
   if (rmFilters.vegetarian)  it = it.filter(f => getFoodFlags(f).includes('vegetarian'));
   if (rmFilters.halal)       it = it.filter(f => getFoodFlags(f).includes('halal'));
-  const CAT_ORDER = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','drinks','other'];
+  const CAT_ORDER = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','ice cream','drinks','other'];
   if (rmFilters.sort === 'lo') it.sort((a, b) => a.kj - b.kj);
   else if (rmFilters.sort === 'hi') it.sort((a, b) => b.kj - a.kj);
   else if (rmFilters.sort === 'protein') it.sort((a, b) => b.protein - a.protein);
