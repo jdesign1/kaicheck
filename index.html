@@ -2391,9 +2391,17 @@ body.native #filter-float-pill {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 60px 24px 24px; text-align: center; gap: 12px;
 }
-.faves-empty-icon { font-size: 48px; opacity: 0.35; }
+.faves-empty-icon { font-size: 52px; }
 .faves-empty-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--md-on-surface); }
-.faves-empty-sub { font-size: 13px; color: var(--md-on-surface-variant); line-height: 1.5; }
+.faves-empty-sub { font-size: 13px; color: var(--md-on-surface-variant); line-height: 1.5; max-width: 220px; }
+.faves-empty-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 36px; padding: 0 18px; border: none; cursor: pointer;
+  background: var(--md-primary); color: var(--md-surface);
+  font-family: var(--font-ui); font-size: 13px; font-weight: 600;
+  border-radius: var(--shape-full);
+}
+.faves-empty-cta:active { transform: scale(0.96); }
 
 /* Legacy no-op (kept so any stale references don't break layout) */
 .fc-btn-tonal, .fc-btn-filled { display: none; }
@@ -3558,14 +3566,15 @@ body.native #filter-float-pill {
 
 /* ── New ranked-card compare v2 ── */
 .cmp-verdict {
-  margin: 0 16px 12px; padding: 12px 14px;
+  margin: 0 16px 14px; padding: 13px 16px;
   background: var(--md-primary-container);
   border-radius: var(--shape-lg);
+  border-left: 4px solid var(--md-primary);
   font-size: 13px; font-weight: 600;
   color: var(--md-on-primary-container);
-  display: flex; align-items: center; gap: 8px; line-height: 1.4;
+  display: flex; align-items: center; gap: 10px; line-height: 1.45;
 }
-.cmp-verdict .ms { font-size: 20px; color: var(--md-primary); flex-shrink: 0; }
+.cmp-verdict .ms { font-size: 22px; color: var(--md-primary); flex-shrink: 0; }
 
 /* ── Compare table: CSS Grid — guarantees row alignment across all columns ──
    grid-template-rows locks every row to the same height for all columns,
@@ -3579,15 +3588,17 @@ body.native #filter-float-pill {
 }
 .cmp-v2-grid {
   display: grid;
-  column-gap: 5px;
+  column-gap: 6px;
   padding: 0 16px;
   /* hdr row: auto-height (tallest card hdr wins, shared by all)
      8 macro rows: 44px each
      steps row: 58px */
   grid-template-rows: auto repeat(8, 44px) 58px;
 }
-.cmp-v2-grid.n2 { grid-template-columns: 44px 1fr 1fr; }
-.cmp-v2-grid.n3 { grid-template-columns: 44px 1fr 1fr 1fr; }
+/* 2-card: wider label col, equal item cols */
+.cmp-v2-grid.n2 { grid-template-columns: 52px 1fr 1fr; }
+/* 3-card: slightly narrower label to give item cols breathing room */
+.cmp-v2-grid.n3 { grid-template-columns: 46px 1fr 1fr 1fr; }
 
 /* Label column */
 .cmp-v2-lbl-hdr { /* empty — header row spacer, auto-sized by grid */ }
@@ -3595,8 +3606,8 @@ body.native #filter-float-pill {
   display: flex; align-items: center;
   font-size: 12px; font-weight: 500;
   color: var(--md-on-surface-variant);
-  border-bottom: 1px solid var(--md-outline-variant);
   padding-right: 4px; line-height: 1.2;
+  border-bottom: 1px solid rgba(0,0,0,0.055);
 }
 .cmp-v2-steps-label {
   display: flex; flex-direction: column;
@@ -3619,8 +3630,8 @@ body.native #filter-float-pill {
   white-space: nowrap;
 }
 .cmp-v2-rank.best   { background: var(--md-primary-container); color: var(--md-primary); }
-.cmp-v2-rank.runner { background: var(--md-surface-container-high); color: var(--md-on-surface-variant); }
-.cmp-v2-rank.worst  { background: var(--md-error-container); color: var(--md-error); }
+.cmp-v2-rank.runner { background: var(--md-surface-container); color: var(--md-on-surface-variant); }
+.cmp-v2-rank.worst  { background: var(--md-surface-container-high); color: var(--md-on-surface-variant); opacity: 0.8; }
 .cmp-v2-name {
   font-size: 12px; font-weight: 700; color: var(--md-on-surface);
   line-height: 1.25; margin-bottom: 2px;
@@ -3633,43 +3644,58 @@ body.native #filter-float-pill {
   margin-bottom: 6px; overflow: hidden; text-overflow: ellipsis;
   white-space: nowrap; padding: 0 3px;
 }
+/* Mute runner/worst text to reinforce visual hierarchy */
+.cmp-v2-card-hdr.rank-runner .cmp-v2-name { color: var(--md-on-surface-variant); font-weight: 600; }
+.cmp-v2-card-hdr.rank-worst  .cmp-v2-name { color: var(--md-on-surface-variant); font-weight: 500; }
+.cmp-v2-card-hdr.rank-worst  .cmp-v2-chain { opacity: 0.7; }
 /* "See why" button on best card header */
 .cmp-v2-see-why {
   margin-top: 6px;
   display: inline-block;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: var(--shape-full);
-  background: var(--md-primary-container);
-  color: var(--md-primary);
+  background: var(--md-primary);
+  color: var(--md-on-primary);
   font-size: 11px; font-weight: 700;
   font-family: var(--font-ui);
   letter-spacing: 0.02em;
   cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  transition: opacity 0.15s;
 }
+.cmp-v2-see-why:active { opacity: 0.78; }
 
 /* Macro cells — middle rows */
 .cmp-v2-cell {
   display: flex; align-items: center; justify-content: center;
   padding: 4px;
-  border-top: 1px solid var(--md-outline-variant);
+  border-bottom: 1px solid rgba(0,0,0,0.055);
 }
 .cmp-v2-chip {
   display: flex; align-items: center; justify-content: center; gap: 2px;
   width: 100%; padding: 5px 3px; border-radius: var(--shape-xs);
   font-size: 12px; font-weight: 700; font-family: var(--font-mono);
-  background: var(--md-surface-container-high); color: var(--md-on-surface);
+  background: var(--md-surface-container); color: var(--md-on-surface);
   line-height: 1; cursor: default;
 }
 .cmp-v2-chip.best  { background: var(--md-primary-container); color: var(--md-on-primary-container); }
 .cmp-v2-chip.worst { background: var(--md-error-container); color: var(--md-on-error-container); }
 .cmp-v2-chip.warn  { background: var(--score-C-bg); color: var(--score-C-text); cursor: pointer; }
 .cmp-v2-chip.worst.warn { background: var(--md-error-container); color: var(--md-on-error-container); cursor: pointer; }
+/* Neutral chips inside de-emphasised columns should be lighter */
+.cmp-v2-cell.rank-runner .cmp-v2-chip:not(.best):not(.worst):not(.warn) {
+  background: var(--md-surface-container-high); color: var(--md-on-surface-variant);
+  font-weight: 600;
+}
+.cmp-v2-cell.rank-worst .cmp-v2-chip:not(.best):not(.worst):not(.warn) {
+  background: transparent; color: var(--md-on-surface-variant);
+  font-weight: 500; opacity: 0.8;
+}
 
 /* Steps row — bottom cell of each column */
 .cmp-v2-steps {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 6px 3px; text-align: center; gap: 2px;
-  border-top: 1px solid var(--md-outline-variant);
   border-radius: 0 0 var(--shape-md) var(--shape-md);
 }
 .cmp-v2-steps-num {
@@ -3677,6 +3703,8 @@ body.native #filter-float-pill {
   color: var(--md-on-surface); line-height: 1;
 }
 .cmp-v2-steps-lbl { font-size: 11px; color: var(--md-on-surface-variant); line-height: 1.3; text-align: center; }
+.cmp-v2-steps.rank-runner .cmp-v2-steps-num { color: var(--md-on-surface-variant); font-weight: 600; }
+.cmp-v2-steps.rank-worst  .cmp-v2-steps-num { color: var(--md-on-surface-variant); font-weight: 500; opacity: 0.8; }
 
 /* ── Column backgrounds and borders, applied per cell by rank ── */
 /* BEST */
@@ -3689,42 +3717,42 @@ body.native #filter-float-pill {
 .cmp-v2-cell.rank-best {
   background: var(--md-surface-container);
   border-left: 1px solid var(--md-primary); border-right: 1px solid var(--md-primary);
-  border-top: 1px solid var(--md-outline-variant);
+  cursor: pointer;
 }
+.cmp-v2-cell.rank-best:active { opacity: 0.7; }
 .cmp-v2-steps.rank-best {
   background: var(--md-surface-container);
-  border: 1px solid var(--md-primary); border-top: 1px solid var(--md-outline-variant);
+  border: 1px solid var(--md-primary); border-top: none;
+  cursor: pointer;
 }
-/* RUNNER */
+.cmp-v2-steps.rank-best:active { opacity: 0.7; }
+/* RUNNER — softer, less prominent than best */
 .cmp-v2-card-hdr.rank-runner {
-  background: var(--md-surface-container-high);
-  border: 1px solid var(--md-outline); border-bottom: none;
+  background: var(--md-surface-container);
+  border: 1px solid var(--md-outline-variant); border-bottom: none;
+  opacity: 0.92;
 }
 .cmp-v2-cell.rank-runner {
-  background: var(--md-surface-container-high);
-  border-left: 1px solid var(--md-outline); border-right: 1px solid var(--md-outline);
-  border-top: 1px solid var(--md-outline-variant);
+  background: var(--md-surface-container);
+  border-left: 1px solid var(--md-outline-variant); border-right: 1px solid var(--md-outline-variant);
 }
 .cmp-v2-steps.rank-runner {
-  background: var(--md-surface-container-high);
-  border: 1px solid var(--md-outline); border-top: 1px solid var(--md-outline-variant);
+  background: var(--md-surface-container);
+  border: 1px solid var(--md-outline-variant); border-top: none;
 }
-/* WORST */
+/* WORST — most de-emphasised, no fill */
 .cmp-v2-card-hdr.rank-worst {
-  background: color-mix(in srgb, var(--md-error-container) 15%, var(--md-surface-container));
-  border: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
-  border-bottom: none; opacity: 0.88;
+  background: var(--md-surface-container-low, var(--md-surface));
+  border: 1px solid var(--md-outline-variant); border-bottom: none;
+  opacity: 0.78;
 }
 .cmp-v2-cell.rank-worst {
-  background: color-mix(in srgb, var(--md-error-container) 15%, var(--md-surface-container));
-  border-left: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
-  border-right: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
-  border-top: 1px solid var(--md-outline-variant); opacity: 0.88;
+  background: var(--md-surface-container-low, var(--md-surface));
+  border-left: 1px solid var(--md-outline-variant); border-right: 1px solid var(--md-outline-variant);
 }
 .cmp-v2-steps.rank-worst {
-  background: color-mix(in srgb, var(--md-error-container) 15%, var(--md-surface-container));
-  border: 1px solid color-mix(in srgb, var(--md-error) 25%, var(--md-outline-variant));
-  border-top: 1px solid var(--md-outline-variant); opacity: 0.88;
+  background: var(--md-surface-container-low, var(--md-surface));
+  border: 1px solid var(--md-outline-variant); border-top: none;
 }
 
 /* Best pick bottom sheet */
@@ -4417,7 +4445,9 @@ body.native #filter-float-pill {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px; background: var(--md-surface-container);
   border-radius: var(--shape-md); margin-bottom: 6px;
+  cursor: pointer; transition: background 0.15s;
 }
+.meal-item-row:active { background: var(--md-surface-container-high); }
 .meal-item-emo { font-size: 22px; flex-shrink: 0; }
 .meal-item-info { flex: 1; min-width: 0; }
 .meal-item-name { font-size: 13px; font-weight: 600; color: var(--md-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -4449,7 +4479,7 @@ body.native #filter-float-pill {
 /* ── Meal hero energy row ── */
 .meal-energy-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
 .meal-cal-total {
-  font-family: var(--font-display); font-size: 40px; font-weight: 800;
+  font-family: var(--font-display); font-size: 33px; font-weight: 800;
   line-height: 1; margin-bottom: 2px; color: var(--md-on-surface);
 }
 /* Grade letter badge — compact circle, tappable */
@@ -9341,6 +9371,34 @@ const foods = [
   {id:1168, name:"Bundaberg Diet Ginger Beer 330ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:112,  protein:0, fat:0, carbs:4.0,  sugar:4.0,  sodium:36,  sat_fat:0, fibre:0, score:"C"},
   {id:1169, name:"Bundaberg Diet Ginger Beer 500ml", chain:"NZ Soft Drinks", cat:"drinks", emoji:"🥤", kj:170,  protein:0, fat:0, carbs:6.0,  sugar:6.0,  sodium:55,  sat_fat:0, fibre:0, score:"C"},
 
+  /* ── Hell Pizza — verified Hell Pizza NZ nutrition PDF 2019
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1170, name:"Fresh Green Salad", chain:"Hell Pizza", cat:"salads", emoji:"🥗", kj:70, protein:1.1, fat:0.2, carbs:1.9, sugar:1.9, sodium:18, sat_fat:0.0, fibre:1.4, score:"B"},
+  {id:1171, name:"Chicken Salad", chain:"Hell Pizza", cat:"salads", emoji:"🥗", kj:688, protein:9.6, fat:12.3, carbs:2.8, sugar:2.4, sodium:406, sat_fat:2.6, fibre:3.0, score:"C"},
+  {id:1172, name:"Greek Salad", chain:"Hell Pizza", cat:"salads", emoji:"🥗", kj:540, protein:4.6, fat:11.4, carbs:3.3, sugar:2.0, sodium:639, sat_fat:4.2, fibre:2.1, score:"D"},
+  {id:1173, name:"Chicken Slaw Salad", chain:"Hell Pizza", cat:"salads", emoji:"🥗", kj:1032, protein:10.5, fat:6.5, carbs:5.2, sugar:3.3, sodium:455, sat_fat:1.7, fibre:1.1, score:"B"},
+  {id:1174, name:"Camembert Salad", chain:"Hell Pizza", cat:"salads", emoji:"🥗", kj:739, protein:5.1, fat:14.4, carbs:5.0, sugar:4.8, sodium:105, sat_fat:3.7, fibre:4.3, score:"C"},
+  {id:1175, name:"Wedges", chain:"Hell Pizza", cat:"sides", emoji:"🍟", kj:3210, protein:14.7, fat:33.1, carbs:98.6, sugar:1.4, sodium:962, sat_fat:2.5, fibre:7.7, score:"B"},
+  {id:1176, name:"Jalapeno Poppers", chain:"Hell Pizza", cat:"sides", emoji:"🍟", kj:1495, protein:10.5, fat:12.0, carbs:50.5, sugar:12.0, sodium:660, sat_fat:7.0, fibre:2.7, score:"C"},
+  {id:1177, name:"Chicken Tenders", chain:"Hell Pizza", cat:"sides", emoji:"🍗", kj:1770, protein:39.4, fat:18.4, carbs:24.9, sugar:1.1, sodium:760, sat_fat:2.2, fibre:0.0, score:"A"},
+  {id:1178, name:"Beer Battered O-Rings", chain:"Hell Pizza", cat:"sides", emoji:"🍟", kj:1295, protein:6.9, fat:12.0, carbs:43.0, sugar:6.9, sodium:516, sat_fat:3.4, fibre:2.0, score:"C"},
+  {id:1179, name:"Corn Nuggets", chain:"Hell Pizza", cat:"sides", emoji:"🍟", kj:1610, protein:7.5, fat:17.8, carbs:46.8, sugar:10.0, sodium:690, sat_fat:2.2, fibre:3.6, score:"C"},
+  {id:1180, name:"Crumbed Camembert", chain:"Hell Pizza", cat:"sides", emoji:"🍟", kj:2740, protein:27.0, fat:50.2, carbs:24.3, sugar:3.6, sodium:816, sat_fat:26.9, fibre:1.7, score:"C"},
+  {id:1181, name:"Prawn Horns", chain:"Hell Pizza", cat:"sides", emoji:"🍟", kj:1160, protein:13.4, fat:11.4, carbs:29.9, sugar:0.9, sodium:516, sat_fat:1.3, fibre:0.0, score:"B"},
+  {id:1182, name:"Holy Loaded Fries (Share)", chain:"Hell Pizza", cat:"sides", emoji:"🍟", kj:5423, protein:20.5, fat:42.5, carbs:82.0, sugar:12.7, sodium:2562, sat_fat:12.5, fibre:0.0, score:"B"},
+  {id:1183, name:"Quorn Vegan Nuggets", chain:"Hell Pizza", cat:"sides", emoji:"🌿", kj:680, protein:10.6, fat:3.6, carbs:21.0, sugar:0.7, sodium:290, sat_fat:0.4, fibre:0.8, score:"A"},
+  {id:1184, name:"Chicken Nibbles", chain:"Hell Pizza", cat:"sides", emoji:"🍗", kj:1713, protein:45.5, fat:24.3, carbs:0.5, sugar:0.5, sodium:843, sat_fat:7.0, fibre:0.0, score:"B"},
+  {id:1185, name:"Unholy Donut", chain:"Hell Pizza", cat:"desserts", emoji:"🍩", kj:1790, protein:7.9, fat:19.3, carbs:54.0, sugar:12.8, sodium:370, sat_fat:10.7, fibre:2.0, score:"C"},
+  {id:1186, name:"Cheesecake", chain:"Hell Pizza", cat:"desserts", emoji:"🍰", kj:2130, protein:7.2, fat:34.5, carbs:42.6, sugar:30.1, sodium:337, sat_fat:21.9, fibre:0.7, score:"D"},
+  {id:1187, name:"GF Brownie", chain:"Hell Pizza", cat:"desserts", emoji:"🍰", kj:1530, protein:3.5, fat:19.3, carbs:44.0, sugar:33.5, sodium:83, sat_fat:10.2, fibre:2.0, score:"D"},
+  {id:1188, name:"Garlic Bread", chain:"Hell Pizza", cat:"sides", emoji:"🧄", kj:3160, protein:16.9, fat:31.9, carbs:96.4, sugar:1.0, sodium:1100, sat_fat:18.6, fibre:6.2, score:"C"},
+  {id:1189, name:"Spirit Pasta", chain:"Hell Pizza", cat:"mains", emoji:"🍝", kj:3400, protein:28.6, fat:48.0, carbs:64.6, sugar:8.4, sodium:1270, sat_fat:24.9, fibre:5.5, score:"C"},
+  {id:1190, name:"Kali Pasta", chain:"Hell Pizza", cat:"mains", emoji:"🍝", kj:2830, protein:31.6, fat:25.9, carbs:74.0, sugar:21.9, sodium:1830, sat_fat:13.9, fibre:9.5, score:"C"},
+  {id:1191, name:"Green Demon Pasta", chain:"Hell Pizza", cat:"mains", emoji:"🍝", kj:2470, protein:21.0, fat:27.4, carbs:61.4, sugar:5.3, sodium:745, sat_fat:6.3, fibre:7.1, score:"B"},
+  {id:1192, name:"Chicken Demon Pasta", chain:"Hell Pizza", cat:"mains", emoji:"🍝", kj:2860, protein:30.3, fat:32.0, carbs:61.7, sugar:5.5, sodium:895, sat_fat:7.9, fibre:7.1, score:"B"},
+  {id:1193, name:"Pork Spare Ribs", chain:"Hell Pizza", cat:"mains", emoji:"🍖", kj:3950, protein:63.6, fat:57.3, carbs:43.6, sugar:40.9, sodium:2230, sat_fat:23.4, fibre:0.0, score:"D"},
+  {id:1194, name:"Lamb Shanks", chain:"Hell Pizza", cat:"mains", emoji:"🍖", kj:2440, protein:60.3, fat:20.6, carbs:35.8, sugar:13.1, sodium:1030, sat_fat:8.0, fibre:5.4, score:"B"},
+
 ];
 
 const DIET_FLAGS_DATA = {
@@ -9595,7 +9653,7 @@ const rests = [
   {name:"Subway",       emoji:"🥖", score:"B", avg_kj:1800, brand:"#009A44", desc:"Build-your-own subs and wraps. Solid protein options and plenty of veggie choices — one of the more customisable fast food chains around."},
   {name:"Nando's",    emoji:"🌶️",score:"A", avg_kj:1942, brand:"#D1011B", desc:"PERi-PERi flame-grilled chicken from Aotearoa\'s favourite Portuguese-inspired chain. Lean protein, bold flavour."},
   {name:"Pizza Hut",    emoji:"🍕", score:"C", avg_kj:6896, brand:"#EE3224", desc:"Classic NZ pizza chain with a wide menu. Whole pizzas are a big kJ commitment — worth checking before you order."},
-  {name:"Hell Pizza",   emoji:"😈", score:"C", avg_kj:6992, brand:"#CC0000", desc:"NZ-owned pizza with attitude. Known for creative toppings and whole-pizza serves that pack a serious kJ punch."},
+  {name:"Hell Pizza",   emoji:"😈", score:"C", avg_kj:4459, brand:"#CC0000", desc:"NZ-owned pizza with attitude. Known for creative toppings and whole-pizza serves that pack a serious kJ punch."},
   {name:"McDonald's", emoji:"🍔", score:"C", avg_kj:1976, brand:"#FFC72C", desc:"The golden arches — fast, familiar and found everywhere. Some surprisingly decent options hiding in the menu if you look."},
   {name:"KFC",          emoji:"🍗", score:"A", avg_kj:1454, brand:"#E4002B", desc:"The Colonel\'s chicken, done the KFC way. Plenty of high-protein options, especially if you skip the extras."},
   {name:"Better Burger",emoji:"🌿", score:"A", avg_kj:1262, brand:"#2D7A3A", desc:"NZ-owned burger joint with a focus on quality ingredients. Scores well across the menu — plenty of high-protein options."},
@@ -10443,6 +10501,25 @@ function hideRecentChipsDelayed() {
   _recentHideTimer = setTimeout(hideRecentChips, 220);
 }
 
+/* ── Fuzzy normalisation for tolerant search ──
+   Strips apostrophes, periods, hyphens, diacritics so that e.g.
+   "wendys" matches "Wendy's", "st pierres" matches "St. Pierre's",
+   "dominos" matches "Domino's", "mcdonalds" matches "McDonald's". */
+function fuzzyNorm(s) {
+  return s.normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')   // diacritics
+    .toLowerCase()
+    .replace(/[''`']/g, '')            // apostrophes
+    .replace(/[.\-]/g, '')             // periods, hyphens
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function fuzzyIncludes(haystack, needle) {
+  const nh = fuzzyNorm(haystack), nn = fuzzyNorm(needle);
+  // Try normal match first; fall back to space-collapsed for e.g. "stpierres" → "st pierres"
+  return nh.includes(nn) || nh.replace(/\s/g,'').includes(nn.replace(/\s/g,''));
+}
+
 /* ── Search name suggestions ── */
 let _sugHideTimer = null;
 let _sugJustSelected = false;
@@ -10452,12 +10529,11 @@ function renderSearchSuggestions(raw) {
   const el = document.getElementById('search-suggestions');
   if (!el) return;
   if (!raw || raw.length < 1) { hideSearchSuggestions(); return; }
-  const norm = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  const nRaw = norm(raw);
+  const nRaw = fuzzyNorm(raw);
   const matches = [];
   for (let i = 0; i < foods.length && matches.length < 5; i++) {
     const f = foods[i];
-    if (norm(f.name).includes(nRaw)) matches.push(f);
+    if (fuzzyNorm(f.name).includes(nRaw) || fuzzyNorm(f.chain).includes(nRaw)) matches.push(f);
   }
   if (!matches.length) { hideSearchSuggestions(); return; }
   el.innerHTML = matches.map(f => {
@@ -10581,10 +10657,9 @@ function doSearch() {
   } else {
     if (catSel !== 'all') fx = fx.filter(f => f.cat === catSel);
     if (q) fx = fx.filter(f => {
-      /* normalise diacritics for matching: é→e, ở→o, etc. */
-      const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-      const haystack = norm(f.name + ' ' + f.chain);
-      return tokens.every(t => haystack.includes(norm(t)));
+      /* fuzzyNorm: diacritics + apostrophes + periods → tolerant matching */
+      const haystack = fuzzyNorm(f.name + ' ' + f.chain);
+      return tokens.every(t => haystack.includes(fuzzyNorm(t)));
     });
   }
   /* Nutrition filters */
@@ -10634,7 +10709,7 @@ function doSearch() {
   /* Restaurant shortcut cards — match on query 3+ chars, no category filter active */
   let restCards = '';
   if (q.length >= 3 && catSel === 'all') {
-    const matchedRests = rests.filter(r => r.name.toLowerCase().includes(q));
+    const matchedRests = rests.filter(r => fuzzyIncludes(r.name, q));
     if (matchedRests.length) {
       restCards = matchedRests.slice(0, 3).map(r => {
         return `<div class="det-rest-link" data-name="${r.name}" onclick="openRest(this.dataset.name)" style="--det-rest-brand:${r.brand}">
@@ -10651,7 +10726,10 @@ function doSearch() {
     }
   }
   const rlblEl2 = document.getElementById('rlbl'); if (rlblEl2) { rlblEl2.style.display = ''; rlblEl2.textContent = fx.length + ' item' + (fx.length !== 1 ? 's' : ''); }
-  document.getElementById('fl').innerHTML = restCards + (fx.map(f => makeCard(f, false)).join('') || (restCards ? '' : '<div class="pol-empty-inline"><div class="ico">🔎</div><div class="title">No matches just yet</div><div class="sub">Try a different keyword, or clear filters to see everything we know about.</div><button class="cta" onclick="clearSearch()"><span class="ms sz-20">restart_alt</span> Reset search</button></div><div style="padding:20px;text-align:center;color:#9E9A93;font-size:13px;display:none">No results found</div>'));
+  const _noResTitle = q ? `No kai for “${q}”` : 'Nothing matches';
+  const _noResSub   = q && catSel !== 'all' ? 'Try clearing the category filter, or check the spelling.' : q ? "Check the spelling, or try a broader search — we've got 672 items across 23 restaurants." : 'Try removing a filter to see more options.';
+  const _noResHtml  = `<div class="pol-empty-inline"><div class="ico">🔍</div><div class="title">${_noResTitle}</div><div class="sub">${_noResSub}</div><button class="cta" onclick="clearSearch()"><span class="ms sz-20">close</span> Clear search</button></div>`;
+  document.getElementById('fl').innerHTML = restCards + (fx.map(f => makeCard(f, false)).join('') || (restCards ? '' : _noResHtml));
 }
 function setMCat(cat, el) {
   mCatSel = cat;
@@ -10756,8 +10834,8 @@ const DIET_TOOLTIPS = {
 };
 /* Chain-specific halal info — shown in tooltip instead of on-screen caveat */
 const HALAL_CHAIN_INFO = {
-  'KFC': 'KFC NZ is Halal certified. KFC NZ does not publish a full allergen breakdown — confirm dietary requirements with staff.',
-  "Nando's": "Nando's NZ is Halal certified. Nutritional values sourced from Nando's AU — NZ-specific allergen data unavailable.",
+  'KFC': "KFC NZ is Halal certified. KFC NZ hasn't published a full allergen breakdown — confirm with staff if you have dietary needs.",
+  "Nando's": "Nando's NZ is Halal certified. Nutrition figures are from Australian stores — NZ-specific allergen info isn't publicly available.",
 };
 let _dietTooltipTimer = null;
 function openDietTooltip(key, el) {
@@ -11263,7 +11341,7 @@ function renderRests() {
   const q = (document.getElementById('rsi').value || '').toLowerCase();
   const so = {A:0,B:1,C:2,D:3};
   let fx = [...rests];
-  if (q) fx = fx.filter(r => r.name.toLowerCase().includes(q));
+  if (q) fx = fx.filter(r => fuzzyIncludes(r.name, q));
   if (rsfSel !== 'all') fx = fx.filter(r => r.score === rsfSel);
   if (rSB) fx.sort((a, b) => so[a.score] - so[b.score]);
   else fx.sort((a, b) => so[b.score] - so[a.score]);
@@ -11371,7 +11449,7 @@ function renderMenu() {
   /* Allow category + search to stack — do NOT reset category when search active */
   let it = foods.filter(f => f.chain === curRest);
   if (mCatSel !== 'all') it = it.filter(f => f.cat === mCatSel);
-  if (q) it = it.filter(f => f.name.toLowerCase().includes(q));
+  if (q) it = it.filter(f => fuzzyIncludes(f.name, q));
   if (rmFilters.protein)     it = it.filter(f => f.protein >= 20);
   if (rmFilters.sugar)       it = it.filter(f => f.sugar <= 5);
   if (rmFilters.fat)         it = it.filter(f => f.fat <= 10);
@@ -11391,6 +11469,20 @@ function renderMenu() {
   });
   document.getElementById('mct').textContent = it.length + ' item' + (it.length !== 1 ? 's' : '');
   const mlEl = document.getElementById('ml');
+  if (it.length === 0) {
+    /* Empty state — no items after filters/search */
+    mlEl.classList.remove('vl-active');
+    _vl = null;
+    const _catLabel = mCatSel !== 'all' ? (mCatSel.charAt(0).toUpperCase() + mCatSel.slice(1)) : null;
+    const _rmTitle  = q ? `No kai for "${q}"` : 'Nothing here';
+    const _rmSub    = q && _catLabel
+      ? `No ${_catLabel} matching "${q}" at ${curRest}. Clear the search to see all ${_catLabel}.`
+      : q
+        ? `Nothing at ${curRest} matches "${q}".`
+        : 'Try removing a filter to see more options.';
+    mlEl.innerHTML = `<div class="pol-empty-inline"><div class="ico">🔍</div><div class="title">${_rmTitle}</div><div class="sub">${_rmSub}</div><button class="cta" onclick="clearMenuSearch()"><span class="ms sz-20">close</span> Clear search</button></div>`;
+    return;
+  }
   if (it.length >= VL_THRESHOLD) {
     /* Virtual list — only visible cards in DOM */
     mlEl.classList.add('vl-active');
@@ -11633,12 +11725,11 @@ function openDetail(id, fromRest, overridePrevPage) {
            border-radius:var(--shape-md)">
          <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
            <span class="ms" style="font-size:16px;color:#D1011B">info</span>
-           <span style="font-size:12px;font-weight:600;color:var(--md-on-surface)">Data sourced from Nando's Australia</span>
+           <span style="font-size:12px;font-weight:600;color:var(--md-on-surface)">Heads up — Nando's NZ data isn't available</span>
          </div>
          <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.5">
-           Nando's New Zealand does not publish nutritional information on their website.
-           Values shown are sourced from Nando's Australia (CalorieKing AU) and may
-           differ slightly from NZ servings.
+           Nando's NZ hasn't published nutrition info on their website — figures shown are
+           from Australian stores and may differ slightly from NZ servings.
          </div>
        </div>`
     : '';
@@ -11708,9 +11799,11 @@ function _renderFavesGrid() {
   /* ── Section 1: Saved Items ── */
   let itemsHtml;
   if (!hasItems) {
-    itemsHtml = `<div class="faves-empty-inline">
-      <span class="ms" style="font-size:32px;opacity:0.3;display:block;margin-bottom:6px">favorite_border</span>
-      <div style="font-size:13px;color:var(--md-on-surface-variant)">Tap ♡ on any food or restaurant to save it here</div>
+    itemsHtml = `<div class="faves-empty">
+      <div class="faves-empty-icon">🤍</div>
+      <div class="faves-empty-title">Nothing saved yet</div>
+      <div class="faves-empty-sub">Tap ♡ on any food to save it here for quick access.</div>
+      <button class="faves-empty-cta" onclick="nav('search')"><span class="ms" style="font-size:16px;line-height:1;vertical-align:middle">search</span> Find something</button>
     </div>`;
   } else {
     const restCards = favRests.map(r => {
@@ -12587,7 +12680,7 @@ function shareCopyText() {
     document.body.appendChild(ta);
     ta.focus(); ta.select();
     try { document.execCommand('copy'); showToast('Copied to clipboard'); }
-    catch(e) { showToast('Copy not supported'); }
+    catch(e) { showToast('Copy didn\'t work — select the text to copy manually', 'content_copy'); }
     document.body.removeChild(ta);
   }
 }
@@ -12627,7 +12720,7 @@ function toggleCmp(id) {
   const i = cmpList.indexOf(id);
   if (i > -1) cmpList.splice(i, 1);
   else {
-    if (cmpList.length >= 3) { showToast('Max 3 items — remove one first'); return; }
+    if (cmpList.length >= 3) { showToast("Tray's full — swap one out to add this", 'compare_arrows'); return; }
     cmpList.push(id);
   }
   syncCmpUI();
@@ -12724,7 +12817,7 @@ function csResultsHtml(slotIdx, q) {
   const lq = q.toLowerCase().trim();
   let results;
   if (lq) {
-    results = foods.filter(f => f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq));
+    results = foods.filter(f => fuzzyIncludes(f.name, lq) || fuzzyIncludes(f.chain, lq));
   } else {
     /* Slot 1+ with no query → default to same restaurant as first item */
     const firstId = csSlots[0];
@@ -12747,7 +12840,7 @@ function csResultsHtml(slotIdx, q) {
     }
   }
   results = results.slice(0, 25);
-  if (!results.length) return `<div style="padding:16px;text-align:center;font-size:13px;color:var(--md-on-surface-variant)">No results — try different terms</div>`;
+  if (!results.length) return `<div style="padding:20px 16px;text-align:center"><div style="font-size:28px;margin-bottom:8px">🔍</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--md-on-surface);margin-bottom:4px">No match</div><div style="font-size:12px;color:var(--md-on-surface-variant)">Try a different name or chain</div></div>`;
   return results.map(f => {
     const alreadyAdded = csSlots.includes(f.id);
     return `
@@ -12901,7 +12994,7 @@ function csPickFood(slotIdx, foodId) {
   /* Prevent adding the same item twice */
   if (csSlots.includes(foodId)) {
     const f = foods.find(x => x.id === foodId);
-    showToast((f ? f.name : 'That item') + ' is already in your comparison', 'info');
+    showToast('Already in there', 'info');
     return;
   }
   csSlots[slotIdx] = foodId;
@@ -12925,7 +13018,7 @@ function csPickFromCarousel(foodId) {
     if (csSlots.length === 2) {
       csSlots[1] = foodId;
     } else {
-      showToast('Remove an item first', 'info'); return;
+      showToast('Remove one item first', 'info'); return;
     }
   } else {
     csSlots[emptyIdx] = foodId;
@@ -13222,7 +13315,7 @@ async function shareCompareImage() {
   closeShareSheet();
   showToast('Generating image…', 'image');
   canvas.toBlob(async blob => {
-    if (!blob) { showToast('Could not generate image'); return; }
+    if (!blob) { showToast("Couldn't make the image — try again?", 'image_not_supported', 'RETRY', shareCompareImage); return; }
     const file = new File([blob], 'kaicheck-compare.png', { type: 'image/png' });
     /* Web Share API with file (mobile browsers) */
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -13395,12 +13488,13 @@ function renderCmp() {
   const allTied = sorted.every(f => effectiveScore(f) === effectiveScore(sorted[0]));
   const verdictHtml = allTied
     ? `<div class="cmp-verdict"><span class="ms">balance</span><span>Pretty similar this time — have a squiz at the details and pick your kai.</span></div>`
-    : `<div class="cmp-verdict"><span class="ms">military_tech</span><span>Choice — <b>${best.name}</b> from ${best.chain} is the pick of the bunch.</span></div>`;
+    : `<div class="cmp-verdict"><span class="ms">military_tech</span><span>Choice — <b>${best.name}</b> from ${best.chain} is the pick of the bunch. Tap the card to see why.</span></div>`;
 
   /* ── Rank helpers ── */
   const RANK_CLS  = ['best','runner','worst'];
   const RANK_ICO  = ['🏆','🥈',''];
-  const RANK_TXT  = ['Best','Runner up','Worst'];
+  const RANK_TXT  = ['Best','Runner up','Last'];
+  const bestColTap = `onclick="event.stopPropagation();openBestPickSheet(${best.id})"`;
   function rankIdx(f) {
     if (f.id === sorted[0].id) return 0;
     if (f.id === sorted[sorted.length-1].id) return n === 2 ? 2 : (n === 3 && sorted[0].id !== sorted[2].id ? 2 : 1);
@@ -13441,14 +13535,13 @@ function renderCmp() {
   const hdrCells = sorted.map(f => {
     const ri = rankIdx(f);
     const isBest = ri === 0;
-    const bestTap = isBest ? `onclick="event.stopPropagation();openBestPickSheet(${f.id})"` : '';
-    const seeWhy  = isBest ? `<div class="cmp-v2-see-why">See why</div>` : '';
-    return `<div class="cmp-v2-card-hdr rank-${RANK_CLS[ri]}" ${bestTap}>
-      <div class="cmp-v2-rank ${RANK_CLS[ri]}">${RANK_ICO[ri]} ${RANK_TXT[ri]}</div>
+    const hdrtap = isBest ? bestColTap : '';
+    const rankBadge = RANK_TXT[ri] ? `<div class="cmp-v2-rank ${RANK_CLS[ri]}">${RANK_ICO[ri]} ${RANK_TXT[ri]}</div>` : '';
+    return `<div class="cmp-v2-card-hdr rank-${RANK_CLS[ri]}" ${hdrtap}>
+      ${rankBadge}
       <div style="font-size:20px;line-height:1;margin-bottom:4px">${emojiImg(f.emoji,EMO.xs)}</div>
       <div class="cmp-v2-name">${f.name}</div>
       <div class="cmp-v2-chain">${f.chain}</div>
-      ${seeWhy}
     </div>`;
   }).join('');
 
@@ -13457,14 +13550,17 @@ function renderCmp() {
     const { be, wo, allSame } = macroBW[mi];
     const cells = sorted.map(f => {
       const ri = rankIdx(f);
+      const isBestCol = ri === 0;
       const raw = f[mac.k];
       const display = mac.fmt ? mac.fmt(raw) : raw;
       const isWarn = mac.warn && mac.warn(raw);
       let chipCls = allSame ? '' : (raw === be ? 'best' : (raw === wo ? 'worst' : ''));
       if (isWarn) chipCls = chipCls ? chipCls + ' warn' : 'warn';
       const warnIco = isWarn ? `<span class="ms" style="font-size:10px;line-height:1">warning</span>` : '';
-      const tapAttr = isWarn ? `onclick="openCmpMacroSheet('${mac.k}',${f.id})"` : '';
-      return `<div class="cmp-v2-cell rank-${RANK_CLS[ri]}"><div class="cmp-v2-chip ${chipCls}" ${tapAttr}>${display}${mac.u}${warnIco}</div></div>`;
+      // Warn chips stop propagation so they open macro sheet, not best pick sheet
+      const tapAttr = isWarn ? `onclick="event.stopPropagation();openCmpMacroSheet('${mac.k}',${f.id})"` : '';
+      const cellTap = isBestCol ? bestColTap : '';
+      return `<div class="cmp-v2-cell rank-${RANK_CLS[ri]}" ${cellTap}><div class="cmp-v2-chip ${chipCls}" ${tapAttr}>${display}${mac.u}${warnIco}</div></div>`;
     }).join('');
     return `<div class="cmp-v2-label">${mac.l}</div>${cells}`;
   }).join('');
@@ -13472,7 +13568,9 @@ function renderCmp() {
   /* Steps row: label + one steps cell per item */
   const stepsCells = sorted.map(f => {
     const ri = rankIdx(f);
-    return `<div class="cmp-v2-steps rank-${RANK_CLS[ri]}">
+    const isBestCol = ri === 0;
+    const stepTap = isBestCol ? bestColTap : '';
+    return `<div class="cmp-v2-steps rank-${RANK_CLS[ri]}" ${stepTap}>
       <div class="cmp-v2-steps-num">${stepsFor(f)}</div>
       <div class="cmp-v2-steps-lbl">steps</div>
     </div>`;
@@ -13908,7 +14006,7 @@ function mbResultsHtml(slotIdx, q) {
   const NZ_CHAIN_ORDER = ["McDonald's","KFC","Burger King","Domino's","Pizza Hut","Subway","Nando's","Burger Fuel","Wendy's","Taco Bell","Hell Pizza","Better Burger","St. Pierre's","Tank","Smart Sushi","Mad Mex","Pita Pit"];
   let results;
   if (lq) {
-    results = foods.filter(f => f.name.toLowerCase().includes(lq) || f.chain.toLowerCase().includes(lq));
+    results = foods.filter(f => fuzzyIncludes(f.name, lq) || fuzzyIncludes(f.chain, lq));
   } else if (slot.label === 'Side' && mainChain) {
     /* Side: same-restaurant items ordered by relevance (sides first, other non-main next, mains last),
        then other restaurants' sides (2 per chain, NZ_CHAIN_ORDER). Drinks excluded — they have their own slot. */
@@ -13962,7 +14060,7 @@ function mbResultsHtml(slotIdx, q) {
     }
   }
   results = results.slice(0, 25);
-  if (!results.length) return `<div style="padding:16px;text-align:center;font-size:13px;color:var(--md-on-surface-variant)">No results — try a different search</div>`;
+  if (!results.length) return `<div style="padding:20px 16px;text-align:center"><div style="font-size:28px;margin-bottom:8px">🔍</div><div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--md-on-surface);margin-bottom:4px">No match</div><div style="font-size:12px;color:var(--md-on-surface-variant)">Try a different name or chain</div></div>`;
   return results.map(f => `
     <div class="mb-result-row" onclick="mbPickFood(${slotIdx},${f.id})">
       <div style="font-size:20px;flex-shrink:0">${emojiImg(f.emoji, EMO.xs)}</div>
@@ -14242,7 +14340,7 @@ function renderMeal() {
             <span style="font-size:13px;font-weight:700;font-family:var(--font-ui);letter-spacing:0.1px;line-height:1">Swap</span>
           </button>` : '';
         return `
-        <div class="meal-item-row">
+        <div class="meal-item-row" onclick="openDetail(${f.id})">
           <div class="meal-item-emo">${emojiImg(f.emoji, EMO.sm)}</div>
           <div class="meal-item-info" style="min-width:0;flex:1">
             <div class="meal-item-name">${f.name}</div>
@@ -14250,7 +14348,7 @@ function renderMeal() {
           </div>
           ${swapIcon}
           <div class="meal-item-kj">${kc(f.kj)} cal</div>
-          <button class="meal-item-rm" onclick="toggleCmp(${f.id});renderMeal()" title="Remove">
+          <button class="meal-item-rm" onclick="event.stopPropagation();toggleCmp(${f.id});renderMeal()" title="Remove">
             <span class="ms" style="font-size:16px">remove_circle_outline</span>
           </button>
         </div>`;
