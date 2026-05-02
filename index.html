@@ -5804,6 +5804,7 @@ body.native #filter-float-pill {
             </button>
           </div>
           <div class="rest-desc" id="rh-desc"></div>
+          <div id="rh-data-note"></div>
         </div>
         <div class="sec-hdr">
           <span id="mct">0 items</span>
@@ -9585,6 +9586,167 @@ const foods = [
   {id:1232, name:"Crushed Lemon", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:469, protein:0.7, fat:0.3, carbs:8.6, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"B"},
   {id:1233, name:"Crushed Pineapple", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:465, protein:0.7, fat:0.3, carbs:8.9, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"B"},
 
+  /* ── Popeyes — verified popeyesuk.com/nutrition (UK data — no NZ source available)
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1234, name:"Biscuit & Cajun Gravy", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1031, protein:4.3, fat:12.0, carbs:29.7, sugar:2.4, sodium:720, sat_fat:6.1, fibre:1.6, score:"C"},
+  {id:1235, name:"Biscuit & Honey", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1219, protein:4.1, fat:11.4, carbs:42.2, sugar:17.1, sodium:400, sat_fat:5.9, fibre:1.4, score:"C"},
+  {id:1236, name:"Biscuit & Hot Honey", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1347, protein:4.1, fat:15.0, carbs:43.0, sugar:17.0, sodium:640, sat_fat:6.0, fibre:2.0, score:"C"},
+  {id:1237, name:"Biscuit & Strawberry Jam", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1151, protein:4.0, fat:11.0, carbs:38.0, sugar:13.0, sodium:400, sat_fat:6.0, fibre:1.0, score:"C"},
+  {id:1238, name:"Cajun Fries", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1217, protein:5.0, fat:13.3, carbs:41.0, sugar:0.3, sodium:1080, sat_fat:7.4, fibre:5.0, score:"C"},
+  {id:1239, name:"Cajun Gravy", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:87, protein:0.3, fat:0.6, carbs:35.0, sugar:0.3, sodium:320, sat_fat:0.2, fibre:0.2, score:"B"},
+  {id:1240, name:"Double Chocolate Cookie", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:945, protein:4.0, fat:11.4, carbs:26.2, sugar:2.1, sodium:400, sat_fat:5.9, fibre:1.4, score:"C"},
+  {id:1241, name:"Large Cajun Fries", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1546, protein:6.0, fat:17.0, carbs:52.0, sugar:0.0, sodium:1600, sat_fat:9.0, fibre:7.0, score:"C"},
+  {id:1242, name:"Large fries", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1480, protein:5.0, fat:21.0, carbs:46.0, sugar:0.3, sodium:1200, sat_fat:9.0, fibre:6.0, score:"D"},
+  {id:1243, name:"Mac & Cheese", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1240, protein:15.8, fat:12.7, carbs:29.4, sugar:3.4, sodium:680, sat_fat:7.9, fibre:1.4, score:"C"},
+  {id:1244, name:"Mash & Cajun Gravy", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1601, protein:3.1, fat:42.1, carbs:27.5, sugar:0.5, sodium:600, sat_fat:5.6, fibre:3.4, score:"C"},
+  {id:1245, name:"Milk Chocolate Cookie", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:945, protein:4.0, fat:11.4, carbs:26.2, sugar:2.1, sodium:400, sat_fat:5.9, fibre:1.4, score:"C"},
+  {id:1246, name:"Original Biscuit", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:945, protein:4.0, fat:11.4, carbs:26.2, sugar:2.1, sodium:400, sat_fat:5.9, fibre:1.4, score:"C"},
+  {id:1247, name:"Regular Fries", chain:"Popeyes", cat:"sides", emoji:"🍟", kj:1184, protein:4.2, fat:13.1, carbs:39.5, sugar:0.2, sodium:920, sat_fat:7.3, fibre:4.5, score:"C"},
+  {id:1248, name:"2 Hot Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1234, protein:18.7, fat:19.1, carbs:12.8, sugar:0.2, sodium:920, sat_fat:7.2, fibre:1.5, score:"C"},
+  {id:1249, name:"3 Hot Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1851, protein:28.0, fat:29.0, carbs:19.0, sugar:0.0, sodium:1400, sat_fat:11.0, fibre:2.0, score:"C"},
+  {id:1250, name:"5 Hot Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:3085, protein:47.0, fat:48.0, carbs:32.0, sugar:0.5, sodium:2320, sat_fat:18.0, fibre:3.8, score:"C"},
+  {id:1251, name:"6 Cajun Citrus Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:3703, protein:56.0, fat:57.0, carbs:38.0, sugar:0.6, sodium:2800, sat_fat:22.0, fibre:5.0, score:"C"},
+  {id:1252, name:"6 Hot Honey Saucin' Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:4187, protein:56.0, fat:58.0, carbs:67.0, sugar:25.0, sodium:3200, sat_fat:22.0, fibre:5.0, score:"D"},
+  {id:1253, name:"6 Hot Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:3703, protein:56.0, fat:57.0, carbs:38.0, sugar:0.6, sodium:2800, sat_fat:22.0, fibre:5.0, score:"C"},
+  {id:1254, name:"8 Cajun Citrus Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:4937, protein:75.0, fat:76.0, carbs:51.0, sugar:0.8, sodium:3600, sat_fat:29.0, fibre:6.0, score:"C"},
+  {id:1255, name:"8 Hot Honey Saucin' Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:5582, protein:75.0, fat:77.0, carbs:89.0, sugar:34.0, sodium:4400, sat_fat:29.0, fibre:6.0, score:"D"},
+  {id:1256, name:"8 Hot Wings", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:4937, protein:75.0, fat:76.0, carbs:51.0, sugar:0.8, sodium:3600, sat_fat:29.0, fibre:6.0, score:"C"},
+  {id:1257, name:"Biscoff Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2290, protein:16.6, fat:14.4, carbs:65.6, sugar:56.6, sodium:200, sat_fat:6.3, fibre:1.9, score:"C"},
+  {id:1258, name:"Cappuccino", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:100, protein:1.7, fat:0.8, carbs:2.3, sugar:2.3, sodium:40, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1259, name:"Caramel Latte", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:488, protein:8.1, fat:4.0, carbs:20.5, sugar:20.2, sodium:240, sat_fat:2.4, fibre:0.0, score:"D"},
+  {id:1260, name:"Chocolate Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1980, protein:12.7, fat:6.9, carbs:69.8, sugar:59.8, sodium:160, sat_fat:3.8, fibre:0.7, score:"C"},
+  {id:1261, name:"Flat White", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:98, protein:1.6, fat:0.8, carbs:2.2, sugar:2.2, sodium:0, sat_fat:0.0, fibre:0.0, score:"B"},
+  {id:1262, name:"Frozen Fanta Lemon", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:463, protein:0.0, fat:0.0, carbs:29.0, sugar:18.0, sodium:0, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1263, name:"Frozen Fanta Strawberry", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:476, protein:0.0, fat:0.0, carbs:29.0, sugar:18.0, sodium:0, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1264, name:"Fruit Shoot Orange 200ml", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:52, protein:0.0, fat:0.0, carbs:2.4, sugar:2.4, sodium:0, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1265, name:"Irn Bru Can", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:264, protein:0.0, fat:0.0, carbs:0.0, sugar:15.0, sodium:0, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1266, name:"Jimmy's Iced Coffee", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:413, protein:6.0, fat:3.0, carbs:12.0, sugar:12.0, sodium:400, sat_fat:2.0, fibre:0.0, score:"D"},
+  {id:1267, name:"Kids Milkshake - Chocolate", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1485, protein:10.0, fat:5.0, carbs:52.0, sugar:45.0, sodium:0, sat_fat:3.0, fibre:1.0, score:"C"},
+  {id:1268, name:"Kids Milkshake - Strawberry", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1434, protein:9.0, fat:3.0, carbs:51.0, sugar:50.0, sodium:400, sat_fat:3.0, fibre:0.0, score:"C"},
+  {id:1269, name:"Kids Milkshake - Vanilla", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1069, protein:9.0, fat:5.0, carbs:29.0, sugar:29.0, sodium:0, sat_fat:3.0, fibre:0.0, score:"C"},
+  {id:1270, name:"Large Biscoff Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2290, protein:16.6, fat:14.4, carbs:65.6, sugar:56.6, sodium:200, sat_fat:6.3, fibre:1.9, score:"C"},
+  {id:1271, name:"Large Chocolate Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1980, protein:12.7, fat:6.9, carbs:69.8, sugar:59.8, sodium:160, sat_fat:3.8, fibre:0.7, score:"C"},
+  {id:1272, name:"Large Coca-Cola Classic", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1170, protein:0.0, fat:0.0, carbs:10.6, sugar:10.6, sodium:0, sat_fat:0.0, fibre:0.0, score:"B"},
+  {id:1273, name:"Large Made with Oreo Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2328, protein:13.5, fat:9.9, carbs:82.7, sugar:67.7, sodium:200, sat_fat:5.3, fibre:1.2, score:"C"},
+  {id:1274, name:"Large Strawberry Cheesecake Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2237, protein:13.1, fat:11.8, carbs:74.3, sugar:60.2, sodium:80, sat_fat:6.3, fibre:0.3, score:"C"},
+  {id:1275, name:"Large Strawberry Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1814, protein:12.3, fat:6.5, carbs:62.0, sugar:56.0, sodium:120, sat_fat:3.6, fibre:0.0, score:"C"},
+  {id:1276, name:"Large Vanilla Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1425, protein:12.2, fat:6.5, carbs:38.7, sugar:38.2, sodium:120, sat_fat:3.6, fibre:0.0, score:"C"},
+  {id:1277, name:"Latte", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:144, protein:2.4, fat:1.2, carbs:3.3, sugar:3.3, sodium:0, sat_fat:0.0, fibre:0.0, score:"B"},
+  {id:1278, name:"Made with Oreo Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2328, protein:13.5, fat:9.9, carbs:82.7, sugar:67.7, sodium:200, sat_fat:5.3, fibre:1.2, score:"C"},
+  {id:1279, name:"Millionaire Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2783, protein:17.0, fat:14.0, carbs:95.0, sugar:76.0, sodium:240, sat_fat:7.5, fibre:0.0, score:"C"},
+  {id:1280, name:"Mint Shake made with Oreo", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2118, protein:16.5, fat:11.2, carbs:70.8, sugar:63.3, sodium:160, sat_fat:5.5, fibre:2.1, score:"C"},
+  {id:1281, name:"Oasis Summer Fruits 500ml", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:74, protein:0.0, fat:0.0, carbs:4.1, sugar:4.1, sodium:0, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1282, name:"Original Lemonade", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:463, protein:0.0, fat:0.0, carbs:29.0, sugar:18.0, sodium:0, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1283, name:"Peach Lemonade", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:463, protein:0.0, fat:0.0, carbs:29.0, sugar:18.0, sodium:0, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1284, name:"Red Bull - The Red Edition - Watermelon", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:485, protein:0.0, fat:0.0, carbs:27.5, sugar:27.5, sodium:0, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1285, name:"Red Bull Energy Drink", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:485, protein:0.0, fat:0.0, carbs:27.5, sugar:27.5, sodium:0, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1286, name:"Red Bull Summer Edition - Curuba & Elderflower", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:480, protein:0.0, fat:0.0, carbs:27.5, sugar:27.5, sodium:0, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1287, name:"Red Bull Winter Edition - Fuji Apple and Ginger", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:495, protein:0.0, fat:0.0, carbs:28.4, sugar:28.4, sodium:120, sat_fat:0.0, fibre:0.0, score:"D"},
+  {id:1288, name:"Regular Coca-Cola Classic", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:810, protein:0.0, fat:0.0, carbs:10.6, sugar:10.6, sodium:0, sat_fat:0.0, fibre:0.0, score:"B"},
+  {id:1289, name:"Smurfberry Kids Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2290, protein:16.6, fat:14.4, carbs:65.6, sugar:56.6, sodium:200, sat_fat:6.3, fibre:1.9, score:"C"},
+  {id:1290, name:"Smurfberry Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2290, protein:16.6, fat:14.4, carbs:65.6, sugar:56.6, sodium:200, sat_fat:6.3, fibre:1.9, score:"C"},
+  {id:1291, name:"Strawberry Cheesecake Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:2237, protein:13.1, fat:11.8, carbs:74.3, sugar:60.2, sodium:80, sat_fat:6.3, fibre:0.3, score:"C"},
+  {id:1292, name:"Strawberry Lemonade", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:463, protein:0.0, fat:0.0, carbs:29.0, sugar:18.0, sodium:0, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1293, name:"Strawberry Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1814, protein:12.3, fat:6.5, carbs:62.0, sugar:56.0, sodium:120, sat_fat:3.6, fibre:0.0, score:"C"},
+  {id:1294, name:"Vanilla Shake", chain:"Popeyes", cat:"drinks", emoji:"🥤", kj:1425, protein:12.2, fat:6.5, carbs:38.7, sugar:38.2, sodium:120, sat_fat:3.6, fibre:0.0, score:"C"},
+  {id:1295, name:"Cajun Crunch Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:3228, protein:39.9, fat:46.6, carbs:49.9, sugar:9.6, sodium:1080, sat_fat:15.3, fibre:2.7, score:"B"},
+  {id:1296, name:"Honey BBQ Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:3228, protein:39.9, fat:46.6, carbs:49.9, sugar:9.6, sodium:1080, sat_fat:15.3, fibre:2.7, score:"B"},
+  {id:1297, name:"Red Bean Creole Sandwich (VE)", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:2481, protein:15.0, fat:31.5, carbs:55.9, sugar:22.9, sodium:1040, sat_fat:4.4, fibre:12.6, score:"C"},
+  {id:1298, name:"The Classic Chicken Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:2892, protein:35.3, fat:40.7, carbs:48.1, sugar:8.2, sodium:1000, sat_fat:11.4, fibre:2.0, score:"B"},
+  {id:1299, name:"The Deluxe Chicken Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:3228, protein:39.9, fat:46.6, carbs:49.9, sugar:9.6, sodium:1080, sat_fat:15.3, fibre:2.7, score:"B"},
+  {id:1300, name:"The Deluxe Superstack Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:3228, protein:39.9, fat:46.6, carbs:49.9, sugar:9.6, sodium:1080, sat_fat:15.3, fibre:2.7, score:"B"},
+  {id:1301, name:"The Double Stack", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:4815, protein:75.0, fat:70.0, carbs:58.0, sugar:7.6, sodium:2040, sat_fat:24.0, fibre:2.7, score:"C"},
+  {id:1302, name:"The Spicy Chicken Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:3271, protein:40.8, fat:50.1, carbs:43.6, sugar:6.8, sodium:1520, sat_fat:15.4, fibre:2.0, score:"C"},
+  {id:1303, name:"The Spicy Deluxe Chicken Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:3393, protein:42.2, fat:49.5, carbs:49.8, sugar:10.1, sodium:1280, sat_fat:15.6, fibre:2.7, score:"B"},
+  {id:1304, name:"The Spicy Deluxe Superstack Sandwich", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:3393, protein:42.2, fat:49.5, carbs:49.8, sugar:10.1, sodium:1280, sat_fat:15.6, fibre:2.7, score:"B"},
+  {id:1305, name:"The Spicy Double Stack", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:4944, protein:75.0, fat:73.0, carbs:58.0, sugar:7.0, sodium:2320, sat_fat:23.0, fibre:2.7, score:"C"},
+  {id:1306, name:"2 Piece Signature Louisiana Chicken", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:3046, protein:55.0, fat:43.0, carbs:29.0, sugar:0.0, sodium:1600, sat_fat:16.0, fibre:1.0, score:"C"},
+  {id:1307, name:"3 Piece Signature Louisiana Chicken", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:4570, protein:83.2, fat:65.0, carbs:43.7, sugar:0.0, sodium:2320, sat_fat:24.0, fibre:2.0, score:"C"},
+  {id:1308, name:"Biscoff Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:1465, protein:6.1, fat:19.6, carbs:36.7, sugar:29.0, sodium:160, sat_fat:4.7, fibre:0.3, score:"C"},
+  {id:1309, name:"Chocolate Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:928, protein:5.3, fat:8.9, carbs:28.7, sugar:26.9, sodium:80, sat_fat:2.4, fibre:0.3, score:"D"},
+  {id:1310, name:"Made with Oreo Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:1210, protein:6.0, fat:11.7, carbs:38.3, sugar:32.2, sodium:160, sat_fat:3.7, fibre:0.6, score:"D"},
+  {id:1311, name:"Millionaire Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:1345, protein:7.0, fat:15.0, carbs:39.0, sugar:31.0, sodium:160, sat_fat:5.0, fibre:2.0, score:"C"},
+  {id:1312, name:"Mini Biscoff Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:826, protein:3.8, fat:10.8, carbs:21.0, sugar:17.3, sodium:80, sat_fat:2.6, fibre:0.0, score:"C"},
+  {id:1313, name:"Mini Chocolate Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:565, protein:0.0, fat:5.6, carbs:17.0, sugar:16.0, sodium:40, sat_fat:0.0, fibre:0.9, score:"C"},
+  {id:1314, name:"Mini Millionaire Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:1345, protein:7.0, fat:15.0, carbs:39.0, sugar:31.0, sodium:160, sat_fat:5.0, fibre:2.0, score:"C"},
+  {id:1315, name:"Mini Mississippi Mud Pie Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:826, protein:3.8, fat:10.8, carbs:21.0, sugar:17.3, sodium:80, sat_fat:2.6, fibre:0.0, score:"C"},
+  {id:1316, name:"Mini Oreo Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:705, protein:3.7, fat:7.0, carbs:21.7, sugar:18.7, sodium:80, sat_fat:1.9, fibre:1.1, score:"D"},
+  {id:1317, name:"Mini Smurfberry Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:488, protein:0.0, fat:5.5, carbs:13.2, sugar:13.0, sodium:40, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1318, name:"Mini Strawberry Cheesecake Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:1350, protein:6.5, fat:14.4, carbs:41.0, sugar:30.0, sodium:0, sat_fat:4.9, fibre:16.0, score:"C"},
+  {id:1319, name:"Mini Strawberry Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:571, protein:3.3, fat:5.5, carbs:18.0, sugar:15.7, sodium:0, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1320, name:"Mini Vanilla Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:488, protein:0.0, fat:5.5, carbs:13.2, sugar:13.0, sodium:40, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1321, name:"Mississippi Mud Pie Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:1465, protein:6.1, fat:19.6, carbs:36.7, sugar:29.0, sodium:160, sat_fat:4.7, fibre:0.3, score:"C"},
+  {id:1322, name:"Smurfberry Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:762, protein:5.1, fat:8.6, carbs:20.5, sugar:20.4, sodium:80, sat_fat:2.2, fibre:0.0, score:"D"},
+  {id:1323, name:"Strawberry Cheesecake Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:1350, protein:6.5, fat:14.4, carbs:41.0, sugar:30.0, sodium:0, sat_fat:4.9, fibre:16.0, score:"C"},
+  {id:1324, name:"Strawberry Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:942, protein:5.1, fat:8.6, carbs:30.9, sugar:25.8, sodium:0, sat_fat:2.2, fibre:0.0, score:"C"},
+  {id:1325, name:"Vanilla Whipz", chain:"Popeyes", cat:"desserts", emoji:"🍦", kj:762, protein:5.1, fat:8.6, carbs:20.5, sugar:20.4, sodium:80, sat_fat:2.2, fibre:0.0, score:"D"},
+  {id:1326, name:"Bold BBQ", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:296, protein:0.3, fat:0.2, carbs:17.4, sugar:12.2, sodium:320, sat_fat:0.0, fibre:0.2, score:"D"},
+  {id:1327, name:"Classic Mayo", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:901, protein:0.5, fat:23.2, carbs:2.0, sugar:1.3, sodium:240, sat_fat:1.8, fibre:0.0, score:"B"},
+  {id:1328, name:"Garlic Mayo", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:899, protein:0.5, fat:23.2, carbs:1.9, sugar:0.8, sodium:240, sat_fat:1.6, fibre:0.0, score:"B"},
+  {id:1329, name:"Hot Honey", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:283, protein:0.1, fat:0.2, carbs:16.6, sugar:14.4, sodium:240, sat_fat:0.1, fibre:0.0, score:"D"},
+  {id:1330, name:"Kickback Dip", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:903, protein:0.5, fat:23.3, carbs:1.9, sugar:1.1, sodium:440, sat_fat:1.7, fibre:0.0, score:"C"},
+  {id:1331, name:"Mango Habanero", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:221, protein:0.1, fat:0.2, carbs:12.4, sugar:7.9, sodium:240, sat_fat:0.1, fibre:0.0, score:"D"},
+  {id:1332, name:"Mayonnaise", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:842, protein:0.3, fat:21.6, carbs:1.6, sugar:0.9, sodium:200, sat_fat:1.6, fibre:0.0, score:"B"},
+  {id:1333, name:"Ranch", chain:"Popeyes", cat:"sides", emoji:"🫙", kj:763, protein:0.4, fat:19.4, carbs:2.2, sugar:1.3, sodium:240, sat_fat:1.4, fibre:0.0, score:"B"},
+  {id:1334, name:"1 Classic Tender", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:653, protein:12.0, fat:9.0, carbs:6.0, sugar:0.0, sodium:400, sat_fat:3.0, fibre:0.0, score:"B"},
+  {id:1335, name:"1 Spicy Tender", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:632, protein:13.0, fat:9.0, carbs:5.0, sugar:0.0, sodium:400, sat_fat:4.0, fibre:0.0, score:"C"},
+  {id:1336, name:"12 Boneless & a dip", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1958, protein:35.6, fat:27.7, carbs:18.7, sugar:0.2, sodium:1120, sat_fat:10.1, fibre:0.9, score:"C"},
+  {id:1337, name:"2 Classic Tenders", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1306, protein:24.0, fat:19.0, carbs:13.0, sugar:0.0, sodium:760, sat_fat:7.0, fibre:0.6, score:"C"},
+  {id:1338, name:"2 Spicy Tenders", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1265, protein:25.0, fat:18.0, carbs:11.0, sugar:0.0, sodium:800, sat_fat:7.0, fibre:0.8, score:"C"},
+  {id:1339, name:"20 Boneless & 2 dips", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1958, protein:35.6, fat:27.7, carbs:18.7, sugar:0.2, sodium:1120, sat_fat:10.1, fibre:0.9, score:"C"},
+  {id:1340, name:"3 Classic Tenders & a dip", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1958, protein:35.6, fat:27.7, carbs:18.7, sugar:0.2, sodium:1120, sat_fat:10.1, fibre:0.9, score:"C"},
+  {id:1341, name:"3 Spicy Tenders & a dip", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1897, protein:38.2, fat:26.5, carbs:16.2, sugar:0.2, sodium:1120, sat_fat:10.8, fibre:1.3, score:"C"},
+  {id:1342, name:"5 Classic Tenders & a dip", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:3264, protein:59.4, fat:46.2, carbs:31.2, sugar:0.3, sodium:1880, sat_fat:16.8, fibre:1.5, score:"C"},
+  {id:1343, name:"5 Spicy Tenders & a dip", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:3162, protein:63.6, fat:44.1, carbs:27.0, sugar:0.3, sodium:1880, sat_fat:18.0, fibre:2.1, score:"C"},
+  {id:1344, name:"6 Boneless & a dip", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1958, protein:35.6, fat:27.7, carbs:18.7, sugar:0.2, sodium:1120, sat_fat:10.1, fibre:0.9, score:"C"},
+  {id:1345, name:"8 Boneless & a dip", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:1958, protein:35.6, fat:27.7, carbs:18.7, sugar:0.2, sodium:1120, sat_fat:10.1, fibre:0.9, score:"C"},
+  {id:1346, name:"8 Classic Tenders & 2 dips", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:5222, protein:95.0, fat:73.9, carbs:49.9, sugar:0.5, sodium:2960, sat_fat:26.9, fibre:2.4, score:"C"},
+  {id:1347, name:"8 Spicy Tenders & 2 dips", chain:"Popeyes", cat:"chicken", emoji:"🍗", kj:5059, protein:101.8, fat:70.6, carbs:43.2, sugar:0.5, sodium:2960, sat_fat:28.8, fibre:3.4, score:"C"},
+  {id:1348, name:"Cajun Crunch Wrap", chain:"Popeyes", cat:"wraps", emoji:"🌯", kj:2028, protein:22.5, fat:24.6, carbs:43.3, sugar:2.7, sodium:1160, sat_fat:4.8, fibre:3.6, score:"B"},
+  {id:1349, name:"Chicken Wrap", chain:"Popeyes", cat:"wraps", emoji:"🌯", kj:2028, protein:22.5, fat:24.6, carbs:43.3, sugar:2.7, sodium:1160, sat_fat:4.8, fibre:3.6, score:"B"},
+  {id:1350, name:"Honey BBQ Wrap", chain:"Popeyes", cat:"wraps", emoji:"🌯", kj:2028, protein:22.5, fat:24.6, carbs:43.3, sugar:2.7, sodium:1160, sat_fat:4.8, fibre:3.6, score:"B"},
+  {id:1351, name:"Kickback Wrap", chain:"Popeyes", cat:"wraps", emoji:"🌯", kj:2028, protein:22.5, fat:24.6, carbs:43.3, sugar:2.7, sodium:1160, sat_fat:4.8, fibre:3.6, score:"B"},
+  {id:1352, name:"Louisiana BBQ Wrap", chain:"Popeyes", cat:"wraps", emoji:"🌯", kj:2608, protein:33.3, fat:26.0, carbs:53.9, sugar:8.6, sodium:1240, sat_fat:9.4, fibre:2.4, score:"B"},
+  {id:1353, name:"Ranch Wrap", chain:"Popeyes", cat:"wraps", emoji:"🌯", kj:2028, protein:22.5, fat:24.6, carbs:43.3, sugar:2.7, sodium:1160, sat_fat:4.8, fibre:3.6, score:"B"},
+  {id:1354, name:"Spicy Chicken Wrap", chain:"Popeyes", cat:"wraps", emoji:"🌯", kj:2043, protein:22.7, fat:24.7, carbs:43.7, sugar:3.1, sodium:1280, sat_fat:4.8, fibre:3.7, score:"B"},
+  {id:1355, name:"Bacon Roll with Cajun Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1652, protein:19.7, fat:17.2, carbs:42.6, sugar:13.7, sodium:800, sat_fat:6.6, fibre:1.9, score:"C"},
+  {id:1356, name:"Bacon Roll with Heinz Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1579, protein:19.7, fat:16.6, carbs:39.5, sugar:11.4, sodium:800, sat_fat:6.6, fibre:1.8, score:"C"},
+  {id:1357, name:"Bacon Roll with HP Sauce", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1594, protein:19.6, fat:16.7, carbs:40.4, sugar:11.1, sodium:760, sat_fat:6.6, fibre:1.7, score:"C"},
+  {id:1358, name:"Bacon, Egg and Cheese Muffin", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1667, protein:20.6, fat:22.9, carbs:26.6, sugar:3.1, sodium:760, sat_fat:6.8, fibre:2.1, score:"C"},
+  {id:1359, name:"Big Breakfast Roll with Chicken Breakfast Patty & Heinz Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1784, protein:22.0, fat:22.0, carbs:37.0, sugar:11.0, sodium:880, sat_fat:7.4, fibre:1.1, score:"C"},
+  {id:1360, name:"Big Breakfast Roll with Chicken Breakfast Patty & HP Sauce", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1799, protein:22.0, fat:22.0, carbs:38.0, sugar:11.0, sodium:840, sat_fat:7.4, fibre:1.1, score:"C"},
+  {id:1361, name:"Big Breakfast Roll with Chicken Breakfast Patty, Streaky Bacon & Heinz Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1784, protein:22.0, fat:22.0, carbs:37.0, sugar:11.0, sodium:880, sat_fat:7.4, fibre:1.1, score:"C"},
+  {id:1362, name:"Big Breakfast Roll with Chicken Breakfast Patty, Streaky Bacon & HP Sauce", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1799, protein:22.0, fat:22.0, carbs:38.0, sugar:11.0, sodium:840, sat_fat:7.4, fibre:1.1, score:"C"},
+  {id:1363, name:"Big Cajun Roll with Chicken Breakfast Patty", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:2332, protein:24.0, fat:29.0, carbs:52.0, sugar:13.0, sodium:1040, sat_fat:7.7, fibre:3.0, score:"C"},
+  {id:1364, name:"Big Cajun Roll with Chicken Breakfast Patty & Streaky Bacon", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:2332, protein:24.0, fat:29.0, carbs:52.0, sugar:13.0, sodium:1040, sat_fat:7.7, fibre:3.0, score:"C"},
+  {id:1365, name:"Big Cajun Wrap with Chicken Breakfast Patty", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:2657, protein:31.0, fat:34.0, carbs:50.0, sugar:9.0, sodium:1120, sat_fat:6.0, fibre:2.9, score:"B"},
+  {id:1366, name:"Big Cajun Wrap with Chicken Breakfast Patty & Streaky Bacon", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:2657, protein:31.0, fat:34.0, carbs:50.0, sugar:9.0, sodium:1120, sat_fat:6.0, fibre:2.9, score:"B"},
+  {id:1367, name:"Biscuit & Nutella", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1402, protein:4.9, fat:19.2, carbs:34.8, sugar:10.5, sodium:400, sat_fat:7.9, fibre:1.9, score:"C"},
+  {id:1368, name:"Breakfast Roll with Chicken Breakfast Patty & Cajun Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1238, protein:13.0, fat:12.0, carbs:36.0, sugar:10.4, sodium:680, sat_fat:5.2, fibre:1.1, score:"C"},
+  {id:1369, name:"Breakfast Roll with Chicken Breakfast Patty & Heinz Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1238, protein:13.0, fat:12.0, carbs:36.0, sugar:10.4, sodium:680, sat_fat:5.2, fibre:1.1, score:"C"},
+  {id:1370, name:"Breakfast Roll with Chicken Breakfast Patty & HP Sauce", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1253, protein:13.0, fat:12.0, carbs:37.0, sugar:10.3, sodium:640, sat_fat:5.2, fibre:1.1, score:"C"},
+  {id:1371, name:"Breakfast Roll with Chicken Breakfast Patty, Streaky Bacon & Cajun Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1238, protein:13.0, fat:12.0, carbs:36.0, sugar:10.4, sodium:680, sat_fat:5.2, fibre:1.1, score:"C"},
+  {id:1372, name:"Breakfast Roll with Chicken Breakfast Patty, Streaky Bacon & Heinz Ketchup", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1238, protein:13.0, fat:12.0, carbs:36.0, sugar:10.4, sodium:680, sat_fat:5.2, fibre:1.1, score:"C"},
+  {id:1373, name:"Breakfast Roll with Chicken Breakfast Patty, Streaky Bacon & HP Sauce", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1253, protein:13.0, fat:12.0, carbs:37.0, sugar:10.3, sodium:640, sat_fat:5.2, fibre:1.1, score:"C"},
+  {id:1374, name:"Cajun Hash Brown", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:478, protein:1.2, fat:6.2, carbs:10.7, sugar:0.0, sodium:240, sat_fat:0.0, fibre:2.0, score:"C"},
+  {id:1375, name:"Chicken Breakfast Patty, Egg & Cheese Muffin", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1802, protein:24.0, fat:24.0, carbs:30.0, sugar:3.4, sodium:800, sat_fat:4.6, fibre:2.1, score:"C"},
+  {id:1376, name:"Double Bacon, Egg and Cheese Muffin", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1598, protein:25.9, fat:18.2, carbs:27.8, sugar:3.9, sodium:880, sat_fat:4.9, fibre:2.2, score:"B"},
+  {id:1377, name:"Double Chicken Breakfast Patty, Egg & Cheese Muffin", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:2173, protein:31.0, fat:28.0, carbs:34.0, sugar:3.9, sodium:1160, sat_fat:6.1, fibre:2.1, score:"C"},
+  {id:1378, name:"Egg and Cheese Muffin", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1155, protein:16.3, fat:11.1, carbs:26.8, sugar:3.0, sodium:440, sat_fat:2.4, fibre:2.1, score:"A"},
+  {id:1379, name:"Hash Brown", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:445, protein:1.2, fat:6.2, carbs:10.7, sugar:0.0, sodium:80, sat_fat:0.0, fibre:1.5, score:"B"},
+  {id:1380, name:"Sage & Onion Hash Brown", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:445, protein:1.4, fat:6.3, carbs:12.5, sugar:0.2, sodium:320, sat_fat:0.3, fibre:1.7, score:"C"},
+  {id:1381, name:"Sausage, Egg and Cheese Muffin", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:1688, protein:24.1, fat:2.3, carbs:30.7, sugar:5.3, sodium:760, sat_fat:2.3, fibre:2.3, score:"A"},
+  {id:1382, name:"The Chicken Festive Feastin’ Roll", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:2168, protein:23.8, fat:27.2, carbs:57.7, sugar:12.6, sodium:1760, sat_fat:6.7, fibre:3.9, score:"D"},
+  {id:1383, name:"The Festive Feastin’ Roll", chain:"Popeyes", cat:"breakfast", emoji:"🥚", kj:2439, protein:26.2, fat:32.8, carbs:56.7, sugar:14.0, sodium:1160, sat_fat:9.8, fibre:3.5, score:"C"},
+  {id:1384, name:"Spicy Savin' Wrap", chain:"Popeyes", cat:"burgers", emoji:"🍔", kj:1338, protein:13.0, fat:17.0, carbs:26.0, sugar:2.0, sodium:400, sat_fat:3.0, fibre:2.0, score:"B"},
+
+  /* ── Heineken — verified fatsecret.co.nz NZ + Heineken official, May 2026
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1385, name:"Original", chain:"Heineken", cat:"beer", emoji:"🍺", kj:584, protein:1.4, fat:0.0, carbs:10.7, sugar:0.5, sodium:7, sat_fat:0.0, fibre:0.0, score:"A"},
+  {id:1386, name:"Silver Low Carb", chain:"Heineken", cat:"beer", emoji:"🍺", kj:368, protein:0.7, fat:0.0, carbs:2.9, sugar:0.4, sodium:8, sat_fat:0.0, fibre:0.0, score:"A"},
+  {id:1387, name:"Light", chain:"Heineken", cat:"beer", emoji:"🍺", kj:305, protein:0.7, fat:0.0, carbs:6.3, sugar:1.0, sodium:7, sat_fat:0.0, fibre:0.0, score:"A"},
+  {id:1388, name:"0.0 Alcohol Free", chain:"Heineken", cat:"beer", emoji:"🍺", kj:290, protein:0.0, fat:0.0, carbs:15.8, sugar:8.7, sodium:5, sat_fat:0.0, fibre:0.0, score:"C"},
+
 ];
 
 const DIET_FLAGS_DATA = {
@@ -9860,8 +10022,10 @@ const rests = [
   {name:"Tip Top Ice Cream", emoji:"🍦", score:"C", avg_kj:1000, brand:"#E85D9B", desc:"Iconic Kiwi ice cream brand. Sticks, cones and novelties — the classics every New Zealander knows. Jelly Tip, Eskimo Pie, Trumpet and Memphis Meltdown. Treat foods: high in sugar and sat fat, but the Trumpet range earns a C."},
   {name:"Kāpiti Ice Cream",  emoji:"🍨", score:"D", avg_kj:986,  brand:"#1B6652", desc:"Premium NZ gourmet ice cream, hand-crafted in the Kāpiti Coast region. Single-serve chocolate-dipped sticks in sophisticated flavours — Affogato, Marlborough Salted Caramel & Macadamia, Vanilla Fudge Brownie and more. All score D: rich, indulgent treat foods."},
   {name:"Speights Beer NZ",  emoji:"🍺", score:"A", avg_kj:409,  brand:"#A0620A", desc:"Iconic Otago brewery, brewed in Dunedin since 1876. From the classic Gold Medal Ale to Summit Ultra low-carb — the Southern Man's beers have surprisingly lean nutritional numbers."},
+  {name:"Heineken",           emoji:"🍺", score:"A", avg_kj:387,  brand:"#009A44", desc:"The world's most international beer brand, widely available across NZ. Original (5%), Silver Low Carb (4%), Light (3.3%) and 0.0 Alcohol Free. Three score A — lean on fat and sodium. The 0.0 scores C due to high residual sugar density per kJ."},
   {name:"Steinlager NZ",     emoji:"🍺", score:"A", avg_kj:424,  brand:"#005E2F", desc:"New Zealand's finest since 1958. Brewed in Hawke's Bay, Steinlager is NZ's most-awarded beer. Classic, Pure, Light, Ultra Low Carb, Tokyo Dry and Alcohol Free — all lean on fat and sodium. Alcohol Free is the only B scorer due to higher residual sugars."},
-  {name:"Export NZ",         emoji:"🍺", score:"A", avg_kj:427,  brand:"#F5C400", desc:"DB Breweries' flagship lager brand, flowing non-stop since 1987. Gold, ULTRA (99% carb free), 33, Citrus Lemon, Crushed Lemon and Crushed Pineapple — 7 beers in the range. Gold, ULTRA and 33 score A. Citrus and Crushed variants score B–C due to fruit sugars. Gold 0% scores D: very high sugar density per kJ."}
+  {name:"Export NZ",         emoji:"🍺", score:"A", avg_kj:427,  brand:"#F5C400", desc:"DB Breweries' flagship lager brand, flowing non-stop since 1987. Gold, ULTRA (99% carb free), 33, Citrus Lemon, Crushed Lemon and Crushed Pineapple — 7 beers in the range. Gold, ULTRA and 33 score A. Citrus and Crushed variants score B–C due to fruit sugars. Gold 0% scores D: very high sugar density per kJ."},
+  {name:"Popeyes",           emoji:"🍗", score:"C", avg_kj:1710, brand:"#F26522", desc:"Louisiana-style fried chicken from the US, now in NZ. Famous for crispy chicken sandwiches, tenders and hot wings. Nutrition info sourced from Popeyes UK — NZ figures not yet published."}
 ];
 
 </script>
@@ -11494,6 +11658,7 @@ function goSearchCat(cat) {
   if (cat !== 'all') {
     lastSearch = { q: '', cat, label: catLabels[cat] || cat };
   }
+  const si = document.getElementById('si'); if (si) si.value = '';
   nav('search');
   document.querySelectorAll('#cats .pill').forEach(p => {
     p.classList.toggle('on', p.getAttribute('onclick') === "setCat('" + cat + "',this)");
@@ -11625,6 +11790,28 @@ function openRest(name) {
     if (heroFaveIco) { heroFaveIco.textContent = fv ? 'favorite' : 'favorite_border'; heroFaveIco.classList.toggle('filled', fv); }
   }
   document.getElementById('rh-desc').textContent = r.desc || '';
+
+  /* Chain-specific data-source banners on the restaurant page */
+  const rhDataNote = document.getElementById('rh-data-note');
+  if (rhDataNote) {
+    if (name === "Popeyes") {
+      rhDataNote.innerHTML = `<div style="margin:8px 16px 4px;padding:10px 12px;
+           background:var(--md-surface-container);
+           border:1px solid var(--md-outline-variant);
+           border-left:3px solid #F26522;
+           border-radius:var(--shape-md)">
+         <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+           <span class="ms" style="font-size:16px;color:#F26522">info</span>
+           <span style="font-size:12px;font-weight:600;color:var(--md-on-surface)">Nutrition info from Popeyes UK</span>
+         </div>
+         <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.5">
+           Popeyes NZ hasn't published nutrition info — figures shown are from the UK menu and may differ from NZ servings.
+         </div>
+       </div>`;
+    } else {
+      rhDataNote.innerHTML = '';
+    }
+  }
   /* Build category pills from this chain's actual items */
   const cats = ['all', ...new Set(it.map(f => f.cat))];
   const catLabels = {all:'All', burgers:'Burgers', chicken:'Chicken', pizza:'Pizza',
@@ -11918,6 +12105,22 @@ function openDetail(id, fromRest, overridePrevPage) {
        </div>`
     : '';
 
+  const popeyesBanner = f.chain === "Popeyes"
+    ? `<div style="margin:12px 16px 0;padding:10px 12px;
+           background:var(--md-surface-container);
+           border:1px solid var(--md-outline-variant);
+           border-left:3px solid #F26522;
+           border-radius:var(--shape-md)">
+         <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+           <span class="ms" style="font-size:16px;color:#F26522">info</span>
+           <span style="font-size:12px;font-weight:600;color:var(--md-on-surface)">Nutrition info from Popeyes UK</span>
+         </div>
+         <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.5">
+           Popeyes NZ hasn't published nutrition info — figures shown are from the UK menu and may differ from NZ servings.
+         </div>
+       </div>`
+    : '';
+
   const nandosBanner = f.chain === "Nando's"
     ? `<div style="margin:12px 16px 0;padding:10px 12px;
            background:var(--md-surface-container);
@@ -11938,7 +12141,7 @@ function openDetail(id, fromRest, overridePrevPage) {
 
   /* Write notes into the dedicated static container — replaces on every call, never stacks */
   document.getElementById('det-source-note').innerHTML =
-    nandosBanner + stPierreNote +
+    popeyesBanner + nandosBanner + stPierreNote +
     `<div style="padding:8px 16px 4px;text-align:center">
        <span style="font-size:11px;color:var(--md-on-surface-variant)">
          Nutritional values are based on publicly available data and may vary by
