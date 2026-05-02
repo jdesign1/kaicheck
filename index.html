@@ -5081,6 +5081,9 @@ body.native #filter-float-pill {
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;pies&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥧</span></span>
       <span class="home-cat-label">Pies</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;beer&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍺</span></span>
+      <span class="home-cat-label">Beer</span>
     </div></div>
           </div>
 
@@ -5341,6 +5344,10 @@ body.native #filter-float-pill {
               <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌿</span></span>
               <span class="home-cat-label">Vietnamese</span>
             </div>
+            <div class="home-cat-chip" onclick="goSearchCat('beer')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍺</span></span>
+              <span class="home-cat-label">Beer</span>
+            </div>
           </div>
         </div>
       </div>
@@ -5442,6 +5449,7 @@ body.native #filter-float-pill {
             <div class="pill" onclick="setCat(&#39;vietnamese&#39;,this)">Vietnamese</div>
             <div class="pill" onclick="setCat(&#39;fishnchips&#39;,this)">Fish &amp; Chips</div>
             <div class="pill" onclick="setCat(&#39;ice cream&#39;,this)">Ice Cream</div>
+            <div class="pill" onclick="setCat(&#39;beer&#39;,this)">Beer</div>
           </div>
         </div>
 
@@ -9524,6 +9532,59 @@ const foods = [
   {id:1202, name:"Trumpet - Hokey Pokey",                  chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:1059, protein:2.1, fat:10.2, sat_fat:7.1,  carbs:37.7, sugar:23.8, sodium:55,  fibre:null, score:"C"},
   {id:1203, name:"Trumpet Colossal Cone - Choc Almond",   chain:"Tip Top", cat:"ice cream", emoji:"🍦", kj:1390, protein:4.0, fat:16.4, sat_fat:9.1,  carbs:40.8, sugar:29.7, sodium:32,  fibre:null, score:"C"},
 
+  /* ── Kāpiti — verified kapitiicecream.co.nz
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1204, name:"Vanilla Bean", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:979, protein:2.4, fat:14.9, carbs:22.8, sugar:20.3, sodium:35, sat_fat:9.6, fibre:2.0, score:"D"},
+  {id:1205, name:"Affogato", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:989, protein:2.4, fat:15.0, carbs:23.1, sugar:20.4, sodium:36, sat_fat:9.7, fibre:2.0, score:"D"},
+  {id:1206, name:"Passionfruit & Yoghurt", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:582, protein:1.6, fat:4.7, carbs:22.4, sugar:20.1, sodium:25, sat_fat:3.2, fibre:2.0, score:"D"},
+  {id:1207, name:"Dark Chocolate & Raspberry", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:995, protein:1.7, fat:14.1, carbs:26.2, sugar:22.6, sodium:30, sat_fat:9.2, fibre:2.0, score:"D"},
+  {id:1208, name:"Nelson Boysenberry", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:1088, protein:2.5, fat:16.6, carbs:24.7, sugar:22.0, sodium:29, sat_fat:10.3, fibre:2.0, score:"D"},
+  {id:1209, name:"White Chocolate & Raspberry", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:1112, protein:2.2, fat:17.0, carbs:25.9, sugar:23.4, sodium:34, sat_fat:10.9, fibre:2.0, score:"D"},
+  {id:1210, name:"Marlborough Salted Caramel & Macadamia", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:1080, protein:2.5, fat:17.1, carbs:24.1, sugar:21.2, sodium:81, sat_fat:10.0, fibre:2.0, score:"D"},
+  {id:1211, name:"Vanilla Fudge Brownie", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:1110, protein:2.7, fat:15.7, carbs:28.3, sugar:24.8, sodium:64, sat_fat:10.0, fibre:2.0, score:"D"},
+  {id:1212, name:"Plant-Based Choc Boysenberry", chain:"Kāpiti Ice Cream", cat:"ice cream", emoji:"🍦", kj:936, protein:1.9, fat:13.0, carbs:25.1, sugar:22.4, sodium:12, sat_fat:9.8, fibre:2.0, score:"D"},
+
+  /* ── Speights Beer NZ — sourced from official Speights NZ website (speights.co.nz).
+     Serving size: 330ml bottle. All per-330ml values.
+     Scores: pipeline.py v2.2 per-1000kJ. All beers score A: negligible fat/sat fat/sodium.
+     Sugar/fibre values from official Speights NZ nutrition panels where available.
+     Source: https://www.speights.co.nz/page-category/product/ ── */
+  {id:1213, name:"Gold Medal Ale",     chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:456,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:7.3,  sugar:0.7, sodium:7,  fibre:1.3, score:"A"},
+  {id:1214, name:"Summit Ultra",       chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:0,   score:"A"},
+  {id:1215, name:"Summit Ultra Lime",  chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:1.3, score:"A"},
+  {id:1216, name:"Mid Ale",            chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:518,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:11.0, sugar:2.6, sodium:7,  fibre:1.3, score:"A"},
+  {id:1217, name:"Old Dark",           chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:518,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:11.0, sugar:2.6, sodium:7,  fibre:1.3, score:"A"},
+  {id:1218, name:"Hazy Pale Ale",      chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:323,  protein:0.3, fat:0.3, sat_fat:0.3, carbs:7.3,  sugar:1.0, sodium:10, fibre:0,   score:"A"},
+  {id:1219, name:"Triple Hop Pilsner", chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:481,  protein:1.3, fat:0.3, sat_fat:0.3, carbs:8.5,  sugar:1.5, sodium:8,  fibre:0,   score:"A"},
+  {id:1220, name:"Alcohol Free",       chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:243,  protein:0.7, fat:0.7, sat_fat:0.3, carbs:11.8, sugar:1.7, sodium:26, fibre:0,   score:"A"},
+  /* ─── Steinlager NZ — sourced from official Steinlager website (steinlager.com), May 2026.
+     Per 330ml bottle. Scores per pipeline.py v2.2 per-1000kJ.
+     Classic carbs shown as <8.5g on label — recorded as stated max (8.5).
+     <0.3g fat/sat_fat fields recorded as max (0.3). Tokyo Dry sat_fat <0.1g → 0.1.
+     Alcohol Free scores B: sugar 5.3g × (1000/226) = 23.5g/1000kJ, exceeds 15g threshold (+3pts). */
+  {id:1221, name:"Classic",        chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:547,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:8.5,  sugar:0.3, sodium:7,  fibre:1.3, score:"A"},
+  {id:1222, name:"Pure",           chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:566,  protein:1.7, fat:0.3, sat_fat:0.3, carbs:8.7,  sugar:0.3, sodium:8,  fibre:1.3, score:"A"},
+  {id:1223, name:"Light",          chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:301,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:4.9,  sugar:1.7, sodium:5,  fibre:1.3, score:"A"},
+  {id:1224, name:"Ultra Low Carb", chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:1.3, score:"A"},
+  {id:1225, name:"Tokyo Dry",      chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:535,  protein:1.3, fat:0.3, sat_fat:0.1, carbs:7.2,  sugar:0.3, sodium:12, fibre:1.3, score:"A"},
+  {id:1226, name:"Alcohol Free",   chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:226,  protein:0.7, fat:0.7, sat_fat:0.3, carbs:11.0, sugar:5.3, sodium:7,  fibre:0,   score:"B"},
+  /* Next ID: 1227 */
+
+  /* ── Export NZ — sourced from official DB Breweries website (db.co.nz), May 2026.
+     All values per 330ml bottle (×3.3 from per-100ml panels on db.co.nz/export/products/).
+     Sugar/protein shown as <1g on label — stored as 0.7g. Fat not listed — est. 0.3g.
+     Gold 0%: DB site has no nutrition table; values from secondary source (mynetdiary / calorie.co.nz).
+     Gold 0% scores D: 12g sugar in only 264kJ = 45.5g/1000kJ sugar (extended added-sugar tiers).
+     Citrus Lemon scores C: 18.2g sugar / 541kJ = 33.6g/1000kJ. Crushed variants score B.
+     Source: https://www.db.co.nz/export/products/ ── */
+  {id:1227, name:"Gold", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:446, protein:0.7, fat:0.3, carbs:7.6, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"A"},
+  {id:1228, name:"ULTRA", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:353, protein:0.7, fat:0.3, carbs:1.7, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"A"},
+  {id:1229, name:"Gold 0%", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:264, protein:1.0, fat:1.0, carbs:15.0, sugar:12.0, sodium:7, sat_fat:0.3, fibre:0.0, score:"D"},
+  {id:1230, name:"33", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:449, protein:0.7, fat:0.3, carbs:5.0, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"A"},
+  {id:1231, name:"Citrus Lemon", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:541, protein:0.7, fat:0.3, carbs:21.5, sugar:18.2, sodium:6, sat_fat:0.3, fibre:0.0, score:"C"},
+  {id:1232, name:"Crushed Lemon", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:469, protein:0.7, fat:0.3, carbs:8.6, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"B"},
+  {id:1233, name:"Crushed Pineapple", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:465, protein:0.7, fat:0.3, carbs:8.9, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"B"},
+
 ];
 
 const DIET_FLAGS_DATA = {
@@ -9796,7 +9857,11 @@ const rests = [
   {name:"Takeaways",    emoji:"🐟", score:"A", avg_kj:1556, brand:"#1B6CA8", desc:"Your local NZ fish and chip shop. Classic Kiwi takeaways — battered fish, chips, fritters, hot dogs and more. Numbers are typical averages."},
   {name:"Taco Bell",    emoji:"🌮", score:"C", avg_kj:2114, brand:"#702082", desc:"The US Tex-Mex chain, now in Aotearoa. Tacos, burritos, crunchwraps and more — big flavour, big kJs. Vegan range available."},
   {name:"NZ Soft Drinks",  emoji:"🥤", score:"D", avg_kj:306,  brand:"#E8001B", desc:"Popular NZ soft drinks in 300ml, 330ml and 500ml serves. Full-sugar versions are high in added sugar — all major brands offer zero-sugar alternatives that score significantly better."},
-  {name:"NZ Ice Cream",    emoji:"🍦", score:"C", avg_kj:1000, brand:"#E85D9B", desc:"Iconic NZ ice cream brands — Tip Top sticks, cones and novelties. These are treat foods: high in sugar and sat fat. Jelly Tip, Eskimo Pie and the Trumpet range are the classics."}
+  {name:"Tip Top Ice Cream", emoji:"🍦", score:"C", avg_kj:1000, brand:"#E85D9B", desc:"Iconic Kiwi ice cream brand. Sticks, cones and novelties — the classics every New Zealander knows. Jelly Tip, Eskimo Pie, Trumpet and Memphis Meltdown. Treat foods: high in sugar and sat fat, but the Trumpet range earns a C."},
+  {name:"Kāpiti Ice Cream",  emoji:"🍨", score:"D", avg_kj:986,  brand:"#1B6652", desc:"Premium NZ gourmet ice cream, hand-crafted in the Kāpiti Coast region. Single-serve chocolate-dipped sticks in sophisticated flavours — Affogato, Marlborough Salted Caramel & Macadamia, Vanilla Fudge Brownie and more. All score D: rich, indulgent treat foods."},
+  {name:"Speights Beer NZ",  emoji:"🍺", score:"A", avg_kj:409,  brand:"#A0620A", desc:"Iconic Otago brewery, brewed in Dunedin since 1876. From the classic Gold Medal Ale to Summit Ultra low-carb — the Southern Man's beers have surprisingly lean nutritional numbers."},
+  {name:"Steinlager NZ",     emoji:"🍺", score:"A", avg_kj:424,  brand:"#005E2F", desc:"New Zealand's finest since 1958. Brewed in Hawke's Bay, Steinlager is NZ's most-awarded beer. Classic, Pure, Light, Ultra Low Carb, Tokyo Dry and Alcohol Free — all lean on fat and sodium. Alcohol Free is the only B scorer due to higher residual sugars."},
+  {name:"Export NZ",         emoji:"🍺", score:"A", avg_kj:427,  brand:"#F5C400", desc:"DB Breweries' flagship lager brand, flowing non-stop since 1987. Gold, ULTRA (99% carb free), 33, Citrus Lemon, Crushed Lemon and Crushed Pineapple — 7 beers in the range. Gold, ULTRA and 33 score A. Citrus and Crushed variants score B–C due to fruit sugars. Gold 0% scores D: very high sugar density per kJ."}
 ];
 
 </script>
@@ -11500,10 +11565,10 @@ function setSF(sc, el) { rsfSel = sc; document.querySelectorAll('#sfpills .pill'
 function toggleRS() { rSB = !rSB; document.getElementById('rsa').innerHTML = '<span class="ms sz-20">swap_vert</span> ' + (rSB ? 'Best' : 'Worst') + ' first'; renderRests(); }
 
 /* ── Restaurant menu page ── */
-/* NZ Ice Cream is an umbrella restaurant — items live under chain:"Tip Top" (etc.)
-   so filter by cat rather than chain for that page. */
+/* Ice cream brands: restaurant name ≠ chain name, so map explicitly. */
 function getRestFoods(name) {
-  if (name === 'NZ Ice Cream') return foods.filter(f => f.cat === 'ice cream');
+  if (name === 'Tip Top Ice Cream') return foods.filter(f => f.chain === 'Tip Top');
+  if (name === 'Kāpiti Ice Cream')  return foods.filter(f => f.chain === 'Kāpiti Ice Cream');
   return foods.filter(f => f.chain === name);
 }
 
