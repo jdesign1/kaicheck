@@ -179,8 +179,8 @@ body.pol-spacing .home-scroll          { gap: 10px; padding: 0 16px 10px; }
 body.pol-spacing .food-list            { gap: 12px; padding: 0 16px 12px; }
 body.pol-spacing .food-card            { border-radius: 18px; }
 body.pol-spacing .fc-header            { padding: 16px 16px 12px; gap: 14px; }
-body.pol-spacing .fc-emoji-wrap        { width: 40px; height: 60px; }
-body.pol-spacing .pills                { gap: 8px; padding: 10px 16px 14px; }
+body.pol-spacing .fc-emoji-wrap        { width: 36px; height: 44px; }
+body.pol-spacing .pills                { gap: 8px; padding: 10px 16px 8px; }
 body.pol-spacing .sec-hdr              { padding: 6px 16px 10px; }
 body.pol-spacing .ins-section          { margin-top: 28px; }
 body.pol-spacing .search-wrap          { padding: 0 16px 14px; }
@@ -1187,7 +1187,8 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 }
 
 /* Padding-top reserves space below the header so first item isn't hidden.
-   Matches each header's height exactly. */
+   Includes a small buffer so active refinement chip borders don't tuck under
+   the overlaid sticky header. */
 #search-scroll {
   padding-top: 124px;
   transition: padding-top 0.2s cubic-bezier(0.2, 0, 0, 1);
@@ -1470,6 +1471,9 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   color: var(--md-on-surface-variant); letter-spacing: 0.8px;
   text-transform: uppercase; margin-bottom: 10px;
 }
+.fsh-presets {
+  padding-bottom: 0;
+}
 .fsh-chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .fsh-chip {
   display: inline-flex; align-items: center; gap: 5px;
@@ -1488,16 +1492,35 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 }
 .fsh-chip .ms { font-size: 15px; }
 .fsh-divider { height: 1px; background: var(--md-outline-variant); margin: 4px 20px; }
-.fsh-clear {
-  display: block; width: calc(100% - 32px); margin: 12px 16px 0;
-  height: 40px; border-radius: var(--shape-full);
-  border: 1px solid var(--md-outline-variant);
-  background: none; cursor: pointer;
+.fsh-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 16px 4px;
+  background: var(--md-surface);
+}
+.fsh-clear,
+.fsh-show {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; margin: 0;
+  min-height: 48px; border-radius: var(--shape-full);
   font-family: var(--font-ui); font-size: 14px; font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.fsh-clear {
+  border: 1px solid var(--md-outline-variant);
+  background: none;
   color: var(--md-on-surface-variant);
-  transition: background 0.15s;
 }
 .fsh-clear:hover { background: var(--md-surface-container-high); }
+.fsh-show {
+  border: 1px solid var(--md-primary);
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  font-weight: 700;
+}
+.fsh-show:hover { background: var(--md-primary); opacity: 0.92; }
 
 /* ── Dietary flag badges ──────────────────────────────────────────────────
    Shown on food cards and detail page hero.
@@ -1506,6 +1529,24 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .diet-badges {
   display: flex; flex-wrap: wrap; gap: 4px;
   padding: 0 14px 10px;
+}
+.fc-title-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 7px;
+}
+.fc-title-badges .diet-badge {
+  opacity: 0.82;
+  background: transparent;
+  border-color: var(--md-outline-variant);
+  padding: 2px 8px;
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+.fc-title-badges .diet-badge:hover,
+.fc-title-badges .diet-badge:focus-visible {
+  opacity: 1;
 }
 .det-diet-badges {
   display: flex; flex-wrap: wrap; gap: 5px;
@@ -1566,28 +1607,34 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 }
 /* Filter sheet dietary section */
 .fsh-diet-note {
-  margin: 6px 20px 8px;
+  margin: 6px 0 8px;
   font-family: var(--font-ui); font-size: 11px;
   color: var(--md-on-surface-variant); line-height: 1.5;
 }
 
 /* ── Sort controls row — sits above food list, below sticky header ── */
 .sort-controls {
-  display: flex; align-items: center;
-  padding: 8px 16px 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 16px 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
+.sort-controls::-webkit-scrollbar { display: none; }
 .sort-chip {
   display: inline-flex; align-items: center; gap: 5px;
-  height: 30px; padding: 0 10px;
+  height: 32px; padding: 0 16px;
   border-radius: var(--shape-full);
   border: 1px solid var(--md-outline-variant);
   background: none; cursor: pointer;
-  font-family: var(--font-ui); font-size: 12px; font-weight: 500;
+  font-family: var(--font-ui); font-size: 14px; font-weight: 500;
   color: var(--md-on-surface-variant);
   transition: background 0.15s, border-color 0.15s, color 0.15s;
   white-space: nowrap;
 }
-.sort-chip .ms { font-size: 14px; }
+.sort-chip .ms { font-size: 16px; }
 .sort-chip.active {
   background: var(--md-primary-container);
   border-color: var(--md-primary);
@@ -1603,6 +1650,79 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   flex-shrink: 0;
 }
 .sort-chip.active .sort-chip-clear { display: inline-flex; }
+.search-results-copy {
+  display: none;
+  flex: 1;
+  min-width: 0;
+  color: var(--md-on-surface-variant);
+  font-size: 12px;
+  line-height: 1.35;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-results-copy.visible { display: block; }
+.search-results-copy strong {
+  display: inline-block;
+  margin-right: 3px;
+  color: var(--md-on-surface);
+  font-weight: 700;
+}
+.active-refinements {
+  display: none;
+  gap: 8px;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  min-width: 0;
+}
+.active-refinements::-webkit-scrollbar { display: none; }
+.active-refinements.visible { display: flex; }
+.active-refinement-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px 0 14px;
+  border-radius: var(--shape-full);
+  border: 1px solid var(--md-primary);
+  background: var(--md-primary-container);
+  color: var(--md-primary);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.active-refinement-chip.clear-all {
+  background: none;
+  border-color: var(--md-outline-variant);
+  color: var(--md-on-surface-variant);
+}
+.active-refinement-chip .ms {
+  font-size: 16px;
+  line-height: 1;
+}
+.active-refinement-chip .chip-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--shape-full);
+}
+.rmenu-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+#rmenu-sort-chip {
+  height: 32px;
+  font-size: 13px;
+}
 
 /* ── Floating filter-clear pill — top-pinned, slides down below status bar ──
    Appears below the .sb area (Dynamic Island ends ~46px, sb content ~76px)
@@ -1757,7 +1877,7 @@ body.native #filter-float-pill {
 .food-card.score-d { background: var(--card-tint-D), var(--md-surface-container); }
 /* Keep selected state on top — primary-container wins over score tint */
 
-
+.food-card::after {
   content: ''; position: absolute; inset: 0;
   background: var(--md-on-surface);
   opacity: 0; border-radius: inherit;
@@ -1771,12 +1891,12 @@ body.native #filter-float-pill {
    Score colour subtly tints the emoji zone background ── */
 .fc-header {
   display: flex; align-items: center; gap: 12px;
-  padding: 14px 14px 10px;
+  padding: 12px 14px 8px;
 }
 .fc-emoji-wrap {
-  width: 40px; height: 56px; flex-shrink: 0;
+  width: 36px; height: 44px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 28px;
+  font-size: 24px;
   background: transparent;
 }
 /* Score lives in badge only — emoji wrap transparent across all states */
@@ -1786,6 +1906,11 @@ body.native #filter-float-pill {
 .fc-emoji-wrap.score-d { background: transparent; }
 
 .fc-title-group { flex: 1; min-width: 0; }
+.fc-trailing {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
 /* Chain label (now above name) — small uppercase kicker */
 .fc-chain {
   font-family: var(--font-ui);
@@ -1819,6 +1944,49 @@ body.native #filter-float-pill {
 .fc-score.score-c { background: var(--score-C-bg); color: var(--score-C-text); border-color: var(--score-C-border); }
 .fc-score.score-d { background: var(--score-D-bg); color: var(--score-D-text); border-color: var(--score-D-border); }
 
+.fc-score-chip {
+  width: 74px;
+  height: 26px;
+  padding: 0 8px;
+  appearance: none;
+  border-radius: var(--shape-full);
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.fc-score-chip.score-a {
+  background: color-mix(in srgb, var(--score-A-bg) 56%, transparent);
+  color: var(--score-A-text);
+  border-color: color-mix(in srgb, var(--score-A-border) 70%, var(--md-outline-variant));
+}
+.fc-score-chip.score-b {
+  background: color-mix(in srgb, var(--score-B-bg) 56%, transparent);
+  color: var(--score-B-text);
+  border-color: color-mix(in srgb, var(--score-B-border) 70%, var(--md-outline-variant));
+}
+.fc-score-chip.score-c {
+  background: color-mix(in srgb, var(--score-C-bg) 56%, transparent);
+  color: var(--score-C-text);
+  border-color: color-mix(in srgb, var(--score-C-border) 70%, var(--md-outline-variant));
+}
+.fc-score-chip.score-d {
+  background: color-mix(in srgb, var(--score-D-bg) 56%, transparent);
+  color: var(--score-D-text);
+  border-color: color-mix(in srgb, var(--score-D-border) 70%, var(--md-outline-variant));
+}
+.fc-card-chevron {
+  color: var(--md-on-surface-variant);
+  font-size: 18px !important;
+  opacity: 0.72;
+}
+
 /* ── Search card subtle score badge — top-right corner ── */
 .fc-score-micro {
   position: absolute; top: 10px; right: 10px;
@@ -1836,7 +2004,7 @@ body.native #filter-float-pill {
 /* ── Zone 2: Stats ──
    Calories primary / kJ secondary + key macro row ── */
 .fc-stats {
-  padding: 0 14px 12px;
+  padding: 0 14px 10px;
   display: flex; align-items: flex-end; justify-content: space-between;
 }
 .fc-energy {
@@ -1845,7 +2013,7 @@ body.native #filter-float-pill {
 /* M3 Display-inspired large calorie number */
 .fc-cal-num {
   font-family: var(--font-display);
-  font-size: 28px; font-weight: 700;
+  font-size: 25px; font-weight: 700;
   color: var(--md-on-surface); letter-spacing: -1px; line-height: 1;
 }
 .fc-cal-unit {
@@ -1860,22 +2028,40 @@ body.native #filter-float-pill {
 .fc-macros {
   display: flex; flex-direction: row; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: flex-end;
 }
+.fc-macros .fc-macro + .fc-macro::before {
+  content: "•";
+  color: var(--md-on-surface-variant);
+  margin-right: 7px;
+  font-weight: 600;
+}
 .fc-macro-row {
   display: flex; gap: 5px;
 }
 .fc-macro {
-  font-size: 11px; font-weight: 600;
+  font-size: 11px; font-weight: 700;
   color: var(--md-on-surface-variant);
-  background: var(--md-surface-container-high);
-  border-radius: var(--shape-xs);
-  padding: 3px 7px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
   white-space: nowrap;
 }
 /* Highlight protein ≥15g as positive, sodium ≥800mg as warning */
-.fc-macro.prot { color: var(--md-on-primary-container); background: var(--md-primary-container); }
-.fc-macro.sodium-warn { color: var(--score-C-text); background: var(--score-C-bg); }
-.fc-macro.satfat-warn { color: var(--score-C-text); background: var(--score-C-bg); }
-.fc-macro.sugar-warn  { color: var(--score-C-text); background: var(--score-C-bg); }
+.fc-macro.prot {
+  color: var(--md-on-primary-container);
+}
+.fc-macro.sodium-warn {
+  color: var(--score-C-text);
+}
+.fc-macro.sodium-high {
+  color: var(--md-error);
+}
+.fc-macro.satfat-warn {
+  color: var(--score-C-text);
+}
+.fc-macro.sugar-warn  {
+  color: var(--score-C-text);
+}
 
 /* ── Divider between stats and actions ── */
 .fc-divider {
@@ -1890,8 +2076,8 @@ body.native #filter-float-pill {
    M3 spec: when two actions are co-equal in importance, equal width is correct.
    Touch target: 36dp height, 10dp vertical padding in action zone. ── */
 .fc-actions {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 6px 12px 12px;
+  display: flex; align-items: center; justify-content: flex-start;
+  padding: 4px 12px 10px;
   gap: 8px;
 }
 /* Tonal button — Compare (secondary action colour, equal size) */
@@ -1901,15 +2087,16 @@ body.native #filter-float-pill {
   display: flex;
   align-items: center;
   gap: 0;
-  background: var(--md-surface-container-high);
+  background: transparent;
+  border: 1px solid var(--md-outline-variant);
   border-radius: var(--shape-full);
-  padding: 2px;
-  margin: 6px 10px 0;
+  padding: 1px;
+  margin: 2px 14px 12px;
 }
 .fc-size-btn {
-  flex: 1; height: 26px;
+  flex: 1; height: 24px;
   border-radius: var(--shape-full);
-  font-family: var(--font-ui); font-size: 11px; font-weight: 600;
+  font-family: var(--font-ui); font-size: 10.5px; font-weight: 600;
   border: none; cursor: pointer;
   color: var(--md-on-surface-variant);
   background: none;
@@ -1917,8 +2104,8 @@ body.native #filter-float-pill {
   white-space: nowrap;
 }
 .fc-size-btn.active {
-  background: var(--md-surface-container-highest);
-  color: var(--md-on-surface);
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
 }
 
 
@@ -2096,6 +2283,9 @@ body.native #filter-float-pill {
 .fc-fave .ms { font-size: 16px; }
 .fc-fave.faved { color: #F08A6A; border-color: #F08A6A; background: rgba(255,180,171,0.1); }
 .fc-fave:hover { background: color-mix(in srgb, var(--md-on-surface) 5%, transparent); }
+.fc-actions .fc-score-chip {
+  margin-left: auto;
+}
 
 /* ── Heart button on detail topbar ── */
 .det-fave-btn {
@@ -2401,32 +2591,51 @@ body.native #filter-float-pill {
 }
 .faves-empty {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 60px 24px 24px; text-align: center; gap: 12px;
+  padding: 18px 24px 14px; text-align: center; gap: 8px;
 }
-.faves-empty-icon { font-size: 52px; }
+.faves-empty-icon { font-size: 36px; line-height: 1; }
 .faves-empty-title { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--md-on-surface); }
 .faves-empty-sub { font-size: 13px; color: var(--md-on-surface-variant); line-height: 1.5; max-width: 220px; }
-.faves-empty-cta {
+.faves-empty-cta,
+.faves-meal-empty-cta {
   display: inline-flex; align-items: center; gap: 6px;
-  height: 36px; padding: 0 18px; border: none; cursor: pointer;
-  background: var(--md-primary); color: var(--md-surface);
-  font-family: var(--font-ui); font-size: 13px; font-weight: 600;
-  border-radius: var(--shape-full);
+  height: 36px; padding: 0 14px; cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--md-outline-variant);
+  color: var(--md-on-surface-variant);
+  font-family: var(--font-ui); font-size: 13px; font-weight: 500;
+  border-radius: 9999px;
+  letter-spacing: 0.1px;
+  transition: transform 120ms ease, background 150ms ease, border-color 150ms ease, color 150ms ease;
 }
-.faves-empty-cta:active { transform: scale(0.96); }
+.faves-empty-cta .ms,
+.faves-meal-empty-cta .ms { font-size: 18px; line-height: 1; color: var(--md-on-surface-variant); }
+.faves-empty-cta:hover,
+.faves-meal-empty-cta:hover { background: rgba(255,255,255,0.04); border-color: var(--md-on-surface-variant); color: var(--md-on-surface); }
+.faves-empty-cta:active,
+.faves-meal-empty-cta:active { transform: scale(0.96); }
+.faves-empty-inline {
+  padding: 12px 8px 8px;
+}
 
 /* Legacy no-op (kept so any stale references don't break layout) */
 .fc-btn-tonal, .fc-btn-filled { display: none; }
 
 /* Selected food card — compare state */
-.food-card.sel { background: var(--md-primary-container); }
+.food-card.sel {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--md-primary) 16%, transparent) 0%, transparent 60%), var(--md-primary-container);
+  border-color: var(--md-primary) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--md-primary) 55%, transparent);
+}
 .food-card.sel::before {
   background: linear-gradient(135deg, color-mix(in srgb, var(--md-primary) 8%, transparent) 0%, transparent 60%);
 }
 .food-card.sel.score-a,
 .food-card.sel.score-b,
 .food-card.sel.score-c,
-.food-card.sel.score-d { background: var(--md-primary-container); }
+.food-card.sel.score-d {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--md-primary) 16%, transparent) 0%, transparent 60%), var(--md-primary-container);
+}
 .food-card.sel .fc-compare {
   background: var(--md-primary);
   color: var(--md-on-primary);
@@ -4806,6 +5015,7 @@ body.native #filter-float-pill {
   margin-top: 3px;
 }
 .home-meal-card-arrow { color: var(--md-on-surface-variant); flex-shrink: 0; }
+#home-compare-card { margin-bottom: 24px; }
 
 /* ── Meal Builder Sheet ── */
 .mb-header {
@@ -5081,6 +5291,42 @@ body.native #filter-float-pill {
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;pies&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥧</span></span>
       <span class="home-cat-label">Pies</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;breakfast&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍳</span></span>
+      <span class="home-cat-label">Breakfast</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;mains&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍽️</span></span>
+      <span class="home-cat-label">Mains</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;salads&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥗</span></span>
+      <span class="home-cat-label">Salads</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;tacos&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌮</span></span>
+      <span class="home-cat-label">Tacos</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;burritos&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌯</span></span>
+      <span class="home-cat-label">Burritos</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;desserts&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍨</span></span>
+      <span class="home-cat-label">Desserts</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;ice cream&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍦</span></span>
+      <span class="home-cat-label">Ice Cream</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;kids&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">👶</span></span>
+      <span class="home-cat-label">Kids</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;platters&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍽️</span></span>
+      <span class="home-cat-label">Platters</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;bowls&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥣</span></span>
+      <span class="home-cat-label">Bowls</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;rice&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍚</span></span>
+      <span class="home-cat-label">Rice</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;vietnamese&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌿</span></span>
+      <span class="home-cat-label">Vietnamese</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;beer&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍺</span></span>
       <span class="home-cat-label">Beer</span>
@@ -5304,6 +5550,14 @@ body.native #filter-float-pill {
               <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥧</span></span>
               <span class="home-cat-label">Pies</span>
             </div>
+            <div class="home-cat-chip" onclick="goSearchCat('breakfast')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍳</span></span>
+              <span class="home-cat-label">Breakfast</span>
+            </div>
+            <div class="home-cat-chip" onclick="goSearchCat('mains')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍽️</span></span>
+              <span class="home-cat-label">Mains</span>
+            </div>
             <div class="home-cat-chip" onclick="goSearchCat('salads')">
               <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🥗</span></span>
               <span class="home-cat-label">Salads</span>
@@ -5429,10 +5683,6 @@ body.native #filter-float-pill {
           </div>
           <div id="recent-chips-row" class="recent-chips-row" role="list" aria-label="Recent searches"></div>
           <div class="pills" id="cats">
-            <button class="pill pill-filter" id="filter-btn-pill" onclick="openFilterSheet()" aria-label="Filter">
-              <span class="ms sz-20">tune</span>
-              <span class="filter-badge" id="filter-badge-pill">0</span>
-            </button>
             <div class="pill" onclick="setCat(&#39;all&#39;,this)">All</div>
             <div class="pill" onclick="setCat(&#39;burgers&#39;,this)">Burgers</div>
             <div class="pill" onclick="setCat(&#39;chicken&#39;,this)">Chicken</div>
@@ -5501,11 +5751,12 @@ body.native #filter-float-pill {
             </div>
           </div>
         <div class="sort-controls" id="sort-controls">
-          <button class="sort-chip" id="sort-chip" onclick="openSortSheet()">
-            <span class="ms">swap_vert</span>
-            <span id="sort-chip-lbl">Best match</span>
-            <span class="sort-chip-clear" onclick="event.stopPropagation();setSortOption('def')" title="Clear sort">×</span>
+          <button class="sort-chip" id="sort-chip" onclick="openFilterSheet()">
+            <span class="ms">tune</span>
+            <span id="sort-chip-lbl">Filters</span>
           </button>
+          <div class="search-results-copy" id="search-results-copy"></div>
+          <div class="active-refinements" id="active-refinements" aria-label="Active filters"></div>
         </div>
         <div class="food-list" id="fl"><div class="search-empty-state"><div class="search-empty-ico">🍴</div><div class="search-empty-title">What are you in the mood for?</div><div class="search-empty-sub">Search a food, or pick a category to get started — we'll do the legwork.</div></div></div>
         </div><!-- /page-scroll -->
@@ -5808,10 +6059,17 @@ body.native #filter-float-pill {
         </div>
         <div class="sec-hdr">
           <span id="mct">0 items</span>
-          <button class="filter-btn" id="rmenu-filter-btn" onclick="openRmenuFilterSheet()">
-            <span class="ms">tune</span>Filter
-            <span class="filter-badge" id="rmenu-filter-badge"></span>
-          </button>
+          <div class="rmenu-controls">
+            <button class="sort-chip" id="rmenu-sort-chip" onclick="openRmenuSortSheet()">
+              <span class="ms">swap_vert</span>
+              <span id="rmenu-sort-chip-lbl">Menu order</span>
+              <span class="sort-chip-clear" onclick="event.stopPropagation();filterCtx='rmenu';setSortOption('def')" title="Clear sort">×</span>
+            </button>
+            <button class="filter-btn" id="rmenu-filter-btn" onclick="openRmenuFilterSheet()">
+              <span class="ms">tune</span>Filter
+              <span class="filter-badge" id="rmenu-filter-badge"></span>
+            </button>
+          </div>
         </div>
         <div class="cmp-rest-banner" id="cmp-rest-banner">
           <div class="cmp-rest-banner-text">These two are in your compare tray — see them side by side?</div>
@@ -7175,9 +7433,21 @@ body.native #filter-float-pill {
     <div class="bottom-sheet" id="filter-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-scroll">
+        <!-- Quick preset section — search context only -->
+        <div class="fsh-section fsh-presets" id="fsh-presets">
+          <div class="fsh-section-title">Quick starts</div>
+          <div class="fsh-chips">
+            <button class="fsh-chip" id="fsh-preset-lowcal" onclick="applyFilterPreset('lowcal')">
+              <span class="ms">arrow_downward</span>Low calorie
+            </button>
+            <button class="fsh-chip" id="fsh-preset-healthiest" onclick="applyFilterPreset('healthiest')">
+              <span class="ms">verified</span>Healthiest
+            </button>
+          </div>
+        </div>
         <!-- Nutrition filters section -->
         <div class="fsh-section">
-          <div class="fsh-section-title">Nutrition filters</div>
+          <div class="fsh-section-title">Specific filters</div>
           <div class="fsh-chips">
             <button class="fsh-chip" id="fsh-protein" onclick="toggleFilter(&#39;protein&#39;,this)">
               <span class="ms">fitness_center</span>High protein
@@ -7188,15 +7458,11 @@ body.native #filter-float-pill {
             <button class="fsh-chip" id="fsh-fat" onclick="toggleFilter(&#39;fat&#39;,this)">
               <span class="ms">opacity</span>Low fat
             </button>
-            <button class="fsh-chip" id="fsh-balanced" onclick="toggleFilter(&#39;balanced&#39;,this)">
-              <span class="ms">balance</span>Balanced
-            </button>
             <button class="fsh-chip" id="fsh-sodium" onclick="toggleFilter(&#39;sodium&#39;,this)">
               <span class="ms">water</span>Low salt
             </button>
           </div>
         </div>
-      </div>
         <!-- Dietary filters section -->
         <div class="fsh-divider"></div>
         <div class="fsh-section">
@@ -7214,7 +7480,11 @@ body.native #filter-float-pill {
           </div>
           <div class="fsh-diet-note">Flags based on menu labelling &amp; chain certifications. Always confirm with staff for allergens.</div>
         </div>
-      <button class="fsh-clear" id="fsh-clear" onclick="clearFilters()">Clear all</button>
+      </div>
+      <div class="fsh-footer" id="fsh-footer">
+        <button class="fsh-clear" id="fsh-clear" onclick="clearFilters()">Clear all</button>
+        <button class="fsh-show" id="fsh-show" onclick="closeAllSheets()">Show items</button>
+      </div>
     </div>
 
     <!-- Compare macro detail sheet -->
@@ -7234,19 +7504,23 @@ body.native #filter-float-pill {
       <div class="sheet-handle"></div>
       <div class="sort-sheet-title">Sort by</div>
       <button class="sort-opt" id="sopt-def" onclick="setSortOption('def')">
-        <span class="ms">dashboard</span>Best match
+        <span class="ms" id="sopt-def-ico">dashboard</span><span id="sopt-def-lbl">Recommended</span>
         <span class="sort-check">check</span>
       </button>
       <button class="sort-opt" id="sopt-lo" onclick="setSortOption('lo')">
-        <span class="ms">arrow_downward</span>Lowest cal
+        <span class="ms">arrow_downward</span><span id="sopt-lo-lbl">Lowest calories</span>
         <span class="sort-check">check</span>
       </button>
       <button class="sort-opt" id="sopt-protein" onclick="setSortOption('protein')">
-        <span class="ms">fitness_center</span>Highest protein
+        <span class="ms">fitness_center</span><span id="sopt-protein-lbl">Highest protein</span>
         <span class="sort-check">check</span>
       </button>
       <button class="sort-opt" id="sopt-grade" onclick="setSortOption('grade')">
-        <span class="ms">grade</span>Best grade
+        <span class="ms">verified</span><span id="sopt-grade-lbl">Healthiest first</span>
+        <span class="sort-check">check</span>
+      </button>
+      <button class="sort-opt" id="sopt-sodium" onclick="setSortOption('sodium')">
+        <span class="ms">water</span><span id="sopt-sodium-lbl">Lowest salt</span>
         <span class="sort-check">check</span>
       </button>
       <div class="sort-sheet-gap"></div>
@@ -8094,33 +8368,33 @@ const foods = [
   {id:1088, name:"Mango Fruitopia Small", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:610, protein:0.3, fat:0, carbs:35, sugar:32, sodium:20, sat_fat:0, fibre:0, score:"D"},
   {id:1089, name:"Mango Fruitopia Medium", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:880, protein:0.4, fat:0, carbs:51, sugar:47, sodium:29, sat_fat:0, fibre:0, score:"D"},
   {id:1090, name:"Mango Fruitopia Large", chain:"McDonald's", cat:"drinks", emoji:"🥤", kj:1210, protein:0.6, fat:0, carbs:70, sugar:64, sodium:40, sat_fat:0, fibre:0, score:"D"},
-  {id:1091, name:"Chocolate Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1350, protein:6.5, fat:4.8, carbs:61, sugar:55, sodium:152, sat_fat:3.2, fibre:0.5, score:"C"},
-  {id:1092, name:"Chocolate Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1890, protein:9.1, fat:6.7, carbs:86, sugar:77, sodium:213, sat_fat:4.5, fibre:0.7, score:"C"},
+  {id:1091, name:"Chocolate Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1350, protein:6.5, fat:4.8, carbs:61, sugar:55, sodium:152, sat_fat:3.2, fibre:0.5, score:"D"},
+  {id:1092, name:"Chocolate Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1890, protein:9.1, fat:6.7, carbs:86, sugar:77, sodium:213, sat_fat:4.5, fibre:0.7, score:"D"},
   {id:1093, name:"Chocolate Shake Large", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:2620, protein:12.6, fat:9.3, carbs:119, sugar:107, sodium:295, sat_fat:6.2, fibre:1.0, score:"D"},
-  {id:1094, name:"Strawberry Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1260, protein:6.5, fat:4.8, carbs:57, sugar:51, sodium:107, sat_fat:3.2, fibre:0, score:"C"},
-  {id:1095, name:"Strawberry Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1765, protein:9.1, fat:6.7, carbs:80, sugar:72, sodium:150, sat_fat:4.5, fibre:0, score:"C"},
+  {id:1094, name:"Strawberry Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1260, protein:6.5, fat:4.8, carbs:57, sugar:51, sodium:107, sat_fat:3.2, fibre:0, score:"D"},
+  {id:1095, name:"Strawberry Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1765, protein:9.1, fat:6.7, carbs:80, sugar:72, sodium:150, sat_fat:4.5, fibre:0, score:"D"},
   {id:1096, name:"Strawberry Shake Large", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:2450, protein:12.6, fat:9.3, carbs:110, sugar:99, sodium:207, sat_fat:6.2, fibre:0, score:"D"},
   {id:1097, name:"Vanilla Shake Small", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1250, protein:6.5, fat:5.5, carbs:55, sugar:48, sodium:106, sat_fat:3.7, fibre:0, score:"C"},
   {id:1098, name:"Vanilla Shake Medium", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:1750, protein:9.1, fat:7.7, carbs:77, sugar:67, sodium:148, sat_fat:5.2, fibre:0, score:"C"},
-  {id:1099, name:"Vanilla Shake Large", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:2430, protein:12.6, fat:10.7, carbs:106, sugar:93, sodium:205, sat_fat:7.2, fibre:0, score:"D"},
-  {id:1100, name:"McCafe Flat White Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:435, protein:5.2, fat:5.2, carbs:8.4, sugar:8.0, sodium:70, sat_fat:3.5, fibre:0, score:"B"},
-  {id:1101, name:"McCafe Flat White Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:580, protein:7.0, fat:7.0, carbs:11.2, sugar:10.7, sodium:93, sat_fat:4.7, fibre:0, score:"B"},
-  {id:1102, name:"McCafe Flat White Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:735, protein:8.8, fat:8.8, carbs:14.2, sugar:13.5, sodium:118, sat_fat:5.9, fibre:0, score:"B"},
-  {id:1103, name:"McCafe Latte Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:435, protein:5.2, fat:5.2, carbs:8.4, sugar:8.0, sodium:70, sat_fat:3.5, fibre:0, score:"B"},
-  {id:1104, name:"McCafe Latte Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:730, protein:8.7, fat:8.7, carbs:14.0, sugar:13.4, sodium:117, sat_fat:5.8, fibre:0, score:"B"},
-  {id:1105, name:"McCafe Latte Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:920, protein:11.0, fat:11.0, carbs:17.7, sugar:16.9, sodium:148, sat_fat:7.3, fibre:0, score:"B"},
-  {id:1106, name:"McCafe Cappuccino Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:365, protein:4.4, fat:4.4, carbs:7.0, sugar:6.7, sodium:59, sat_fat:2.9, fibre:0, score:"B"},
-  {id:1107, name:"McCafe Cappuccino Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:505, protein:6.1, fat:6.1, carbs:9.7, sugar:9.3, sodium:82, sat_fat:4.1, fibre:0, score:"B"},
-  {id:1108, name:"McCafe Cappuccino Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:655, protein:7.8, fat:7.8, carbs:12.5, sugar:12.0, sodium:105, sat_fat:5.2, fibre:0, score:"B"},
+  {id:1099, name:"Vanilla Shake Large", chain:"McDonald's", cat:"drinks", emoji:"🥛", kj:2430, protein:12.6, fat:10.7, carbs:106, sugar:93, sodium:205, sat_fat:7.2, fibre:0, score:"C"},
+  {id:1100, name:"McCafe Flat White Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:435, protein:5.2, fat:5.2, carbs:8.4, sugar:8.0, sodium:70, sat_fat:3.5, fibre:0, score:"C"},
+  {id:1101, name:"McCafe Flat White Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:580, protein:7.0, fat:7.0, carbs:11.2, sugar:10.7, sodium:93, sat_fat:4.7, fibre:0, score:"D"},
+  {id:1102, name:"McCafe Flat White Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:735, protein:8.8, fat:8.8, carbs:14.2, sugar:13.5, sodium:118, sat_fat:5.9, fibre:0, score:"C"},
+  {id:1103, name:"McCafe Latte Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:435, protein:5.2, fat:5.2, carbs:8.4, sugar:8.0, sodium:70, sat_fat:3.5, fibre:0, score:"C"},
+  {id:1104, name:"McCafe Latte Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:730, protein:8.7, fat:8.7, carbs:14.0, sugar:13.4, sodium:117, sat_fat:5.8, fibre:0, score:"C"},
+  {id:1105, name:"McCafe Latte Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:920, protein:11.0, fat:11.0, carbs:17.7, sugar:16.9, sodium:148, sat_fat:7.3, fibre:0, score:"C"},
+  {id:1106, name:"McCafe Cappuccino Small", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:365, protein:4.4, fat:4.4, carbs:7.0, sugar:6.7, sodium:59, sat_fat:2.9, fibre:0, score:"C"},
+  {id:1107, name:"McCafe Cappuccino Medium", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:505, protein:6.1, fat:6.1, carbs:9.7, sugar:9.3, sodium:82, sat_fat:4.1, fibre:0, score:"D"},
+  {id:1108, name:"McCafe Cappuccino Large", chain:"McDonald's", cat:"drinks", emoji:"☕", kj:655, protein:7.8, fat:7.8, carbs:12.5, sugar:12.0, sodium:105, sat_fat:5.2, fibre:0, score:"C"},
   {id:1109, name:"McCafe Hot Chocolate Small", chain:"McDonald's", cat:"drinks", emoji:"🍫", kj:840, protein:5.0, fat:5.8, carbs:29.5, sugar:27.5, sodium:108, sat_fat:3.8, fibre:1.5, score:"C"},
   {id:1110, name:"McCafe Hot Chocolate Medium", chain:"McDonald's", cat:"drinks", emoji:"🍫", kj:1175, protein:7.0, fat:8.1, carbs:41.3, sugar:38.5, sodium:151, sat_fat:5.3, fibre:2.1, score:"C"},
   {id:1111, name:"McCafe Hot Chocolate Large", chain:"McDonald's", cat:"drinks", emoji:"🍫", kj:1490, protein:8.9, fat:10.3, carbs:52.3, sugar:48.8, sodium:192, sat_fat:6.7, fibre:2.6, score:"C"},
   {id:1112, name:"Orange Juice", chain:"McDonald's", cat:"drinks", emoji:"🍊", kj:480, protein:1.8, fat:0.2, carbs:26.8, sugar:26.8, sodium:3, sat_fat:0, fibre:0.4, score:"B", natural_sugar:true},
-  {id:1113, name:"Apple Juice", chain:"McDonald's", cat:"drinks", emoji:"🍎", kj:420, protein:0.5, fat:0.1, carbs:24.5, sugar:23.5, sodium:10, sat_fat:0, fibre:0.2, score:"C"},
+  {id:1113, name:"Apple Juice", chain:"McDonald's", cat:"drinks", emoji:"🍎", kj:420, protein:0.5, fat:0.1, carbs:24.5, sugar:23.5, sodium:10, sat_fat:0, fibre:0.2, score:"D"},
   {id:1114, name:"Water", chain:"McDonald's", cat:"drinks", emoji:"💧", kj:0, protein:0, fat:0, carbs:0, sugar:0, sodium:0, sat_fat:0, fibre:0, score:"A"},
-  {id:1115, name:"McFlurry Oreo Regular", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:1370, protein:6.8, fat:7.5, carbs:52.4, sugar:40.7, sodium:176, sat_fat:4.8, fibre:0.5, score:"D"},
+  {id:1115, name:"McFlurry Oreo Regular", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:1370, protein:6.8, fat:7.5, carbs:52.4, sugar:40.7, sodium:176, sat_fat:4.8, fibre:0.5, score:"C"},
   {id:1116, name:"McFlurry Oreo Mini", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:710, protein:3.5, fat:3.9, carbs:27.2, sugar:21.1, sodium:91, sat_fat:2.5, fibre:0.3, score:"C"},
-  {id:1117, name:"McFlurry Caramel Regular", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:1340, protein:6.4, fat:6.8, carbs:53.7, sugar:42.5, sodium:205, sat_fat:4.4, fibre:0, score:"D"},
+  {id:1117, name:"McFlurry Caramel Regular", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:1340, protein:6.4, fat:6.8, carbs:53.7, sugar:42.5, sodium:205, sat_fat:4.4, fibre:0, score:"C"},
   {id:1118, name:"McFlurry Caramel Mini", chain:"McDonald's", cat:"drinks", emoji:"🍦", kj:695, protein:3.3, fat:3.5, carbs:27.9, sugar:22.1, sodium:106, sat_fat:2.3, fibre:0, score:"C"},
   /* ── KFC — verified KFC NZ Nutrition Page — kfc.co.nz/nutrition — April 2026
      Scores auto-calculated by pipeline.py v2.0 — FSANZ daily reference values. ── */
@@ -9547,28 +9821,29 @@ const foods = [
 
   /* ── Speights Beer NZ — sourced from official Speights NZ website (speights.co.nz).
      Serving size: 330ml bottle. All per-330ml values.
-     Scores: pipeline.py v2.2 per-1000kJ. All beers score A: negligible fat/sat fat/sodium.
+     Scores: pipeline.py v2.2 per-1000kJ plus alcohol cap: alcoholic beers cannot score above C.
      Sugar/fibre values from official Speights NZ nutrition panels where available.
      Source: https://www.speights.co.nz/page-category/product/ ── */
-  {id:1213, name:"Gold Medal Ale",     chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:456,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:7.3,  sugar:0.7, sodium:7,  fibre:1.3, score:"A"},
-  {id:1214, name:"Summit Ultra",       chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:0,   score:"A"},
-  {id:1215, name:"Summit Ultra Lime",  chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:1.3, score:"A"},
-  {id:1216, name:"Mid Ale",            chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:518,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:11.0, sugar:2.6, sodium:7,  fibre:1.3, score:"A"},
-  {id:1217, name:"Old Dark",           chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:518,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:11.0, sugar:2.6, sodium:7,  fibre:1.3, score:"A"},
-  {id:1218, name:"Hazy Pale Ale",      chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:323,  protein:0.3, fat:0.3, sat_fat:0.3, carbs:7.3,  sugar:1.0, sodium:10, fibre:0,   score:"A"},
-  {id:1219, name:"Triple Hop Pilsner", chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:481,  protein:1.3, fat:0.3, sat_fat:0.3, carbs:8.5,  sugar:1.5, sodium:8,  fibre:0,   score:"A"},
-  {id:1220, name:"Alcohol Free",       chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:243,  protein:0.7, fat:0.7, sat_fat:0.3, carbs:11.8, sugar:1.7, sodium:26, fibre:0,   score:"A"},
+  {id:1213, name:"Gold Medal Ale",     chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:456,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:7.3,  sugar:0.7, sodium:7,  fibre:1.3, score:"C", abv:4.0, std_drinks:1.0},
+  {id:1214, name:"Summit Ultra",       chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:0,   score:"C", abv:4.2, std_drinks:1.1},
+  {id:1215, name:"Summit Ultra Lime",  chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:1.3, score:"C", abv:4.2, std_drinks:1.1},
+  {id:1216, name:"Mid Ale",            chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:518,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:11.0, sugar:2.6, sodium:7,  fibre:1.3, score:"C", abv:2.5, std_drinks:0.7},
+  {id:1217, name:"Old Dark",           chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:518,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:11.0, sugar:2.6, sodium:7,  fibre:1.3, score:"C", abv:4.0, std_drinks:1.0},
+  {id:1218, name:"Hazy Pale Ale",      chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:323,  protein:0.3, fat:0.3, sat_fat:0.3, carbs:7.3,  sugar:1.0, sodium:10, fibre:0,   score:"C", abv:4.0, std_drinks:1.0},
+  {id:1219, name:"Triple Hop Pilsner", chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:481,  protein:1.3, fat:0.3, sat_fat:0.3, carbs:8.5,  sugar:1.5, sodium:8,  fibre:0,   score:"C", abv:5.0, std_drinks:1.3},
+  {id:1220, name:"Alcohol Free",       chain:"Speights Beer NZ", cat:"beer", emoji:"🍺", kj:243,  protein:0.7, fat:0.7, sat_fat:0.3, carbs:11.8, sugar:1.7, sodium:26, fibre:0,   score:"A", abv:0.0, std_drinks:0.0},
   /* ─── Steinlager NZ — sourced from official Steinlager website (steinlager.com), May 2026.
      Per 330ml bottle. Scores per pipeline.py v2.2 per-1000kJ.
      Classic carbs shown as <8.5g on label — recorded as stated max (8.5).
      <0.3g fat/sat_fat fields recorded as max (0.3). Tokyo Dry sat_fat <0.1g → 0.1.
-     Alcohol Free scores B: sugar 5.3g × (1000/226) = 23.5g/1000kJ, exceeds 15g threshold (+3pts). */
-  {id:1221, name:"Classic",        chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:547,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:8.5,  sugar:0.3, sodium:7,  fibre:1.3, score:"A"},
-  {id:1222, name:"Pure",           chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:566,  protein:1.7, fat:0.3, sat_fat:0.3, carbs:8.7,  sugar:0.3, sodium:8,  fibre:1.3, score:"A"},
-  {id:1223, name:"Light",          chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:301,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:4.9,  sugar:1.7, sodium:5,  fibre:1.3, score:"A"},
-  {id:1224, name:"Ultra Low Carb", chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:1.3, score:"A"},
-  {id:1225, name:"Tokyo Dry",      chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:535,  protein:1.3, fat:0.3, sat_fat:0.1, carbs:7.2,  sugar:0.3, sodium:12, fibre:1.3, score:"A"},
-  {id:1226, name:"Alcohol Free",   chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:226,  protein:0.7, fat:0.7, sat_fat:0.3, carbs:11.0, sugar:5.3, sodium:7,  fibre:0,   score:"B"},
+     Alcohol Free scores B: sugar 5.3g × (1000/226) = 23.5g/1000kJ, exceeds 15g threshold (+3pts).
+     Alcoholic beers use alcohol cap and cannot score above C. */
+  {id:1221, name:"Classic",        chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:547,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:8.5,  sugar:0.3, sodium:7,  fibre:1.3, score:"C", abv:5.0, std_drinks:1.3},
+  {id:1222, name:"Pure",           chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:566,  protein:1.7, fat:0.3, sat_fat:0.3, carbs:8.7,  sugar:0.3, sodium:8,  fibre:1.3, score:"C", abv:5.0, std_drinks:1.3},
+  {id:1223, name:"Light",          chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:301,  protein:1.0, fat:0.3, sat_fat:0.3, carbs:4.9,  sugar:1.7, sodium:5,  fibre:1.3, score:"C", abv:2.5, std_drinks:0.7},
+  {id:1224, name:"Ultra Low Carb", chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:367,  protein:0.7, fat:0.3, sat_fat:0.3, carbs:1.5,  sugar:0.3, sodium:6,  fibre:1.3, score:"C", abv:4.2, std_drinks:1.1},
+  {id:1225, name:"Tokyo Dry",      chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:535,  protein:1.3, fat:0.3, sat_fat:0.1, carbs:7.2,  sugar:0.3, sodium:12, fibre:1.3, score:"C", abv:5.0, std_drinks:1.3},
+  {id:1226, name:"Alcohol Free",   chain:"Steinlager NZ", cat:"beer", emoji:"🍺", kj:226,  protein:0.7, fat:0.7, sat_fat:0.3, carbs:11.0, sugar:5.3, sodium:7,  fibre:0,   score:"B", abv:0.0, std_drinks:0.0},
   /* Next ID: 1227 */
 
   /* ── Export NZ — sourced from official DB Breweries website (db.co.nz), May 2026.
@@ -9576,15 +9851,15 @@ const foods = [
      Sugar/protein shown as <1g on label — stored as 0.7g. Fat not listed — est. 0.3g.
      Gold 0%: DB site has no nutrition table; values from secondary source (mynetdiary / calorie.co.nz).
      Gold 0% scores D: 12g sugar in only 264kJ = 45.5g/1000kJ sugar (extended added-sugar tiers).
-     Citrus Lemon scores C: 18.2g sugar / 541kJ = 33.6g/1000kJ. Crushed variants score B.
+     Citrus Lemon scores C: 18.2g sugar / 541kJ = 33.6g/1000kJ. Crushed variants score C after alcohol cap.
      Source: https://www.db.co.nz/export/products/ ── */
-  {id:1227, name:"Gold", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:446, protein:0.7, fat:0.3, carbs:7.6, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"A"},
-  {id:1228, name:"ULTRA", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:353, protein:0.7, fat:0.3, carbs:1.7, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"A"},
-  {id:1229, name:"Gold 0%", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:264, protein:1.0, fat:1.0, carbs:15.0, sugar:12.0, sodium:7, sat_fat:0.3, fibre:0.0, score:"D"},
-  {id:1230, name:"33", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:449, protein:0.7, fat:0.3, carbs:5.0, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"A"},
-  {id:1231, name:"Citrus Lemon", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:541, protein:0.7, fat:0.3, carbs:21.5, sugar:18.2, sodium:6, sat_fat:0.3, fibre:0.0, score:"C"},
-  {id:1232, name:"Crushed Lemon", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:469, protein:0.7, fat:0.3, carbs:8.6, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"B"},
-  {id:1233, name:"Crushed Pineapple", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:465, protein:0.7, fat:0.3, carbs:8.9, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"B"},
+  {id:1227, name:"Gold", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:446, protein:0.7, fat:0.3, carbs:7.6, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"C", abv:4.0, std_drinks:1.0},
+  {id:1228, name:"ULTRA", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:353, protein:0.7, fat:0.3, carbs:1.7, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"C", abv:4.2, std_drinks:1.1},
+  {id:1229, name:"Gold 0%", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:264, protein:1.0, fat:1.0, carbs:15.0, sugar:12.0, sodium:7, sat_fat:0.3, fibre:0.0, score:"D", abv:0.0, std_drinks:0.0},
+  {id:1230, name:"33", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:449, protein:0.7, fat:0.3, carbs:5.0, sugar:0.7, sodium:8, sat_fat:0.3, fibre:0.0, score:"C", abv:4.3, std_drinks:1.1},
+  {id:1231, name:"Citrus Lemon", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:541, protein:0.7, fat:0.3, carbs:21.5, sugar:18.2, sodium:6, sat_fat:0.3, fibre:0.0, score:"C", abv:2.0, std_drinks:0.5},
+  {id:1232, name:"Crushed Lemon", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:469, protein:0.7, fat:0.3, carbs:8.6, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"C", abv:4.0, std_drinks:1.0},
+  {id:1233, name:"Crushed Pineapple", chain:"Export NZ", cat:"beer", emoji:"🍺", kj:465, protein:0.7, fat:0.3, carbs:8.9, sugar:7.9, sodium:8, sat_fat:0.3, fibre:0.0, score:"C", abv:4.0, std_drinks:1.0},
 
   /* ── Popeyes — verified popeyesuk.com/nutrition (UK data — no NZ source available)
      Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
@@ -9742,10 +10017,15 @@ const foods = [
 
   /* ── Heineken — verified fatsecret.co.nz NZ + Heineken official, May 2026
      Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
-  {id:1385, name:"Original", chain:"Heineken", cat:"beer", emoji:"🍺", kj:584, protein:1.4, fat:0.0, carbs:10.7, sugar:0.5, sodium:7, sat_fat:0.0, fibre:0.0, score:"A"},
-  {id:1386, name:"Silver Low Carb", chain:"Heineken", cat:"beer", emoji:"🍺", kj:368, protein:0.7, fat:0.0, carbs:2.9, sugar:0.4, sodium:8, sat_fat:0.0, fibre:0.0, score:"A"},
-  {id:1387, name:"Light", chain:"Heineken", cat:"beer", emoji:"🍺", kj:305, protein:0.7, fat:0.0, carbs:6.3, sugar:1.0, sodium:7, sat_fat:0.0, fibre:0.0, score:"A"},
-  {id:1388, name:"0.0 Alcohol Free", chain:"Heineken", cat:"beer", emoji:"🍺", kj:290, protein:0.0, fat:0.0, carbs:15.8, sugar:8.7, sodium:5, sat_fat:0.0, fibre:0.0, score:"C"},
+  {id:1385, name:"Original", chain:"Heineken", cat:"beer", emoji:"🍺", kj:584, protein:1.4, fat:0.0, carbs:10.7, sugar:0.5, sodium:7, sat_fat:0.0, fibre:0.0, score:"C", abv:5.0, std_drinks:1.3},
+  {id:1386, name:"Silver Low Carb", chain:"Heineken", cat:"beer", emoji:"🍺", kj:368, protein:0.7, fat:0.0, carbs:2.9, sugar:0.4, sodium:8, sat_fat:0.0, fibre:0.0, score:"C", abv:4.0, std_drinks:1.0},
+  {id:1387, name:"Light", chain:"Heineken", cat:"beer", emoji:"🍺", kj:305, protein:0.7, fat:0.0, carbs:6.3, sugar:1.0, sodium:7, sat_fat:0.0, fibre:0.0, score:"C", abv:3.3, std_drinks:0.9},
+  {id:1388, name:"0.0 Alcohol Free", chain:"Heineken", cat:"beer", emoji:"🍺", kj:290, protein:0.0, fat:0.0, carbs:15.8, sugar:8.7, sodium:5, sat_fat:0.0, fibre:0.0, score:"C", abv:0.0, std_drinks:0.0},
+
+  /* ── Tui NZ — verified db.co.nz (DB Breweries official)
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1389, name:"EIPA", chain:"Tui NZ", cat:"beer", emoji:"🍺", kj:446, protein:1.7, fat:0.0, carbs:7.6, sugar:3.0, sodium:8, sat_fat:0.0, fibre:0.0, score:"C", abv:4.0, std_drinks:1.0},
+  {id:1390, name:"Strong Lager", chain:"Tui NZ", cat:"beer", emoji:"🍺", kj:1055, protein:2.5, fat:0.0, carbs:11.5, sugar:4.5, sodium:13, sat_fat:0.0, fibre:0.0, score:"D", abv:7.2, std_drinks:2.8},
 
 ];
 
@@ -9993,6 +10273,8 @@ const DIET_FLAGS_DATA = {
 /* Helper — returns array of dietary flag strings for a food item */
 function getFoodFlags(f) { return DIET_FLAGS_DATA[f.id] || []; }
 
+const BEER_BRANDS = ['Speights Beer NZ', 'Steinlager NZ', 'Export NZ', 'Heineken', 'Tui NZ'];
+
 
 const rests = [
   /* brand: primary brand colour used as a subtle tint on cards + restaurant header pages. */
@@ -10019,12 +10301,13 @@ const rests = [
   {name:"Takeaways",    emoji:"🐟", score:"A", avg_kj:1556, brand:"#1B6CA8", desc:"Your local NZ fish and chip shop. Classic Kiwi takeaways — battered fish, chips, fritters, hot dogs and more. Numbers are typical averages."},
   {name:"Taco Bell",    emoji:"🌮", score:"C", avg_kj:2114, brand:"#702082", desc:"The US Tex-Mex chain, now in Aotearoa. Tacos, burritos, crunchwraps and more — big flavour, big kJs. Vegan range available."},
   {name:"NZ Soft Drinks",  emoji:"🥤", score:"D", avg_kj:306,  brand:"#E8001B", desc:"Popular NZ soft drinks in 300ml, 330ml and 500ml serves. Full-sugar versions are high in added sugar — all major brands offer zero-sugar alternatives that score significantly better."},
-  {name:"Tip Top Ice Cream", emoji:"🍦", score:"C", avg_kj:1000, brand:"#E85D9B", desc:"Iconic Kiwi ice cream brand. Sticks, cones and novelties — the classics every New Zealander knows. Jelly Tip, Eskimo Pie, Trumpet and Memphis Meltdown. Treat foods: high in sugar and sat fat, but the Trumpet range earns a C."},
-  {name:"Kāpiti Ice Cream",  emoji:"🍨", score:"D", avg_kj:986,  brand:"#1B6652", desc:"Premium NZ gourmet ice cream, hand-crafted in the Kāpiti Coast region. Single-serve chocolate-dipped sticks in sophisticated flavours — Affogato, Marlborough Salted Caramel & Macadamia, Vanilla Fudge Brownie and more. All score D: rich, indulgent treat foods."},
-  {name:"Speights Beer NZ",  emoji:"🍺", score:"A", avg_kj:409,  brand:"#A0620A", desc:"Iconic Otago brewery, brewed in Dunedin since 1876. From the classic Gold Medal Ale to Summit Ultra low-carb — the Southern Man's beers have surprisingly lean nutritional numbers."},
-  {name:"Heineken",           emoji:"🍺", score:"A", avg_kj:387,  brand:"#009A44", desc:"The world's most international beer brand, widely available across NZ. Original (5%), Silver Low Carb (4%), Light (3.3%) and 0.0 Alcohol Free. Three score A — lean on fat and sodium. The 0.0 scores C due to high residual sugar density per kJ."},
-  {name:"Steinlager NZ",     emoji:"🍺", score:"A", avg_kj:424,  brand:"#005E2F", desc:"New Zealand's finest since 1958. Brewed in Hawke's Bay, Steinlager is NZ's most-awarded beer. Classic, Pure, Light, Ultra Low Carb, Tokyo Dry and Alcohol Free — all lean on fat and sodium. Alcohol Free is the only B scorer due to higher residual sugars."},
-  {name:"Export NZ",         emoji:"🍺", score:"A", avg_kj:427,  brand:"#F5C400", desc:"DB Breweries' flagship lager brand, flowing non-stop since 1987. Gold, ULTRA (99% carb free), 33, Citrus Lemon, Crushed Lemon and Crushed Pineapple — 7 beers in the range. Gold, ULTRA and 33 score A. Citrus and Crushed variants score B–C due to fruit sugars. Gold 0% scores D: very high sugar density per kJ."},
+  {name:"NZ Ice Cream",    emoji:"🍦", score:"D", avg_kj:993,  brand:"#E85D9B", aliases:["tip top","tip top ice cream","kapiti","kāpiti","kapiti ice cream","kāpiti ice cream"], desc:"Classic Kiwi ice cream brands grouped for easier browsing. Tip Top brings sticks, cones and novelties like Jelly Tip, Eskimo Pie and Trumpet; Kāpiti adds premium single-serve flavours like Affogato, Vanilla Bean and Salted Caramel & Macadamia."},
+  {name:"NZ Beer",           emoji:"🍺", score:"C", avg_kj:438,  brand:"#A0620A", desc:"Beer brands available in Aotearoa, grouped for easier comparison. Alcoholic beers are capped at C even when the nutrition panel is lean; high-standard-drink serves score D, while zero-alcohol drinks keep their nutrition-based score."},
+  {name:"Speights Beer NZ",  emoji:"🍺", score:"C", avg_kj:409,  brand:"#A0620A", hidden:true, desc:"Iconic Otago brewery, brewed in Dunedin since 1876. Alcoholic beers are capped at C even when their nutrition panel is lean; Alcohol Free scores A."},
+  {name:"Heineken",           emoji:"🍺", score:"C", avg_kj:387,  brand:"#009A44", hidden:true, desc:"The world's most international beer brand, widely available across NZ. Alcoholic beers are capped at C; Heineken 0.0 keeps its nutrition-based C due to residual sugar density."},
+  {name:"Steinlager NZ",     emoji:"🍺", score:"C", avg_kj:424,  brand:"#005E2F", hidden:true, desc:"New Zealand's finest since 1958. Alcoholic beers are capped at C; Alcohol Free scores B due to higher residual sugars."},
+  {name:"Tui NZ",           emoji:"🍺", score:"C", avg_kj:750,  brand:"#C1002A", hidden:true, desc:"Tui has been brewed on the banks of the Mangatainoka River since 1889. EIPA is capped at C for alcohol; Strong Lager scores D because it is a high-standard-drink serve."},
+  {name:"Export NZ",         emoji:"🍺", score:"C", avg_kj:427,  brand:"#F5C400", hidden:true, desc:"DB Breweries' flagship lager brand, flowing non-stop since 1987. Alcoholic beers are capped at C; Gold 0% scores D from very high sugar density per kJ."},
   {name:"Popeyes",           emoji:"🍗", score:"C", avg_kj:1710, brand:"#F26522", desc:"Louisiana-style fried chicken from the US, now in NZ. Famous for crispy chicken sandwiches, tenders and hot wings. Nutrition info sourced from Popeyes UK — NZ figures not yet published."}
 ];
 
@@ -10038,22 +10321,40 @@ const rests = [
 const kc  = kj => Math.round(kj / 4.184);
 const SC  = s  => ({A:{t:'#7DECC8',b:'#0F3D38',br:'#004E3C'},B:{t:'#A8E8B0',b:'#0A2800',br:'#1A3A26'},C:{t:'#F0CC5E',b:'#3A2C00',br:'#4A3800'},D:{t:'#F08A6A',b:'#2A0808',br:'#7A2818'}}[s] || {t:'#F08A6A',b:'#2A0808',br:'#7A2818'});
 const SCL = s  => ({A:'sA',B:'sB',C:'sC',D:'sD'}[s] || 'sD');
-/* ── effectiveScore(f): runtime score adjustment for high added sugar.
+function worseGrade(score, floorScore) {
+  const G = ['A','B','C','D'];
+  const scoreIdx = G.indexOf(score);
+  const floorIdx = G.indexOf(floorScore);
+  if (scoreIdx < 0 || floorIdx < 0) return score;
+  return G[Math.max(scoreIdx, floorIdx)];
+}
+
+function alcoholAdjustedScore(f, score) {
+  const abv = Number(f && f.abv);
+  const stdDrinks = Number(f && f.std_drinks);
+  if (!Number.isFinite(abv) || abv <= 0) return score;
+  if (abv < 0.5) return score;
+  if (Number.isFinite(stdDrinks) && stdDrinks >= 1.5) return worseGrade(score, 'D');
+  return worseGrade(score, 'C');
+}
+
+/* ── effectiveScore(f): runtime score adjustment for high added sugar and alcohol.
    Items with natural_sugar:true or fibre > 5g/1000kJ excluded (fruit/fibre sugar).
-   Bumps score 1 level for added sugar > 12g/1000kJ, 2 levels for > 25g/1000kJ. ── */
+   Bumps score 1 level for added sugar > 12g/1000kJ, 2 levels for > 25g/1000kJ.
+   Alcoholic drinks (ABV ≥0.5%) cannot score above C; high-standard-drink serves score D. ── */
 function effectiveScore(f) {
   if (!f || !f.score) return f ? f.score : 'C';
   const kj = f.kj || 0;
-  if (kj <= 0) return f.score;
+  if (kj <= 0) return alcoholAdjustedScore(f, f.score);
   const sugarPk = f.sugar / kj * 1000;
   const fibrePk = f.fibre ? (f.fibre / kj * 1000) : 0;
-  if (f.natural_sugar || fibrePk > 5) return f.score;
+  if (f.natural_sugar || fibrePk > 5) return alcoholAdjustedScore(f, f.score);
   const G = ['A','B','C','D'];
   let i = G.indexOf(f.score);
-  if (i < 0) return f.score;
+  if (i < 0) return alcoholAdjustedScore(f, f.score);
   if (sugarPk > 25) i = Math.min(i + 2, 3);
   else if (sugarPk > 12) i = Math.min(i + 1, 3);
-  return G[i];
+  return alcoholAdjustedScore(f, G[i]);
 }
 /* ── healthScore(f) — continuous nutrient-density score (lower = healthier)
    Mirrors pipeline.py v2.2 per-1000kJ algorithm exactly, but returns the
@@ -10158,6 +10459,7 @@ function hideSkel(id, delay) {
 function nav(p) {
   _vl = null; /* leaving restaurant page — release virtual list */
   closeDietTooltip();
+  closeAllSheets();
   document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
   document.getElementById('pg-' + p).classList.add('active');
   /* Sync filled/outlined state on all nav icons across all pages */
@@ -10289,7 +10591,7 @@ function nav(p) {
    ─────────────────────────────────────────────────── */
 const VL_THRESHOLD = 50;
 const VL_OVERSCAN  = 5;
-const VL_ROW_H     = 180; /* estimated px per card + 10px gap — covers pizza toggle cards */
+const VL_ROW_H     = 160; /* estimated px per card + 10px gap — covers pizza toggle cards */
 
 function _vlRender() {
   if (!_vl) return;
@@ -10336,6 +10638,34 @@ function emojiImg(emoji, size, cls) {
   return `<span${clsAttr} style="font-size:${size};line-height:1;display:inline-block;vertical-align:middle;flex-shrink:0" aria-hidden="true">${emoji}</span>`;
 }
 
+function scorePreviewLabel(score) {
+  return ({ A:'Great', B:'Solid', C:'Occasional', D:'Treat' })[score] || 'Check';
+}
+
+function sodiumPreview(f) {
+  const sodium = Number(f.sodium) || 0;
+  const dailyPct = Math.round((sodium / 2000) * 100);
+  if (sodium >= 1600) return { cls:'sodium-high', label:dailyPct + '% daily salt' };
+  if (sodium >= 800) return { cls:'sodium-warn', label:'High salt' };
+  return { cls:'', label:sodium + 'mg salt' };
+}
+
+function cardStatsHtml(f) {
+  const cal = kc(f.kj);
+  const sodium = sodiumPreview(f);
+  const pills = [];
+  pills.push('<span class="fc-macro ' + (f.protein >= 15 ? 'prot' : '') + '">' + f.protein + 'g protein</span>');
+  pills.push('<span class="fc-macro ' + sodium.cls + '">' + sodium.label + '</span>');
+  return `
+      <div>
+        <div class="fc-energy">
+          <span class="fc-cal-num">${cal}</span>
+          <span class="fc-cal-unit">cal</span>
+        </div>
+      </div>
+      <div class="fc-macros">${pills.slice(0,2).join('')}</div>`;
+}
+
 /* ── Food card builder — GLOBAL COMPONENT ──
    Three zones: Header / Stats / Actions
    Called from: Search, Restaurant menu, Insights page.
@@ -10343,13 +10673,24 @@ function emojiImg(emoji, size, cls) {
    Items with f.sizes (e.g. Pita Pit) get a Regular / Small toggle
    that live-updates the stats zone without re-rendering the card. ── */
 function makeCard(f, fromRest) {
-  const inC = cmpList.includes(f.id), cal = kc(f.kj);
+  const inC = cmpList.includes(f.id);
   const cmpIcon = inC
     ? `<span class="ms">check</span>`
     : `<span class="ms">add</span>`;
   const cmpLabel = inC ? 'Added' : 'Compare';
   const df = fromRest ? `openDetail(${f.id},true)` : `openDetail(${f.id},false)`;
   const esc = effectiveScore(f); const sc = esc.toLowerCase();
+  const dietBadges = (() => {
+    const _fl = getFoodFlags(f);
+    if (!_fl.length) return '';
+    const _DB = {'vegan':'🌿 Vegan','vegetarian':'🥬 Vegetarian','halal':'☾ Halal','gluten_free':'🌾 GF','contains_dairy':'🥛 Dairy','contains_nuts':'🥜 Nuts'};
+    const _BC = {'vegan':'vegan','vegetarian':'vegetarian','halal':'halal','gluten_free':'gf','contains_dairy':'dairy','contains_nuts':'nuts'};
+    const _badges = ['vegan','vegetarian','halal','gluten_free','contains_dairy','contains_nuts']
+      .filter(k => _fl.includes(k))
+      .map(k => '<span class="diet-badge '+_BC[k]+'" data-chain="'+f.chain+'" onclick="event.stopPropagation();openDietTooltip(\''+k+'\',this)" role="button">'+_DB[k]+'</span>')
+      .join('');
+    return _badges ? '<div class="fc-title-badges">'+_badges+'</div>' : '';
+  })();
   /* Size toggle HTML — only for items with multiple sizes */
   const sizeToggle = f.sizes
     ? (() => {
@@ -10387,47 +10728,22 @@ function makeCard(f, fromRest) {
 
   return `<div class="food-card score-${sc}${inC ? ' sel' : ''}" id="fc${f.id}" onclick="${df}" style="cursor:pointer">
 
-    <!-- Subtle score badge — top right -->
-    <div class="fc-score-micro score-${sc}">${esc}</div>
-
     <!-- Zone 1: Header — emoji + name + chain + score -->
     <div class="fc-header">
-      <div class="fc-emoji-wrap score-${sc}">${emojiImg(f.emoji,EMO.md)}</div>
+      <div class="fc-emoji-wrap score-${sc}">${emojiImg(f.emoji,'36px')}</div>
       <div class="fc-title-group">
         <div class="fc-chain">${f.chain}${f.pcs ? ' · ' + f.pcs : ''}${f.size ? ' · ' + f.size : ''}</div>
         <div class="fc-name">${f.name}</div>
+        ${dietBadges}
+      </div>
+      <div class="fc-trailing">
+        <span class="ms fc-card-chevron" aria-hidden="true">chevron_right</span>
       </div>
     </div>
 
-    <!-- Diet badges — only rendered when item has flags -->
-    ${(()=>{ const _fl=getFoodFlags(f); if(!_fl.length) return '';
-      const _DB={'vegan':'🌿 Vegan','vegetarian':'🥬 Vegetarian','halal':'☾ Halal','gluten_free':'🌾 GF','contains_dairy':'🥛 Dairy','contains_nuts':'🥜 Nuts'};
-      const _BC={'vegan':'vegan','vegetarian':'vegetarian','halal':'halal','gluten_free':'gf','contains_dairy':'dairy','contains_nuts':'nuts'};
-      const _badges=['vegan','vegetarian','halal','gluten_free','contains_dairy','contains_nuts']
-        .filter(k=>_fl.includes(k))
-        .map(k=>'<span class="diet-badge '+_BC[k]+'" data-chain="'+f.chain+'" onclick="event.stopPropagation();openDietTooltip(\''+k+'\',this)" role="button">'+_DB[k]+'</span>').join('');
-      return _badges ? '<div class="diet-badges">'+_badges+'</div>' : '';
-    })()}
-
     <!-- Zone 2: Stats — calories + macros (id enables live size swap) -->
     <div class="fc-stats" id="${statsId}">
-      <div>
-        <div class="fc-energy">
-          <span class="fc-cal-num">${cal}</span>
-          <span class="fc-cal-unit">cal</span>
-          <span class="fc-kj">${f.kj} kJ</span>
-        </div>
-      </div>
-      <div class="fc-macros">${(()=>{
-        const pills=[];
-        if(f.protein>=15) pills.push('<span class="fc-macro prot">'+f.protein+'g protein</span>');
-        if(f.sodium>=800)  pills.push('<span class="fc-macro sodium-warn">'+f.sodium+'mg salt</span>');
-        else               pills.push('<span class="fc-macro">'+f.sodium+'mg salt</span>');
-        if(f.sat_fat>=8)   pills.push('<span class="fc-macro satfat-warn">'+f.sat_fat+'g sat fat</span>');
-        else               pills.push('<span class="fc-macro">'+f.fat+'g fat</span>');
-        if(pills.length<2 && f.sugar>=15) pills.push('<span class="fc-macro sugar-warn">'+f.sugar+'g sugar</span>');
-        return pills.slice(0,2).join('');
-      })()}</div>
+      ${cardStatsHtml(f)}
     </div>
 
     ${sizeToggle}
@@ -10442,6 +10758,9 @@ function makeCard(f, fromRest) {
       </button>
       <button class="fc-fave${isFaved(f.id) ? ' faved' : ''}" id="fcfv${f.id}" onclick="event.stopPropagation();onFaveCard(${f.id})" aria-label="Save to favourites">
         <span class="ms${isFaved(f.id) ? ' filled' : ''}">${isFaved(f.id) ? 'favorite' : 'favorite_border'}</span>
+      </button>
+      <button class="fc-score-chip score-${sc}" onclick="event.stopPropagation();openScoreSheet('${esc}',${f.id})" aria-label="Score ${esc}: ${scorePreviewLabel(esc)}">
+        <span>${scorePreviewLabel(esc)}</span>
       </button>
     </div>
 
@@ -10471,18 +10790,7 @@ function setSizeForCard(id, size, btn) {
   /* Swap stats zone HTML */
   const statsEl = document.getElementById('fc-stats-' + id);
   if (statsEl) {
-    statsEl.innerHTML = `
-      <div>
-        <div class="fc-energy">
-          <span class="fc-cal-num">${kc(s.kj)}</span>
-          <span class="fc-cal-unit">cal</span>
-          <span class="fc-kj">${s.kj} kJ</span>
-        </div>
-      </div>
-      <div class="fc-macros">
-        <span class="fc-macro prot">${s.protein}g protein</span>
-        <span class="fc-macro">${s.fat}g fat</span>
-      </div>`;
+    statsEl.innerHTML = cardStatsHtml(s);
   }
 
   /* Refresh score badge if score changed between sizes */
@@ -10496,6 +10804,13 @@ function setSizeForCard(id, size, btn) {
       /* Update emoji wrap colour */
       const emojiWrap = card.querySelector('.fc-emoji-wrap');
       if (emojiWrap) emojiWrap.className = `fc-emoji-wrap score-${sc}`;
+      const scoreChip = card.querySelector('.fc-score-chip');
+      if (scoreChip) {
+        scoreChip.className = `fc-score-chip score-${sc}`;
+        scoreChip.innerHTML = `<span>${scorePreviewLabel(s.score)}</span>`;
+        scoreChip.setAttribute('aria-label', `Score ${s.score}: ${scorePreviewLabel(s.score)}`);
+        scoreChip.setAttribute('onclick', `event.stopPropagation();openScoreSheet('${s.score}',${id})`);
+      }
     }
   }
 
@@ -10875,6 +11190,10 @@ function fuzzyIncludes(haystack, needle) {
   return nh.includes(nn) || nh.replace(/\s/g,'').includes(nn.replace(/\s/g,''));
 }
 
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 /* ── Search name suggestions ── */
 let _sugHideTimer = null;
 let _sugJustSelected = false;
@@ -10992,7 +11311,7 @@ function doSearch() {
   const cb = document.getElementById('search-clear-btn');
   if (cb) cb.classList.toggle('hidden', !raw && catSel === 'all');
   const rawNoSpace = raw.replace(/\s+/g, '');
-  const chainMatch = rests.find(r => r.name.toLowerCase().replace(/\s+/g, '') === rawNoSpace);
+  const chainMatch = rests.find(r => !r.hidden && r.name.toLowerCase().replace(/\s+/g, '') === rawNoSpace);
   const q = ALIASES[raw] || ALIASES[rawNoSpace] || (chainMatch ? chainMatch.name.toLowerCase() : raw);
   /* Check if raw query matches a tag — if so, override cat filter or chain filter */
   const tagHit = TAGS[raw] || TAGS[rawNoSpace];
@@ -11022,7 +11341,6 @@ function doSearch() {
   if (srFilters.protein)     fx = fx.filter(f => f.protein >= 20);
   if (srFilters.sugar)       fx = fx.filter(f => f.sugar <= 5);
   if (srFilters.fat)         fx = fx.filter(f => f.fat <= 10);
-  if (srFilters.balanced)    fx = fx.filter(f => f.protein >= 15 && f.sugar <= 10 && f.sat_fat <= 8);
   if (srFilters.sodium)      fx = fx.filter(f => f.sodium <= 600);
   /* Dietary filters */
   if (srFilters.vegan)       fx = fx.filter(f => getFoodFlags(f).includes('vegan'));
@@ -11035,6 +11353,7 @@ function doSearch() {
   else if (srFilters.sort === 'hi') fx.sort((a, b) => b.kj - a.kj);
   else if (srFilters.sort === 'protein') fx.sort((a, b) => b.protein - a.protein);
   else if (srFilters.sort === 'grade') fx.sort((a, b) => (GRADE_ORDER[effectiveScore(a)]??9) - (GRADE_ORDER[effectiveScore(b)]??9) || a.kj - b.kj);
+  else if (srFilters.sort === 'sodium') fx.sort((a, b) => a.sodium - b.sodium || a.kj - b.kj);
   else fx.sort((a, b) => {
     const ca = CAT_ORDER_S.indexOf(a.cat) === -1 ? 99 : CAT_ORDER_S.indexOf(a.cat);
     const cb = CAT_ORDER_S.indexOf(b.cat) === -1 ? 99 : CAT_ORDER_S.indexOf(b.cat);
@@ -11048,11 +11367,13 @@ function doSearch() {
     _sugSelectedName = null;
   }
   const isDefault = !q && catSel === 'all' && srFilters.sort === 'def' &&
-    !srFilters.protein && !srFilters.sugar && !srFilters.fat && !srFilters.balanced && !srFilters.sodium &&
+    !srFilters.protein && !srFilters.sugar && !srFilters.fat && !srFilters.sodium &&
     !srFilters.vegan && !srFilters.vegetarian && !srFilters.halal;
   if (isDefault && !searchInteracted) {
     const rlblEl = document.getElementById('rlbl'); if (rlblEl) { rlblEl.textContent = ''; rlblEl.style.display = 'none'; }
+    const copyEl = document.getElementById('search-results-copy'); if (copyEl) { copyEl.classList.remove('visible'); copyEl.innerHTML = ''; }
     const scEl = document.getElementById('sort-controls'); if (scEl) scEl.style.display = 'none';
+    const arEl = document.getElementById('active-refinements'); if (arEl) { arEl.classList.remove('visible'); arEl.innerHTML = ''; }
     document.getElementById('fl').innerHTML =
       '<div class="search-empty-state">' +
         '<div class="search-empty-ico">🍴</div>' +
@@ -11062,10 +11383,11 @@ function doSearch() {
     return;
   }
   const scEl2 = document.getElementById('sort-controls'); if (scEl2) scEl2.style.display = '';
+  renderActiveSearchRefinements();
   /* Restaurant shortcut cards — match on query 3+ chars, no category filter active */
   let restCards = '';
   if (q.length >= 3 && catSel === 'all') {
-    const matchedRests = rests.filter(r => fuzzyIncludes(r.name, q));
+    const matchedRests = rests.filter(r => !r.hidden && fuzzyIncludes(restSearchText(r), q));
     if (matchedRests.length) {
       restCards = matchedRests.slice(0, 3).map(r => {
         return `<div class="det-rest-link" data-name="${r.name}" onclick="openRest(this.dataset.name)" style="--det-rest-brand:${r.brand}">
@@ -11082,8 +11404,9 @@ function doSearch() {
     }
   }
   const rlblEl2 = document.getElementById('rlbl'); if (rlblEl2) { rlblEl2.style.display = ''; rlblEl2.textContent = fx.length + ' item' + (fx.length !== 1 ? 's' : ''); }
-  const _noResTitle = q ? `No kai for “${q}”` : 'Nothing matches';
-  const _noResSub   = q && catSel !== 'all' ? 'Try clearing the category filter, or check the spelling.' : q ? "Check the spelling, or try a broader search — we've got 672 items across 23 restaurants." : 'Try removing a filter to see more options.';
+  renderSearchResultsMeta(fx.length, q);
+  const _noResTitle = q ? `No kai for "${q}"` : 'Nothing matches';
+  const _noResSub   = q ? 'Try a broader search, or clear everything and start again.' : 'Try clearing your search and filters.';
   const _noResHtml  = `<div class="pol-empty-inline"><div class="ico">🔍</div><div class="title">${_noResTitle}</div><div class="sub">${_noResSub}</div><button class="cta" onclick="clearSearch()"><span class="ms sz-20">close</span> Clear search</button></div>`;
   document.getElementById('fl').innerHTML = restCards + (fx.map(f => makeCard(f, false)).join('') || (restCards ? '' : _noResHtml));
 }
@@ -11093,6 +11416,16 @@ function setMCat(cat, el) {
   if (el) el.classList.add('on');
   renderMenu();
   if (el) el.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+}
+
+function renderSearchResultsMeta(count, q) {
+  const copy = document.getElementById('search-results-copy');
+  if (!copy) return;
+  const cat = searchCatLabel();
+  const countText = count + ' ' + (count === 1 ? 'item' : 'items');
+  const context = q ? ' for "' + escHtml(q) + '"' : (cat ? ' in ' + escHtml(cat) : '');
+  copy.innerHTML = '<strong>' + countText + '</strong>' + context;
+  copy.classList.toggle('visible', activeSearchRefinements().length === 0);
 }
 
 function setCat(c, el) {
@@ -11135,39 +11468,140 @@ function openRmenuFilterSheet() {
 }
 function syncFilterSheetToCtx() {
   const f = filterCtx === 'rmenu' ? rmFilters : srFilters;
-  ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].forEach(k => {
+  ['protein','sugar','fat','sodium','vegan','vegetarian','halal'].forEach(k => {
     const el = document.getElementById('fsh-' + k);
     if (el) el.classList.toggle('on', f[k]);
   });
+  syncFilterSheetActions();
 }
 
-const SORT_LABELS = { def:'Best match', lo:'Lowest cal', hi:'Highest cal', protein:'Highest protein', grade:'Best grade' };
+function countSearchMatchesWithFilters(f) {
+  const ALIASES = {
+    "maccas":"mcdonald's","macca's":"mcdonald's","mcdonalds":"mcdonald's","mcd":"mcdonald's",
+    "the colonel":"kfc","colonel":"kfc",
+    "hut":"pizza hut","pizzahut":"pizza hut",
+    "nandos":"nando's",
+    "hell":"hell pizza","hellpizza":"hell pizza",
+    "pita":"pita pit","pitapit":"pita pit",
+    "burgerfuel":"burger fuel",
+    "burgerking":"burger king","bk":"burger king","hungry jacks":"burger king",
+    "wendys":"wendy's",
+    "stpierres":"st. pierre's","betterburger":"better burger",
+    "ljs":"lj's","l j's":"lj's",
+    "rolld":"roll'd","rolled":"roll'd",
+    "fishandchips":"takeaways","fish and chips":"takeaways","fish & chips":"takeaways","fush and chups":"takeaways"
+  };
+  const TAGS = {
+    "vietnamese":"roll'd","viet":"roll'd","vietnam":"roll'd",
+    "pho":"pho","pho noodle":"pho","noodle soup":"pho",
+    "banh mi":"banhmi","banh":"banhmi","baguette":"banhmi","viet baguette":"banhmi",
+    "fresh roll":"freshrolls","fresh rolls":"freshrolls","rice paper":"freshrolls",
+    "rice paper roll":"freshrolls","soldier":"freshrolls","soldiers":"freshrolls",
+    "bun":"bun","noodle salad":"bun","bún":"bun",
+    "com":"com","rice bowl":"com","com rice":"com","fried rice":"com",
+    "goi":"goi","viet salad":"goi","vietnamese salad":"goi",
+    "bao":"bao","steamed bun":"bao","steam bun":"bao",
+    "fish and chips":"fishnchips","fish & chips":"fishnchips","fishnchips":"fishnchips",
+    "fish":"fishnchips",
+    "chips":"fishnchips","hot dog":"fishnchips","hotdog":"fishnchips",
+    "fritter":"fishnchips","dim sim":"fishnchips","dimsim":"fishnchips"
+  };
+  const si = document.getElementById('si');
+  const raw = si ? si.value.toLowerCase().trim() : '';
+  const rawNoSpace = raw.replace(/\s+/g, '');
+  const chainMatch = rests.find(r => !r.hidden && r.name.toLowerCase().replace(/\s+/g, '') === rawNoSpace);
+  const q = ALIASES[raw] || ALIASES[rawNoSpace] || (chainMatch ? chainMatch.name.toLowerCase() : raw);
+  const tagHit = TAGS[raw] || TAGS[rawNoSpace];
+  const tokens = q.split(/\s+/).filter(Boolean);
+  let fx = [...foods];
+  if (tagHit) {
+    const isChain = rests.some(r => r.name.toLowerCase() === tagHit);
+    fx = isChain ? fx.filter(food => food.chain.toLowerCase() === tagHit) : fx.filter(food => food.cat === tagHit);
+  } else {
+    if (catSel === 'vietnamese') fx = fx.filter(food => food.chain === "Roll'd");
+    else if (catSel !== 'all') fx = fx.filter(food => food.cat === catSel);
+    if (q) fx = fx.filter(food => {
+      const haystack = fuzzyNorm(food.name + ' ' + food.chain);
+      return tokens.every(t => haystack.includes(fuzzyNorm(t)));
+    });
+  }
+  if (f.protein)     fx = fx.filter(food => food.protein >= 20);
+  if (f.sugar)       fx = fx.filter(food => food.sugar <= 5);
+  if (f.fat)         fx = fx.filter(food => food.fat <= 10);
+  if (f.sodium)      fx = fx.filter(food => food.sodium <= 600);
+  if (f.vegan)       fx = fx.filter(food => getFoodFlags(food).includes('vegan'));
+  if (f.vegetarian)  fx = fx.filter(food => getFoodFlags(food).includes('vegetarian'));
+  if (f.halal)       fx = fx.filter(food => getFoodFlags(food).includes('halal'));
+  return fx.length;
+}
+
+function syncFilterSheetActions() {
+  const isSearch = filterCtx !== 'rmenu';
+  const presets = document.getElementById('fsh-presets');
+  const footer = document.getElementById('fsh-footer');
+  const showBtn = document.getElementById('fsh-show');
+  if (presets) presets.style.display = isSearch ? '' : 'none';
+  if (footer) footer.style.display = '';
+  if (showBtn) {
+    showBtn.style.display = isSearch ? '' : 'none';
+    if (isSearch) {
+      const count = countSearchMatchesWithFilters(srFilters);
+      showBtn.textContent = 'Show ' + count + ' item' + (count === 1 ? '' : 's');
+    }
+  }
+  const presetState = {
+    lowcal: srFilters.sort === 'lo',
+    healthiest: srFilters.sort === 'grade',
+    lowsalt: srFilters.sodium
+  };
+  Object.keys(presetState).forEach(k => {
+    const el = document.getElementById('fsh-preset-' + k);
+    if (el) el.classList.toggle('on', isSearch && presetState[k]);
+  });
+}
+
+function syncSortSheetToCtx() {
+  const isRmenu = filterCtx === 'rmenu';
+  const labels = isRmenu ? RM_SORT_LABELS : SORT_LABELS;
+  const defLbl = document.getElementById('sopt-def-lbl');
+  const defIco = document.getElementById('sopt-def-ico');
+  const gradeLbl = document.getElementById('sopt-grade-lbl');
+  const sodiumOpt = document.getElementById('sopt-sodium');
+  const sodiumLbl = document.getElementById('sopt-sodium-lbl');
+  if (defLbl) defLbl.textContent = labels.def;
+  if (defIco) defIco.textContent = isRmenu ? 'restaurant_menu' : 'dashboard';
+  if (gradeLbl) gradeLbl.textContent = labels.grade;
+  if (sodiumLbl) sodiumLbl.textContent = labels.sodium;
+  if (sodiumOpt) sodiumOpt.style.display = '';
+}
+
+const SORT_LABELS = { def:'Recommended', lo:'Lowest calories', hi:'Highest calories', protein:'Highest protein', grade:'Best score', sodium:'Lowest sodium' };
+const RM_SORT_LABELS = { def:'Menu order', lo:'Low calorie', hi:'Highest calories', protein:'Highest protein', grade:'Healthiest', sodium:'Lowest salt' };
 function updateFilterUI() {
-  /* Sort chip — update label + active state */
+  /* Search filters button — update label + active state */
   const sortLbl = document.getElementById('sort-chip-lbl');
   const sortChip = document.getElementById('sort-chip');
-  if (sortLbl) sortLbl.textContent = SORT_LABELS[srFilters.sort] || 'Best match';
-  if (sortChip) sortChip.classList.toggle('active', srFilters.sort !== 'def');
+  const srCount = ['protein','sugar','fat','sodium','vegan','vegetarian','halal'].filter(k => srFilters[k]).length;
+  const srRefineCount = srCount + (srFilters.sort !== 'def' ? 1 : 0);
+  if (sortLbl) sortLbl.textContent = srRefineCount ? 'Filters · ' + srRefineCount : 'Filters';
+  if (sortChip) sortChip.classList.toggle('active', srRefineCount > 0);
+  const rmSortLbl = document.getElementById('rmenu-sort-chip-lbl');
+  const rmSortChip = document.getElementById('rmenu-sort-chip');
+  if (rmSortLbl) rmSortLbl.textContent = RM_SORT_LABELS[rmFilters.sort] || 'Menu order';
+  if (rmSortChip) rmSortChip.classList.toggle('active', rmFilters.sort !== 'def');
   /* Sort sheet option rows — tick the active one */
-  ['def','lo','protein','grade'].forEach(v => {
+  syncSortSheetToCtx();
+  ['def','lo','protein','grade','sodium'].forEach(v => {
     const el = document.getElementById('sopt-' + v);
-    if (el) el.classList.toggle('on', srFilters.sort === v);
+    if (el) el.classList.toggle('on', (filterCtx === 'rmenu' ? rmFilters.sort : srFilters.sort) === v);
   });
   /* Search filter badge — sort not counted here, only nutrition filters */
-  const srCount = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].filter(k => srFilters[k]).length;
   const badge = document.getElementById('filter-badge');
   const btn = document.getElementById('filter-btn');
   if (badge) { badge.textContent = srCount; badge.classList.toggle('visible', srCount > 0); }
   if (btn) btn.classList.toggle('active', srCount > 0);
-  /* Icon-only filter pill in category pills row */
-  document.querySelectorAll('#filter-btn-pill').forEach(b => b.classList.toggle('active', srCount > 0));
-  document.querySelectorAll('#filter-badge-pill').forEach(b => {
-    b.textContent = srCount;
-    b.classList.toggle('visible', srCount > 0);
-  });
   /* Rmenu badge */
-  const rmCount = (rmFilters.sort !== 'def' ? 1 : 0) +
-    ['protein','sugar','fat','balanced','sodium'].filter(k => rmFilters[k]).length;
+  const rmCount = ['protein','sugar','fat','sodium','vegan','vegetarian','halal'].filter(k => rmFilters[k]).length;
   const rmBadge = document.getElementById('rmenu-filter-badge');
   const rmBtn = document.getElementById('rmenu-filter-btn');
   if (rmBadge) { rmBadge.textContent = rmCount; rmBadge.classList.toggle('visible', rmCount > 0); }
@@ -11178,8 +11612,77 @@ function updateFilterUI() {
   syncFilterPill();
 }
 
-const NUT_LABELS = { protein:'High protein', sugar:'Low sugar', fat:'Low fat', balanced:'Balanced', sodium:'Low sodium' };
+const NUT_LABELS = { protein:'High protein', sugar:'Low sugar', fat:'Low fat', sodium:'Low salt' };
 const DIET_LABELS = { vegan:'Vegan', vegetarian:'Vegetarian', halal:'Halal' };
+const SEARCH_FILTER_KEYS = ['protein','sugar','fat','sodium','vegan','vegetarian','halal'];
+function searchCatLabel() {
+  if (catSel === 'all') return '';
+  const pill = Array.from(document.querySelectorAll('#cats .pill'))
+    .find(p => (p.getAttribute('onclick') || '').includes("'" + catSel.replace(/'/g, "\\'") + "'"));
+  return pill ? pill.textContent.trim() : catSel;
+}
+function activeSearchRefinements(opts = {}) {
+  const includeSort = opts.includeSort !== false;
+  const includeCat = opts.includeCat === true;
+  const items = [];
+  if (includeSort && srFilters.sort !== 'def') items.push({ key:'sort', label:SORT_LABELS[srFilters.sort] || 'Sort' });
+  ['protein','sugar','fat','sodium'].forEach(k => { if (srFilters[k]) items.push({ key:k, label:NUT_LABELS[k] }); });
+  ['vegan','vegetarian','halal'].forEach(k => { if (srFilters[k]) items.push({ key:k, label:DIET_LABELS[k] }); });
+  if (includeCat && catSel !== 'all') items.push({ key:'cat', label:searchCatLabel() });
+  return items;
+}
+function setSearchCatAll() {
+  catSel = 'all';
+  document.querySelectorAll('#cats .pill').forEach(p => {
+    p.classList.toggle('on', (p.getAttribute('onclick') || '') === "setCat('all',this)");
+  });
+}
+function scrollSearchResultsTop() {
+  const scr = document.getElementById('search-scroll');
+  if (scr) scr.scrollTo({ top: 0, behavior: 'instant' });
+  const hdr = document.getElementById('search-sticky-hdr');
+  if (hdr) { hdr.classList.remove('hidden'); hdr.classList.remove('scrolled'); }
+}
+function renderActiveSearchRefinements() {
+  const row = document.getElementById('active-refinements');
+  const copy = document.getElementById('search-results-copy');
+  if (!row) return;
+  const items = activeSearchRefinements();
+  if (!items.length) {
+    row.classList.remove('visible');
+    row.innerHTML = '';
+    if (copy && copy.innerHTML) copy.classList.add('visible');
+    return;
+  }
+  row.innerHTML = items.map(item =>
+    item.key === 'sort'
+      ? `<button class="active-refinement-chip" type="button">
+          ${item.label}<span class="ms chip-action" onclick="event.stopPropagation();clearSearchRefinement('sort')">close</span>
+        </button>`
+      : `<button class="active-refinement-chip" onclick="clearSearchRefinement('${item.key}')" type="button">
+          ${item.label}<span class="ms">close</span>
+        </button>`
+  ).join('') + (items.length > 1
+    ? `<button class="active-refinement-chip clear-all" onclick="clearSearchRefinement('all')" type="button">Clear all</button>`
+    : '');
+  row.classList.add('visible');
+  if (copy) copy.classList.remove('visible');
+}
+function clearSearchRefinement(key) {
+  if (key === 'all') {
+    srFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
+  } else if (key === 'sort') {
+    srFilters.sort = 'def';
+  } else if (key === 'cat') {
+    setSearchCatAll();
+  } else if (SEARCH_FILTER_KEYS.includes(key)) {
+    srFilters[key] = false;
+  }
+  searchInteracted = true;
+  updateFilterUI();
+  doSearch();
+  scrollSearchResultsTop();
+}
 const DIET_TOOLTIPS = {
   vegan:          { label:'🌿 Vegan',            desc:'No animal products — entirely plant-based.' },
   vegetarian:     { label:'🥬 Vegetarian',        desc:'No meat or fish. May contain dairy or eggs.' },
@@ -11254,12 +11757,12 @@ function syncFilterPill() {
   const headerHidden = hdr && hdr.classList.contains('hidden');
   /* Any filter or sort active? */
   const hasSort = srFilters.sort !== 'def';
-  const hasNut  = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].some(k => srFilters[k]);
+  const hasNut  = ['protein','sugar','fat','sodium','vegan','vegetarian','halal'].some(k => srFilters[k]);
   if (!headerHidden || (!hasSort && !hasNut)) { pill.classList.remove('visible'); return; }
   /* Build summary label */
   const parts = [];
   if (hasSort) parts.push(SORT_LABELS[srFilters.sort]);
-  ['protein','sugar','fat','balanced','sodium'].forEach(k => { if (srFilters[k]) parts.push(NUT_LABELS[k]); });
+  ['protein','sugar','fat','sodium'].forEach(k => { if (srFilters[k]) parts.push(NUT_LABELS[k]); });
   ['vegan','vegetarian','halal'].forEach(k => { if (srFilters[k]) parts.push(DIET_LABELS[k]); });
   lbl.textContent = parts.length <= 2 ? parts.join(' · ') : parts.slice(0,2).join(' · ') + ' +' + (parts.length - 2);
   pill.classList.add('visible');
@@ -11267,35 +11770,66 @@ function syncFilterPill() {
 
 /* Opens sort sheet if only sort active, filter sheet if nutrition filters active */
 function openActiveFilterSheet() {
-  const hasNut = ['protein','sugar','fat','balanced','sodium','vegan','vegetarian','halal'].some(k => srFilters[k]);
+  const hasNut = ['protein','sugar','fat','sodium','vegan','vegetarian','halal'].some(k => srFilters[k]);
   if (hasNut) openFilterSheet();
   else openSortSheet();
 }
 
 function openSortSheet() {
+  filterCtx = 'search';
   updateFilterUI(); /* sync ticks before opening */
   document.getElementById('sheet-scrim').classList.add('visible');
   document.getElementById('sort-sheet').classList.add('open');
 }
 
+function openRmenuSortSheet() {
+  filterCtx = 'rmenu';
+  updateFilterUI();
+  document.getElementById('sheet-scrim').classList.add('visible');
+  document.getElementById('sort-sheet').classList.add('open');
+}
+
 function setSortOption(val) {
+  if (filterCtx === 'rmenu') {
+    rmFilters.sort = (rmFilters.sort === val && val !== 'def') ? 'def' : val;
+    updateFilterUI();
+    renderMenu();
+    closeAllSheets();
+    return;
+  }
   srFilters.sort = (srFilters.sort === val && val !== 'def') ? 'def' : val;
   searchInteracted = true;
   updateFilterUI();
   doSearch();
+  scrollSearchResultsTop();
   closeAllSheets();
 }
 
 function setSortFilter(val) {
   if (filterCtx === 'search') searchInteracted = true;
   if (filterCtx === 'rmenu') { rmFilters.sort = val; updateFilterUI(); renderMenu(); }
-  else { srFilters.sort = val; updateFilterUI(); doSearch(); }
+  else { srFilters.sort = val; updateFilterUI(); doSearch(); scrollSearchResultsTop(); }
 }
 
 function toggleFilter(key) {
   if (filterCtx === 'search') searchInteracted = true;
   if (filterCtx === 'rmenu') { rmFilters[key] = !rmFilters[key]; updateFilterUI(); renderMenu(); }
-  else { srFilters[key] = !srFilters[key]; updateFilterUI(); doSearch(); }
+  else { srFilters[key] = !srFilters[key]; updateFilterUI(); doSearch(); scrollSearchResultsTop(); }
+}
+
+function applyFilterPreset(preset) {
+  filterCtx = 'search';
+  searchInteracted = true;
+  if (preset === 'lowcal') {
+    srFilters.sort = 'lo';
+  } else if (preset === 'healthiest') {
+    srFilters.sort = 'grade';
+  } else if (preset === 'lowsalt') {
+    srFilters.sodium = true;
+  }
+  updateFilterUI();
+  doSearch();
+  scrollSearchResultsTop();
 }
 
 function clearFilters() {
@@ -11309,9 +11843,10 @@ function clearFilters() {
     document.querySelectorAll('#cats .pill').forEach(p => p.classList.toggle('on', p.getAttribute('onclick') === "setCat('all',this)"));
     const si = document.getElementById('si'); if (si) si.value = '';
     updateFilterUI(); doSearch();
-    /* Reset sort chip label */
+    scrollSearchResultsTop();
+    /* Reset filter chip label */
     const lbl = document.getElementById('sort-chip-lbl');
-    if (lbl) lbl.textContent = 'Best match';
+    if (lbl) lbl.textContent = 'Filters';
     const chip = document.getElementById('sort-chip');
     if (chip) chip.classList.remove('active');
   }
@@ -11433,8 +11968,8 @@ function renderWelcomeCarousel() {
       <div class="wh-meta">
         ${lastSearch ? `
           <button class="wh-chip wh-chip-action" onclick="resumeLastSearch()">
-            <span class="ms wh-chip-ico">history</span>
-            Resume ${lastSearch.label}
+            <span class="ms wh-chip-ico">search</span>
+            Search ${lastSearch.label}
             
           </button>
         ` : `
@@ -11463,7 +11998,7 @@ function renderHomeFaves() {
   const ids   = loadFaves();
   const names = loadRestFaves();
   const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
-  const favRests  = names.map(n => rests.find(r => r.name === n)).filter(Boolean);
+  const favRests  = names.map(n => rests.find(r => r.name === n && !r.hidden)).filter(Boolean);
   if (faveItems.length === 0 && favRests.length === 0) { sec.style.display = 'none'; return; }
   sec.style.display = '';
 
@@ -11514,23 +12049,31 @@ function renderHome() {
 
   /* Category chips */
   const cats = [
-    {id:'burgers', label:'Burgers',     emoji:'🍔'},
-    {id:'chicken', label:'Chicken',     emoji:'🍗'},
-    {id:'pizza',   label:'Pizza',       emoji:'🍕'},
-    {id:'wraps',   label:'Wraps',       emoji:'🫓'},
-    {id:'sides',   label:'Sides',       emoji:'🍟'},
-    {id:'sushi',   label:'Sushi',       emoji:'🍣'},
-    {id:'subs',    label:'Subs',        emoji:'🥖'},
-    {id:'drinks',  label:'Drinks',      emoji:'🥤'},
-    {id:'pies',    label:'Pies',        emoji:'🥧'},
-    {id:'banhmi',  label:'Bánh Mì',     emoji:'🥖'},
-    {id:'freshrolls', label:'Fresh Rolls', emoji:'🌿'},
-    {id:'pho',     label:'Phở',         emoji:'🍲'},
-    {id:'bun',     label:'Bún',         emoji:'🍜'},
-    {id:'com',     label:'Cơm',         emoji:'🍚'},
-    {id:'goi',     label:'Gỏi',         emoji:'🥗'},
-    {id:'bao',     label:'Bao',         emoji:'🧆'},
+    {id:'burgers', label:'Burgers', emoji:'🍔'},
+    {id:'chicken', label:'Chicken', emoji:'🍗'},
+    {id:'pizza', label:'Pizza', emoji:'🍕'},
+    {id:'wraps', label:'Wraps', emoji:'🫓'},
+    {id:'sides', label:'Sides', emoji:'🍟'},
     {id:'fishnchips', label:'Fish & Chips', emoji:'🐟'},
+    {id:'sushi', label:'Sushi', emoji:'🍣'},
+    {id:'subs', label:'Subs', emoji:'🥖'},
+    {id:'drinks', label:'Drinks', emoji:'🥤'},
+    {id:'smoothies', label:'Smoothies', emoji:'🥤'},
+    {id:'juices', label:'Juices', emoji:'🍊'},
+    {id:'pies', label:'Pies', emoji:'🥧'},
+    {id:'breakfast', label:'Breakfast', emoji:'🍳'},
+    {id:'mains', label:'Mains', emoji:'🍽️'},
+    {id:'salads', label:'Salads', emoji:'🥗'},
+    {id:'tacos', label:'Tacos', emoji:'🌮'},
+    {id:'burritos', label:'Burritos', emoji:'🌯'},
+    {id:'desserts', label:'Desserts', emoji:'🍨'},
+    {id:'ice cream', label:'Ice Cream', emoji:'🍦'},
+    {id:'kids', label:'Kids', emoji:'👶'},
+    {id:'platters', label:'Platters', emoji:'🍽️'},
+    {id:'bowls', label:'Bowls', emoji:'🥣'},
+    {id:'rice', label:'Rice', emoji:'🍚'},
+    {id:'vietnamese', label:'Vietnamese', emoji:'🌿'},
+    {id:'beer', label:'Beer', emoji:'🍺'},
   ];
   const catsEl = document.getElementById('home-cats');
   if (catsEl) catsEl.innerHTML = cats.map(cat =>
@@ -11652,7 +12195,8 @@ function goSearchCat(cat) {
   /* Track for resume shortcut */
   const catLabels = { burgers:'Burgers', chicken:'Chicken', pizza:'Pizza', wraps:'Wraps',
     sides:'Sides', sushi:'Sushi', subs:'Subs', drinks:'Drinks', pies:'Pies',
-    smoothies:'Smoothies', juices:'Juices', salads:'Salads', fishnchips:'Fish & Chips',
+    smoothies:'Smoothies', juices:'Juices', breakfast:'Breakfast', mains:'Mains',
+    salads:'Salads', fishnchips:'Fish & Chips',
     tacos:'Tacos', burritos:'Burritos', desserts:'Desserts', 'ice cream':'Ice Cream', kids:'Kids',
     platters:'Platters', bowls:'Bowls', rice:'Rice', vietnamese:'Vietnamese' };
   if (cat !== 'all') {
@@ -11696,11 +12240,15 @@ function goSearchHighProtein() {
 }
 
 /* ── Restaurants page ── */
+function restSearchText(r) {
+  return [r.name, r.desc || '', ...(r.aliases || [])].join(' ');
+}
+
 function renderRests() {
   const q = (document.getElementById('rsi').value || '').toLowerCase();
   const so = {A:0,B:1,C:2,D:3};
-  let fx = [...rests];
-  if (q) fx = fx.filter(r => fuzzyIncludes(r.name, q));
+  let fx = rests.filter(r => !r.hidden);
+  if (q) fx = fx.filter(r => fuzzyIncludes(restSearchText(r), q));
   if (rsfSel !== 'all') fx = fx.filter(r => r.score === rsfSel);
   if (rSB) fx.sort((a, b) => so[a.score] - so[b.score]);
   else fx.sort((a, b) => so[b.score] - so[a.score]);
@@ -11730,10 +12278,10 @@ function setSF(sc, el) { rsfSel = sc; document.querySelectorAll('#sfpills .pill'
 function toggleRS() { rSB = !rSB; document.getElementById('rsa').innerHTML = '<span class="ms sz-20">swap_vert</span> ' + (rSB ? 'Best' : 'Worst') + ' first'; renderRests(); }
 
 /* ── Restaurant menu page ── */
-/* Ice cream brands: restaurant name ≠ chain name, so map explicitly. */
+/* Umbrella restaurants group multiple retail brands into one browse page. */
 function getRestFoods(name) {
-  if (name === 'Tip Top Ice Cream') return foods.filter(f => f.chain === 'Tip Top');
-  if (name === 'Kāpiti Ice Cream')  return foods.filter(f => f.chain === 'Kāpiti Ice Cream');
+  if (name === 'NZ Beer') return foods.filter(f => f.cat === 'beer');
+  if (name === 'NZ Ice Cream') return foods.filter(f => f.cat === 'ice cream');
   return foods.filter(f => f.chain === name);
 }
 
@@ -11808,18 +12356,38 @@ function openRest(name) {
            Popeyes NZ hasn't published nutrition info — figures shown are from the UK menu and may differ from NZ servings.
          </div>
        </div>`;
+    } else if (name === 'NZ Beer') {
+      rhDataNote.innerHTML = `<div style="margin:8px 16px 4px;padding:10px 12px;
+           background:var(--md-surface-container);
+           border:1px solid var(--md-outline-variant);
+           border-left:3px solid var(--score-C-text);
+           border-radius:var(--shape-md)">
+         <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+           <span class="ms" style="font-size:16px;color:var(--score-C-text)">info</span>
+           <span style="font-size:12px;font-weight:600;color:var(--md-on-surface)">Alcohol affects the health score</span>
+         </div>
+         <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.5">
+           Alcoholic beers are capped at C, high-standard-drink serves score D, and zero-alcohol beers keep their nutrition-based score.
+         </div>
+       </div>`;
     } else {
       rhDataNote.innerHTML = '';
     }
   }
   /* Build category pills from this chain's actual items */
-  const cats = ['all', ...new Set(it.map(f => f.cat))];
+  const ICE_CREAM_BRANDS = ['Tip Top', 'Kāpiti Ice Cream'];
+  const cats = name === 'NZ Beer'
+    ? ['all', ...BEER_BRANDS]
+    : name === 'NZ Ice Cream'
+      ? ['all', ...ICE_CREAM_BRANDS]
+      : ['all', ...new Set(it.map(f => f.cat))];
   const catLabels = {all:'All', burgers:'Burgers', chicken:'Chicken', pizza:'Pizza',
     wraps:'Wraps', sides:'Sides', drinks:'Drinks', sushi:'Sushi', pies:'Pies',
     smoothies:'Smoothies', juices:'Juices', salads:'Salads', desserts:'Desserts', 'ice cream':'Ice Cream',
     tacos:'Tacos', burritos:'Burritos', subs:'Subs', rice:'Rice', pho:'Pho',
     platters:'Platters', fishnchips:'Fish & Chips', freshrolls:'Fresh Rolls',
-    kids:'Kids', bowls:'Bowls', bao:'Bao', bun:'Bun', goi:'Goi', banhmi:'Bánh Mì', com:'Cơm'};
+    kids:'Kids', bowls:'Bowls', bao:'Bao', bun:'Bun', goi:'Goi', banhmi:'Bánh Mì', com:'Cơm',
+    'Tip Top':'Tip Top', 'Kāpiti Ice Cream':'Kāpiti'};
   const mcatsEl = document.getElementById('mcats');
   if (mcatsEl) mcatsEl.innerHTML = cats.map(cat =>
     `<div class="pill${cat === 'all' ? ' on' : ''}" onclick="setMCat('${cat}',this)">${catLabels[cat] || (cat.charAt(0).toUpperCase() + cat.slice(1))}</div>`
@@ -11836,12 +12404,13 @@ function renderMenu() {
   if (mcb) mcb.classList.toggle('hidden', !q);
   /* Allow category + search to stack — do NOT reset category when search active */
   let it = getRestFoods(curRest);
-  if (mCatSel !== 'all') it = it.filter(f => f.cat === mCatSel);
+  if (mCatSel !== 'all') {
+    it = (curRest === 'NZ Beer' || curRest === 'NZ Ice Cream') ? it.filter(f => f.chain === mCatSel) : it.filter(f => f.cat === mCatSel);
+  }
   if (q) it = it.filter(f => fuzzyIncludes(f.name, q));
   if (rmFilters.protein)     it = it.filter(f => f.protein >= 20);
   if (rmFilters.sugar)       it = it.filter(f => f.sugar <= 5);
   if (rmFilters.fat)         it = it.filter(f => f.fat <= 10);
-  if (rmFilters.balanced)    it = it.filter(f => f.protein >= 15 && f.sugar <= 10 && f.sat_fat <= 8);
   if (rmFilters.sodium)      it = it.filter(f => f.sodium <= 600);
   if (rmFilters.vegan)       it = it.filter(f => getFoodFlags(f).includes('vegan'));
   if (rmFilters.vegetarian)  it = it.filter(f => getFoodFlags(f).includes('vegetarian'));
@@ -11850,6 +12419,8 @@ function renderMenu() {
   if (rmFilters.sort === 'lo') it.sort((a, b) => a.kj - b.kj);
   else if (rmFilters.sort === 'hi') it.sort((a, b) => b.kj - a.kj);
   else if (rmFilters.sort === 'protein') it.sort((a, b) => b.protein - a.protein);
+  else if (rmFilters.sort === 'grade') it.sort((a, b) => healthScore(a) - healthScore(b));
+  else if (rmFilters.sort === 'sodium') it.sort((a, b) => a.sodium - b.sodium || a.kj - b.kj);
   else it.sort((a, b) => {
     const ca = CAT_ORDER.indexOf(a.cat) === -1 ? 99 : CAT_ORDER.indexOf(a.cat);
     const cb = CAT_ORDER.indexOf(b.cat) === -1 ? 99 : CAT_ORDER.indexOf(b.cat);
@@ -11861,7 +12432,7 @@ function renderMenu() {
     /* Empty state — no items after filters/search */
     mlEl.classList.remove('vl-active');
     _vl = null;
-    const _catLabel = mCatSel !== 'all' ? (mCatSel.charAt(0).toUpperCase() + mCatSel.slice(1)) : null;
+    const _catLabel = mCatSel !== 'all' ? ((curRest === 'NZ Beer' || curRest === 'NZ Ice Cream') ? mCatSel : (mCatSel.charAt(0).toUpperCase() + mCatSel.slice(1))) : null;
     const _rmTitle  = q ? `No kai for "${q}"` : 'Nothing here';
     const _rmSub    = q && _catLabel
       ? `No ${_catLabel} matching "${q}" at ${curRest}. Clear the search to see all ${_catLabel}.`
@@ -12138,10 +12709,27 @@ function openDetail(id, fromRest, overridePrevPage) {
        </div>`
     : '';
 
+  const alcoholBanner = f.cat === 'beer' && Number(f.abv) >= 0.5
+    ? `<div style="margin:12px 16px 0;padding:10px 12px;
+           background:var(--md-surface-container);
+           border:1px solid var(--md-outline-variant);
+           border-left:3px solid var(--score-C-text);
+           border-radius:var(--shape-md)">
+         <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
+           <span class="ms" style="font-size:16px;color:var(--score-C-text)">info</span>
+           <span style="font-size:12px;font-weight:600;color:var(--md-on-surface)">Alcohol affects the health score</span>
+         </div>
+         <div style="font-size:11px;color:var(--md-on-surface-variant);line-height:1.5">
+           Alcoholic drinks cannot score above C, even when the nutrition panel is low in sugar, fat and sodium.
+           High-standard-drink serves score D.
+         </div>
+       </div>`
+    : '';
+
 
   /* Write notes into the dedicated static container — replaces on every call, never stacks */
   document.getElementById('det-source-note').innerHTML =
-    popeyesBanner + nandosBanner + stPierreNote +
+    popeyesBanner + nandosBanner + stPierreNote + alcoholBanner +
     `<div style="padding:8px 16px 4px;text-align:center">
        <span style="font-size:11px;color:var(--md-on-surface-variant)">
          Nutritional values are based on publicly available data and may vary by
@@ -12160,9 +12748,10 @@ function openDetail(id, fromRest, overridePrevPage) {
   /* Zone 8: Restaurant link — only if chain exists in rests[] AND not already in that menu */
   const rl = document.getElementById('det-rest-link');
   if (rl) {
-    const rEntry = rests.find(r => r.name === f.chain);
+    const restLinkName = f.cat === 'beer' ? 'NZ Beer' : f.chain;
+    const rEntry = rests.find(r => r.name === restLinkName && !r.hidden);
     if (rEntry && !dFR) {
-      rl.innerHTML = `<div class="det-rest-link" data-name="${f.chain}" onclick="openRest(this.dataset.name)"
+      rl.innerHTML = `<div class="det-rest-link" data-name="${restLinkName}" onclick="openRest(this.dataset.name)"
         style="--det-rest-brand:${rEntry.brand}">
         <div class="det-rest-link-inner">
           <div class="det-rest-link-emoji">${emojiImg(rEntry.emoji, '28px')}</div>
@@ -12197,17 +12786,16 @@ function _renderFavesGrid() {
   const names     = loadRestFaves();
   const meals     = loadMeals();
   const faveItems = ids.map(id => foods.find(f => f.id === id)).filter(Boolean);
-  const favRests  = names.map(n => rests.find(r => r.name === n)).filter(Boolean);
+  const favRests  = names.map(n => rests.find(r => r.name === n && !r.hidden)).filter(Boolean);
   const hasItems  = faveItems.length > 0 || favRests.length > 0;
 
   /* ── Section 1: Saved Items ── */
   let itemsHtml;
   if (!hasItems) {
     itemsHtml = `<div class="faves-empty">
-      <div class="faves-empty-icon">🤍</div>
       <div class="faves-empty-title">Nothing saved yet</div>
-      <div class="faves-empty-sub">Tap ♡ on any food to save it here for quick access.</div>
-      <button class="faves-empty-cta" onclick="nav('search')"><span class="ms" style="font-size:16px;line-height:1;vertical-align:middle">search</span> Find something</button>
+      <div class="faves-empty-sub">Tap the heart on any food or restaurant to save it here.</div>
+      <button class="faves-empty-cta" onclick="nav('search')"><span class="ms">search</span> Search all foods</button>
     </div>`;
   } else {
     const restCards = favRests.map(r => {
@@ -12271,8 +12859,7 @@ function _renderFavesGrid() {
   let mealsHtml;
   if (!meals.length) {
     mealsHtml = `<div class="faves-empty-inline">
-      <span class="ms" style="font-size:32px;opacity:0.3;display:block;margin-bottom:6px">restaurant_menu</span>
-      <div style="font-size:13px;color:var(--md-on-surface-variant)">Build a meal and tap <span class="ms" style="font-size:13px;vertical-align:middle">bookmark_add</span> to save it</div>
+      <button class="faves-meal-empty-cta" onclick="openMealBuilder()"><span class="ms">restaurant_menu</span> Build a meal</button>
     </div>`;
   } else {
     mealsHtml = `<div class="faves-meals-list">${meals.map((m, idx) => {
@@ -13041,6 +13628,25 @@ function openNutSheet(el) {
   document.getElementById('sheet-scrim').classList.add('visible');
   document.getElementById('rdi-sheet').classList.add('open');
 }
+
+function openRDISheet(gender) {
+  if (!curFood) return;
+  const g = gender || 'f';
+  const ref = g === 'm'
+    ? { e:2512, fa:80, sf:24, su:50, na:2300 }
+    : { e:1912, fa:60, sf:20, su:50, na:2300 };
+  const candidates = [
+    { k:'e',  v:kc(curFood.kj), ref:ref.e },
+    { k:'fa', v:curFood.fat || 0, ref:ref.fa },
+    { k:'sf', v:curFood.sat_fat || 0, ref:ref.sf },
+    { k:'su', v:curFood.sugar || 0, ref:ref.su },
+    { k:'na', v:curFood.sodium || 0, ref:ref.na }
+  ];
+  const worst = candidates
+    .map(x => ({ k:x.k, ratio:x.ref ? x.v / x.ref : 0 }))
+    .sort((a,b) => b.ratio - a.ratio)[0];
+  openNutSheet({ dataset: { nut: worst ? worst.k : 'e', gender: g } });
+}
 function closeShareSheet() { closeAllSheets(); }
 
 /* ── Show toast feedback ── */
@@ -13796,7 +14402,7 @@ function syncCmpUI() {
       document.getElementById('pg-rmenu').classList.contains('active');
     const restItems = curRest ? cmpList.filter(id => {
       const f = foods.find(x => x.id === id);
-      return f && f.chain === curRest;
+      return f && (curRest === 'NZ Beer' ? f.cat === 'beer' : f.chain === curRest);
     }) : [];
     const showBanner = onRmenu && restItems.length >= 2 && !_cmpRestBannerDismissed && !onCmpPage;
     banner.classList.toggle('visible', showBanner);
