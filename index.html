@@ -1670,7 +1670,7 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   display: inline-block;
   margin-right: 3px;
   color: var(--md-on-surface);
-  font-weight: 700;
+  font-weight: 500;
 }
 .active-refinements {
   display: none;
@@ -1720,9 +1720,24 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   gap: 8px;
   min-width: 0;
 }
-#rmenu-sort-chip {
+#pg-rmenu .sec-hdr {
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+}
+#pg-rmenu .rmenu-controls {
+  order: 1;
+}
+#pg-rmenu #mct {
+  order: 2;
+  margin-left: auto;
+  text-align: right;
+  font-weight: 400 !important;
+  color: var(--md-on-surface-variant);
+}
+#rmenu-filter-chip {
   height: 32px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* ── Floating filter-clear pill — top-pinned, slides down below status bar ──
@@ -2965,7 +2980,7 @@ body.native #filter-float-pill {
   border-top: 1px solid var(--md-outline-variant);
   margin-bottom: 4px;
 }
-.det-emoji { font-size: 52px; line-height: 1; display:inline-flex; align-items:baseline; }
+.det-emoji { font-size: 46px; line-height: 1; display:inline-flex; align-items:baseline; }
 /* Score-coloured top stripe — keep for legacy compat */
 .det-score-stripe { height: 3px; width: 100%; }
 .det-score-stripe.score-a { background: var(--score-A-text); }
@@ -2993,23 +3008,23 @@ body.native #filter-float-pill {
   display: flex; gap: 8px; flex-wrap: wrap;
 }
 
-/* ── Burn It Off button — M3 Filled Tonal Button ── */
+/* ── Burn It Off button — M3 outlined action chip ── */
 .burn-btn {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 0 16px 0 12px;
   height: 40px;
-  background: var(--md-primary-container);
-  border: none;
+  background: transparent;
+  border: 1px solid var(--md-outline-variant);
   border-radius: var(--shape-full);
   font-family: var(--font-ui); font-size: 14px; font-weight: 600; letter-spacing: 0.01em;
   color: var(--md-primary);
   cursor: pointer;
   flex-shrink: 0;
-  transition: filter 0.15s, background 0.15s;
+  transition: transform 120ms ease, background 150ms ease, border-color 150ms ease;
   white-space: nowrap;
 }
-.burn-btn:hover  { filter: brightness(1.12); }
-.burn-btn:active { background: color-mix(in srgb, var(--md-primary-container) 85%, var(--md-primary) 15%); }
+.burn-btn:hover  { background: rgba(255,255,255,0.04); border-color: var(--md-on-surface-variant); }
+.burn-btn:active { transform: scale(0.97); background: rgba(126,216,138,0.08); }
 .burn-btn .ms    { font-size: 18px; }
 
 /* ── Burn Sheet ── */
@@ -3117,7 +3132,6 @@ body.native #filter-float-pill {
   padding: 12px 14px;
   background: var(--md-surface-container);
   border: 1px solid var(--md-outline-variant);
-  border-left: 3px solid var(--det-rest-brand, var(--md-primary));
   border-radius: var(--shape-md);
 }
 .det-rest-link-emoji { font-size: 28px; flex-shrink: 0; line-height: 1; }
@@ -3237,8 +3251,6 @@ body.native #filter-float-pill {
 }
 
 
-/* ── Nut-row warn icon — exclamation beside macro with warning ── */
-.nut-warn-ico { color: var(--md-error); font-size: 16px; margin-left: 4px; vertical-align: middle; line-height: 1; }
 /* ── Warn block inside RDI bottom sheet ── */
 .nut-warn-block {
   margin: 12px 0 0;
@@ -3307,6 +3319,7 @@ body.native #filter-float-pill {
   padding: 12px 16px;
   border-bottom: 1px solid var(--md-outline-variant);
   min-height: 52px;   /* M3 list item min height */
+  position: relative;
 }
 .nut-row:last-child { border-bottom: none; }
 .nut-l { font-size: 14px; color: var(--md-on-surface); font-weight: 400; }
@@ -3324,8 +3337,21 @@ body.native #filter-float-pill {
 .nut-row.nut-bad  .nut-v { color: var(--score-D-text); }
 
 /* Combined nutrient + daily % rows */
-.nut-tappable { cursor: pointer; }
-.nut-tappable:active { background: rgba(255,255,255,0.06); }
+.nut-tappable {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 140ms ease;
+}
+.nut-tappable::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--md-on-surface);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.nut-tappable:active::after { opacity: 0.08; }
 .nut-row-inner { flex: 1; min-width: 0; }
 .nut-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
 .nut-rdi-pct { font-size: 12px; font-weight: 700; color: var(--md-on-surface); white-space: nowrap; }
@@ -3334,7 +3360,30 @@ body.native #filter-float-pill {
 .nut-rdi-bar-track { height: 4px; background: var(--md-outline-variant); border-radius: 9999px; overflow: visible; position: relative; }
 .nut-rdi-bar-fill { height: 100%; border-radius: 9999px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); max-width: 100%; }
 .nut-rdi-bar-over { position: absolute; top: -1.5px; right: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--md-error); }
-.nut-row-chevron { color: var(--md-on-surface-variant); flex-shrink: 0; margin-left: 8px; }
+.nut-row-chevron {
+  width: 28px; height: 28px;
+  border-radius: var(--shape-full);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--md-on-surface-variant);
+  flex-shrink: 0; margin-left: 10px;
+}
+.nut-row.nut-warn .nut-row-chevron,
+.nut-row.nut-bad .nut-row-chevron,
+.nut-row.nut-alert .nut-row-chevron {
+  color: var(--md-error);
+  background: color-mix(in srgb, var(--md-error) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-error) 42%, transparent);
+}
+.nut-row.nut-warn,
+.nut-row.nut-bad,
+.nut-row.nut-alert {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--md-error) 16%, transparent);
+}
+.nut-row.nut-good .nut-row-chevron {
+  color: var(--md-primary);
+  background: color-mix(in srgb, var(--md-primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--md-primary) 42%, transparent);
+}
 
 /* ════════════════════════════════════════════════════
    SCORE EXPLANATION BOTTOM SHEET
@@ -4532,6 +4581,285 @@ body.native #filter-float-pill {
 /* Kill the old .car-title / default emoji header where .car-hdr-rich is used */
 .car-hdr-rich + .car-sub-title { margin-top: 4px; }
 
+/* ── Learn immersive lesson mode ─────────────────────────────
+   Topic chips jump vertically between chapters; dots/swipes move within a
+   chapter. Each slide owns the viewport with a large central visual. */
+#pg-insights .page-scroll {
+  scroll-snap-type: none;
+}
+#pg-insights .learn-hero {
+  scroll-snap-align: start;
+}
+#pg-insights .car-slot {
+  min-height: 610px;
+  display: flex;
+  flex-direction: column;
+  scroll-snap-align: start;
+  margin: 0 0 18px;
+  padding: 18px 16px 10px;
+  border-radius: 0;
+  background: transparent;
+}
+body.native #pg-insights .car-slot {
+  min-height: calc(100dvh - 112px);
+}
+body.native #pg-insights .car-slot {
+  min-height: calc(100dvh - 92px);
+}
+#pg-insights .car-hdr-rich {
+  justify-content: center;
+  padding: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+#pg-insights .car-hdr-ico {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+}
+#pg-insights .car-hdr-title {
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#pg-insights .car-hdr-text {
+  flex: 0 1 auto;
+}
+#pg-insights .car-count-pill,
+#pg-insights .car-sub-title {
+  display: none;
+}
+#pg-insights .car-sub-title {
+  padding: 0 2px;
+  margin-bottom: 8px;
+  max-width: 310px;
+}
+#pg-insights .car-wrap,
+#pg-insights .car-track {
+  flex: 1;
+  min-height: 0;
+}
+#pg-insights .car-wrap {
+  display: flex;
+  border-radius: 0;
+}
+#pg-insights .car-track {
+  align-items: stretch;
+  width: 100%;
+}
+#pg-insights .car-wrap-peek {
+  --peek: 0px;
+}
+#pg-insights .car-wrap-peek::after {
+  display: none;
+}
+#pg-insights .car-wrap-peek .car-track > .car-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  margin-right: 0;
+}
+#pg-insights .car-slide {
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border-radius: 0;
+  text-align: center;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#pg-insights .sl-topbar {
+  display: none;
+}
+#pg-insights .sl-tag {
+  margin-bottom: 0;
+}
+#pg-insights .sl-viz {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 0 22px;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+#pg-insights .sl-viz-art,
+#pg-insights .car-slide > .sl-ico {
+  position: relative;
+  width: clamp(202px, 58vw, 238px);
+  height: clamp(202px, 58vw, 238px);
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto 0;
+  background-color: #F4F7EF;
+  background-image: var(--learn-art);
+  background-repeat: no-repeat;
+  background-position: center var(--learn-art-y, center);
+  background-size: var(--learn-art-size, 78%);
+  border: 0;
+  box-shadow: none;
+}
+#pg-insights .sl-viz-art::before,
+#pg-insights .sl-viz-art::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+#pg-insights .sl-viz-art::before {
+  left: 18%;
+  right: 18%;
+  bottom: 19%;
+  height: 30%;
+  border-radius: 999px 999px 36px 36px;
+  background: rgba(255,226,154,0.18);
+}
+#pg-insights .sl-viz-art::after {
+  top: 20%;
+  right: 24%;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: rgba(255,219,128,0.38);
+}
+#pg-insights .sl-viz-art::before,
+#pg-insights .sl-viz-art::after {
+  display: none;
+}
+#pg-insights .sl-viz-art svg {
+  display: none;
+}
+#pg-insights .sl-re .sl-viz-art::before { background: rgba(255,181,173,0.18); }
+#pg-insights .sl-am .sl-viz-art::before { background: rgba(255,217,102,0.18); }
+#pg-insights .sl-g  .sl-viz-art::before { background: rgba(184,240,117,0.18); }
+#pg-insights .sl-bl .sl-viz-art::before { background: rgba(176,216,245,0.18); }
+#pg-insights .sl-te .sl-viz-art::before { background: rgba(127,224,192,0.18); }
+#pg-insights .sl-pu .sl-viz-art::before { background: rgba(208,184,245,0.18); }
+#pg-insights .car-slide > .sl-ico {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  color: transparent;
+  font-size: 0;
+  line-height: 1;
+  margin: 0 auto 22px;
+}
+#pg-insights .sl-viz-meta {
+  max-width: 260px;
+  text-align: center;
+}
+#pg-insights .sl-viz-stat {
+  display: none;
+}
+#pg-insights .sl-viz-cap {
+  display: none;
+}
+#pg-insights .sl-head {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  max-width: 305px;
+  margin: 0 auto 8px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+#pg-insights .sl-body {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  max-width: 310px;
+  margin: 0 auto;
+  max-height: 82px;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 400;
+}
+#pg-insights .sl-src {
+  display: none;
+}
+#pg-insights #cs1 { --learn-art: url("assets/learn-illustrations/learn-data.svg"); --learn-art-size: 76%; }
+#pg-insights #cs2 { --learn-art: url("assets/learn-illustrations/learn-portions.svg"); --learn-art-size: 82%; }
+#pg-insights #cs3 { --learn-art: url("assets/learn-illustrations/learn-protein.svg"); --learn-art-size: 74%; }
+#pg-insights #cs4 { --learn-art: url("assets/learn-illustrations/learn-sugar.svg"); --learn-art-size: 62%; --learn-art-y: 52%; }
+#pg-insights #cs5 { --learn-art: url("assets/learn-illustrations/learn-heart.svg"); --learn-art-size: 68%; --learn-art-y: 54%; }
+#pg-insights #cs6 { --learn-art: url("assets/learn-illustrations/learn-move.svg"); --learn-art-size: 76%; }
+#pg-insights #cs7 { --learn-art: url("assets/learn-illustrations/learn-fakeaway.svg"); --learn-art-size: 78%; }
+#pg-insights .swipe-hint {
+  display: none;
+}
+#pg-insights #cs7 .r-pills,
+#pg-insights #cs7 .r-vs {
+  display: none;
+}
+#pg-insights .dots {
+  margin: 8px 0 0;
+  gap: 10px;
+}
+#pg-insights .dot {
+  width: 8px;
+  height: 32px;
+  cursor: pointer;
+}
+#pg-insights .dot::after {
+  width: 7px;
+  height: 7px;
+  background: rgba(160,178,196,0.48);
+}
+#pg-insights .dot.on::after {
+  width: 7px;
+  background: #A8C9FF;
+}
+.learn-topic-nav {
+  display: none;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 8px;
+  margin-top: 0;
+}
+.learn-topic-nav button {
+  flex: 0 1 auto;
+  min-width: 0;
+  height: 32px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-tap-highlight-color: transparent;
+}
+.learn-topic-nav button:only-child {
+  max-width: none;
+  margin-left: 0;
+}
+.learn-topic-nav button:active {
+  transform: scale(0.98);
+}
+
 /* ── Utility classes extracted from inline styles ── */
 .ms-34 { font-size:34px; line-height:1; display:inline-block; vertical-align:middle; flex-shrink:0; }
 .ms-42 { font-size:42px; line-height:1; display:inline-block; vertical-align:middle; flex-shrink:0; }
@@ -5028,12 +5356,20 @@ body.native #filter-float-pill {
 .mb-slot-empty {
   display: flex; align-items: center; gap: 12px;
   padding: 14px; margin: 0 16px 8px;
-  background: var(--md-surface-container-high);
+  background: transparent;
   border-radius: var(--shape-md);
-  border: 1.5px dashed var(--md-outline-variant);
+  border: 1px solid var(--md-outline-variant);
   cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, opacity 0.15s;
 }
-.mb-slot-empty:active { opacity: 0.7; }
+.mb-slot-empty:hover {
+  background: rgba(255,255,255,0.03);
+  border-color: var(--md-on-surface-variant);
+}
+.mb-slot-empty:active {
+  background: rgba(126,216,138,0.08);
+  opacity: 0.9;
+}
 .mb-slot-search {
   margin: 0 16px 8px; border-radius: var(--shape-md);
   border: 1.5px solid var(--md-primary);
@@ -6068,18 +6404,14 @@ body.native #filter-float-pill {
           <div id="rh-data-note"></div>
         </div>
         <div class="sec-hdr">
-          <span id="mct">0 items</span>
           <div class="rmenu-controls">
-            <button class="sort-chip" id="rmenu-sort-chip" onclick="openRmenuSortSheet()">
-              <span class="ms">swap_vert</span>
-              <span id="rmenu-sort-chip-lbl">Menu order</span>
-              <span class="sort-chip-clear" onclick="event.stopPropagation();filterCtx='rmenu';setSortOption('def')" title="Clear sort">×</span>
-            </button>
-            <button class="filter-btn" id="rmenu-filter-btn" onclick="openRmenuFilterSheet()">
-              <span class="ms">tune</span>Filter
+            <button class="sort-chip" id="rmenu-filter-chip" onclick="openRmenuFilterSheet()">
+              <span class="ms">tune</span>
+              <span id="rmenu-filter-chip-lbl">Filters</span>
               <span class="filter-badge" id="rmenu-filter-badge"></span>
             </button>
           </div>
+          <span id="mct">0 items</span>
         </div>
         <div class="cmp-rest-banner" id="cmp-rest-banner">
           <div class="cmp-rest-banner-text">These two are in your compare tray — see them side by side?</div>
@@ -7189,11 +7521,11 @@ body.native #filter-float-pill {
           </div>
           <div class="car-sub-title">Recreate your favourites at home — healthier, cheaper, just as good</div>
           <div class="car-wrap car-wrap-peek" id="c7w"><div class="car-track" id="c7t">
-            <div class="car-slide sl-g"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY BURGER</div><div class="sl-read"><span class="ms">schedule</span>25 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-1')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🍔</span><div class="sl-head">Lean Beef &amp; Beetroot Burger</div><div class="sl-body">Mix 400g lean mince with egg, grated carrot, breadcrumbs &amp; parsley. Form 4 patties, pan-fry 4–5 min each side. Serve in wholegrain buns with lettuce, tomato &amp; avocado.</div><div class="r-pills"><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">⏱ 25 min</div><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">Serves 4</div><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">~347 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~143 cal &amp; 10g sat. fat vs a Big Mac.</div></div><div class="sl-src">Heart Foundation NZ</div></div>
-            <div class="car-slide sl-bl"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY NANDO'S</div><div class="sl-read"><span class="ms">schedule</span>30 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-2')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🌿</span><div class="sl-head">Peri Peri Oven Chicken</div><div class="sl-body">Marinate chicken thighs in peri peri sauce 1 hr. Sear 2 min each side then roast 200°C for 15–20 min. Serve with baked kūmara &amp; salad.</div><div class="r-pills"><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">⏱ 30 min</div><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">Serves 4</div><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">~215 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~330 cal vs a Zinger Burger.</div></div><div class="sl-src">Healthy Food Guide NZ</div></div>
-            <div class="car-slide sl-te"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY FISH</div><div class="sl-read"><span class="ms">schedule</span>20 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-3')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🐟</span><div class="sl-head">Crumbed Fish Burgers</div><div class="sl-body">Blend 500g white fish with spring onion, lemon zest &amp; herbs. Shape into patties, coat in breadcrumbs, pan-fry 3–4 min each side. Serve with Greek yoghurt tartare.</div><div class="r-pills"><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">⏱ 20 min</div><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">Serves 4</div><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">~263 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~186 cal vs battered fish &amp; chips.</div></div><div class="sl-src">Heart Foundation NZ</div></div>
-            <div class="car-slide sl-pu"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY PITA</div><div class="sl-read"><span class="ms">schedule</span>25 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-4')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🥙</span><div class="sl-head">Chicken Souvlaki Pita</div><div class="sl-body">Marinate chicken in lemon, garlic &amp; oregano 30 min. Grill until cooked. Fill a warmed pita with tzatziki, lettuce, tomato, cucumber &amp; red onion.</div><div class="r-pills"><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">⏱ 25 min</div><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">Serves 2</div><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">~335 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Similar kJ to Pita Pit — fresher, lower sodium.</div></div><div class="sl-src">Healthy Food Guide NZ</div></div>
-            <div class="car-slide sl-am"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY CHIPS</div><div class="sl-read"><span class="ms">schedule</span>40 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-5')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🍟</span><div class="sl-head">Peri Peri Baked Wedges</div><div class="sl-body">Cut 4 agria potatoes into wedges, toss with 1 tsp olive oil &amp; 2 tsp peri peri seasoning. Bake 200°C for 35–40 min turning once until golden.</div><div class="r-pills"><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">⏱ 40 min</div><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">Serves 4</div><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">~167 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~282 cal vs large fish &amp; chip chips.</div></div><div class="sl-src">NZ Nutrition Foundation</div></div>
+            <div class="car-slide sl-g"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY BURGER</div><div class="sl-read"><span class="ms">schedule</span>25 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-1')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🍔</span><div class="sl-head">Lean Beef &amp; Beetroot Burger</div><div class="sl-body">Lean beef, wholegrain bun, beetroot, lettuce and avocado — burger night with a lighter feel.</div><div class="r-pills"><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">⏱ 25 min</div><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">Serves 4</div><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">~347 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~143 cal &amp; 10g sat. fat vs a Big Mac.</div></div><div class="sl-src">Heart Foundation NZ</div></div>
+            <div class="car-slide sl-bl"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY NANDO'S</div><div class="sl-read"><span class="ms">schedule</span>30 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-2')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🌿</span><div class="sl-head">Peri Peri Oven Chicken</div><div class="sl-body">Oven-roast peri peri chicken with baked kumara and salad for the spicy takeaway feel.</div><div class="r-pills"><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">⏱ 30 min</div><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">Serves 4</div><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">~215 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~330 cal vs a Zinger Burger.</div></div><div class="sl-src">Healthy Food Guide NZ</div></div>
+            <div class="car-slide sl-te"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY FISH</div><div class="sl-read"><span class="ms">schedule</span>20 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-3')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🐟</span><div class="sl-head">Crumbed Fish Burgers</div><div class="sl-body">Pan-fried crumbed fish with Greek yoghurt tartare — crisp, lighter, and quick.</div><div class="r-pills"><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">⏱ 20 min</div><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">Serves 4</div><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">~263 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~186 cal vs battered fish &amp; chips.</div></div><div class="sl-src">Heart Foundation NZ</div></div>
+            <div class="car-slide sl-pu"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY PITA</div><div class="sl-read"><span class="ms">schedule</span>25 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-4')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🥙</span><div class="sl-head">Chicken Souvlaki Pita</div><div class="sl-body">Lemon, garlic and oregano chicken tucked into pita with tzatziki and crunchy salad.</div><div class="r-pills"><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">⏱ 25 min</div><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">Serves 2</div><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">~335 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Similar kJ to Pita Pit — fresher, lower sodium.</div></div><div class="sl-src">Healthy Food Guide NZ</div></div>
+            <div class="car-slide sl-am"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY CHIPS</div><div class="sl-read"><span class="ms">schedule</span>40 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-5')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🍟</span><div class="sl-head">Peri Peri Baked Wedges</div><div class="sl-body">Baked agria wedges with peri peri seasoning — crisp comfort without the deep fryer.</div><div class="r-pills"><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">⏱ 40 min</div><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">Serves 4</div><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">~167 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~282 cal vs large fish &amp; chip chips.</div></div><div class="sl-src">NZ Nutrition Foundation</div></div>
           </div></div>
           <div class="dots" id="c7d"></div>
         </div>
@@ -7306,10 +7638,6 @@ body.native #filter-float-pill {
       </div>
       <div class="sheet-scroll" id="mb-body"></div>
       <div class="mb-footer" id="mb-footer">
-        <div class="mb-kj-row">
-          <span class="mb-kj-label">Total</span>
-          <span class="mb-kj-val kj-zero">—</span>
-        </div>
         <button class="mb-cta" disabled>See meal total</button>
       </div>
     </div>
@@ -7443,7 +7771,7 @@ body.native #filter-float-pill {
     <div class="bottom-sheet" id="filter-sheet">
       <div class="sheet-handle"></div>
       <div class="sheet-scroll">
-        <!-- Quick preset section — search context only -->
+        <!-- Quick preset section -->
         <div class="fsh-section fsh-presets" id="fsh-presets">
           <div class="fsh-section-title">Quick starts</div>
           <div class="fsh-chips">
@@ -10462,6 +10790,7 @@ let savedPrevPage = 'search';
 let rmFilters = { sort:'def', protein:false, sugar:false, fat:false, balanced:false, sodium:false, vegan:false, vegetarian:false, halal:false };
 let filterCtx = 'search'; /* which page opened the filter sheet */
 let _vl = null; /* virtual list state — set by renderMenu() when items ≥ VL_THRESHOLD */
+let _searchLazy = null; /* search list lazy-render state for large result sets */
 
 /* ── Navigation ── */
 /* ══════════════════════════════════════════
@@ -10573,6 +10902,7 @@ function nav(p) {
     hdr.classList.toggle('scrolled', y > 0 && !hdr.classList.contains('hidden'));
     lastY = y;
     if (typeof syncFilterPill === 'function') syncFilterPill();
+    if (typeof appendSearchLazyResults === 'function') appendSearchLazyResults();
     hideSearchSuggestions();
     closeDietTooltip();
   }, true);
@@ -10636,6 +10966,8 @@ function nav(p) {
 const VL_THRESHOLD = 50;
 const VL_OVERSCAN  = 5;
 const VL_ROW_H     = 160; /* estimated px per card + 10px gap — covers pizza toggle cards */
+const SEARCH_LAZY_THRESHOLD = 80;
+const SEARCH_LAZY_BATCH = 30;
 
 function _vlRender() {
   if (!_vl) return;
@@ -10660,6 +10992,40 @@ function _vlRender() {
     `<div class="vl-spacer" style="height:${botH}px"></div>`;
 }
 
+function renderSearchFoodList(restCards, items, emptyHtml) {
+  const fl = document.getElementById('fl');
+  if (!fl) return;
+  if (!items.length) {
+    _searchLazy = null;
+    fl.innerHTML = restCards || emptyHtml;
+    return;
+  }
+  if (items.length < SEARCH_LAZY_THRESHOLD) {
+    _searchLazy = null;
+    fl.innerHTML = restCards + items.map(f => makeCard(f, false)).join('');
+    return;
+  }
+  _searchLazy = { items, rendered: 0, listEl: fl };
+  fl.innerHTML = restCards;
+  appendSearchLazyResults(true);
+}
+
+function appendSearchLazyResults(force) {
+  if (!_searchLazy) return;
+  const scr = document.getElementById('search-scroll');
+  if (!scr) return;
+  const nearBottom = scr.scrollTop + scr.clientHeight >= scr.scrollHeight - 900;
+  if (!force && !nearBottom) return;
+  const state = _searchLazy;
+  const next = Math.min(state.rendered + SEARCH_LAZY_BATCH, state.items.length);
+  if (next <= state.rendered) return;
+  state.listEl.insertAdjacentHTML('beforeend',
+    state.items.slice(state.rendered, next).map(f => makeCard(f, false)).join('')
+  );
+  state.rendered = next;
+  if (state.rendered >= state.items.length) _searchLazy = null;
+}
+
 /* ── Emoji size tokens ──
    Change these to resize all emoji globally.
    EMO.xs — inline text, compare tray chips
@@ -10669,7 +11035,7 @@ function _vlRender() {
             ⚠️  if increasing EMO.md, also update .fc-emoji-wrap and .rest-ico box sizes in CSS
    EMO.lg — food detail page (open layout — scales freely)
 */
-const EMO = { xs:'20px', sm:'34px', md:'42px', lg:'52px', cat:'40px' };
+const EMO = { xs:'20px', sm:'34px', md:'42px', lg:'46px', cat:'40px' };
 
 /* ── OpenMoji helper ──
    Converts any emoji character → OpenMoji colour SVG <img>.
@@ -11228,10 +11594,99 @@ function fuzzyNorm(s) {
     .replace(/\s+/g, ' ')
     .trim();
 }
-function fuzzyIncludes(haystack, needle) {
+function fuzzyCompact(s) {
+  return fuzzyNorm(s).replace(/\s/g,'');
+}
+function fuzzyTokens(s) {
+  return fuzzyNorm(s).split(/\s+/).filter(Boolean);
+}
+function fuzzyEditDistance(a, b) {
+  if (a === b) return 0;
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  let prev = Array.from({ length:b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const curr = [i];
+    for (let j = 1; j <= b.length; j++) {
+      curr[j] = Math.min(
+        prev[j] + 1,
+        curr[j - 1] + 1,
+        prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+      );
+    }
+    prev = curr;
+  }
+  return prev[b.length];
+}
+function fuzzyTokenMatch(hayToken, needleToken) {
+  const h = fuzzyCompact(hayToken), n = fuzzyCompact(needleToken);
+  if (!n) return true;
+  if (h.includes(n) || n.includes(h)) return true;
+  if (n.length < 3 || h.length < 3) return false;
+  const dist = fuzzyEditDistance(h, n);
+  const maxLen = Math.max(h.length, n.length);
+  const limit = maxLen <= 4 ? 1 : (maxLen <= 8 ? 2 : 3);
+  return dist <= limit && (1 - dist / maxLen) >= 0.66;
+}
+function fuzzyMatchScore(haystack, needle) {
   const nh = fuzzyNorm(haystack), nn = fuzzyNorm(needle);
-  // Try normal match first; fall back to space-collapsed for e.g. "stpierres" → "st pierres"
-  return nh.includes(nn) || nh.replace(/\s/g,'').includes(nn.replace(/\s/g,''));
+  const ch = nh.replace(/\s/g,''), cn = nn.replace(/\s/g,'');
+  if (!nn) return 0;
+  if (nh === nn || ch === cn) return 100;
+  if (nh.startsWith(nn) || ch.startsWith(cn)) return 90;
+  if (nh.includes(nn) || ch.includes(cn)) return 80;
+  const hayTokens = fuzzyTokens(haystack);
+  const needleTokens = fuzzyTokens(needle);
+  if (!needleTokens.length) return 0;
+  let total = 0;
+  for (const nt of needleTokens) {
+    let best = 0;
+    for (const ht of hayTokens) {
+      if (fuzzyTokenMatch(ht, nt)) {
+        const dist = fuzzyEditDistance(fuzzyCompact(ht), fuzzyCompact(nt));
+        best = Math.max(best, 70 - Math.min(dist, 6) * 8);
+      }
+    }
+    if (!best) return 0;
+    total += best;
+  }
+  return Math.round(total / needleTokens.length);
+}
+function fuzzyIncludes(haystack, needle) {
+  return fuzzyMatchScore(haystack, needle) >= 54;
+}
+
+const REST_SEARCH_ALIASES = {
+  "McDonald's":["maccas","macca's","macdonalds","mac donalds","mcdonalds","mcdonlds","mcdonals","mcds","mcd"],
+  "KFC":["kentucky fried chicken","the colonel","colonel"],
+  "Pizza Hut":["pizzahut","pizza hutt"],
+  "Burger King":["burgerking","bk","hungry jacks"],
+  "Burger Fuel":["burgerfuel"],
+  "Domino's":["dominos","dominoes"],
+  "Nando's":["nandos","nandos chicken"],
+  "Hell Pizza":["hell","hellpizza"],
+  "Pita Pit":["pitapit","pita"],
+  "St. Pierre's":["st pierres","stpierres","saint pierres"],
+  "Wendy's":["wendys"],
+  "Dunkin' Donuts":["dunkin","dunkin donuts","dunkindonuts","dunkin donut","dunking donuts","dunkin'"],
+  "Carl's Jr":["carls jr","carls","carl junior"],
+  "LJ's":["ljs","lj","l j's"],
+  "Roll'd":["rolld","rolled","roll d"],
+  "Breadtop":["bread top"]
+};
+function restaurantAliases(name) {
+  return REST_SEARCH_ALIASES[name] || [];
+}
+function isRestaurantNameQuery(r, raw) {
+  const needle = fuzzyCompact(raw);
+  if (!needle) return false;
+  const name = fuzzyCompact(r.name);
+  if (name === needle) return true;
+  if (restaurantAliases(r.name).some(a => fuzzyCompact(a) === needle)) return true;
+  if (needle.length < 5) return false;
+  const dist = fuzzyEditDistance(name, needle);
+  const limit = Math.max(1, Math.floor(Math.max(name.length, needle.length) * 0.25));
+  return dist <= limit;
 }
 
 function escHtml(s) {
@@ -11247,20 +11702,38 @@ function renderSearchSuggestions(raw) {
   const el = document.getElementById('search-suggestions');
   if (!el) return;
   if (!raw || raw.length < 1) { hideSearchSuggestions(); return; }
-  const nRaw = fuzzyNorm(raw);
   const matches = [];
-  for (let i = 0; i < foods.length && matches.length < 5; i++) {
+  const seen = new Set();
+  rests
+    .filter(r => !r.hidden)
+    .map(r => ({ type:'restaurant', item:r, score:fuzzyMatchScore(restSearchText(r), raw) }))
+    .filter(x => x.score >= 54)
+    .sort((a, b) => b.score - a.score || a.item.name.localeCompare(b.item.name))
+    .slice(0, 3)
+    .forEach(x => { seen.add('restaurant:' + x.item.name); matches.push(x); });
+  for (let i = 0; i < foods.length; i++) {
     const f = foods[i];
-    if (fuzzyNorm(f.name).includes(nRaw) || fuzzyNorm(f.chain).includes(nRaw)) matches.push(f);
+    const score = Math.max(fuzzyMatchScore(f.name, raw), fuzzyMatchScore(f.chain, raw) - 4);
+    const key = 'food:' + f.id;
+    if (score >= 54 && !seen.has(key)) {
+      seen.add(key);
+      matches.push({ type:'food', item:f, score });
+    }
   }
+  matches.sort((a, b) => b.score - a.score || (a.type === 'restaurant' ? -1 : 1));
+  matches.length = Math.min(matches.length, 6);
   if (!matches.length) { hideSearchSuggestions(); return; }
-  el.innerHTML = matches.map(f => {
-    const safe = f.name.replace(/"/g, '&quot;');
+  el.innerHTML = matches.map(match => {
+    const f = match.item;
+    const name = match.type === 'restaurant' ? f.name : f.name;
+    const meta = match.type === 'restaurant' ? 'Restaurant' : f.chain;
+    const icon = match.type === 'restaurant' ? 'restaurant_menu' : 'search';
+    const safe = name.replace(/"/g, '&quot;');
     return `<div class="search-suggestion-item" role="option"
-      onmousedown="event.preventDefault(); selectSearchSuggestion('${safe.replace(/'/g, "\\'")}')">
-      <span class="ms">search</span>
-      <span class="search-sug-name">${f.name}</span>
-      <span class="search-sug-chain">${f.chain}</span>
+      onmousedown="event.preventDefault(); selectSearchSuggestion('${safe.replace(/'/g, "\\'")}','${match.type}')">
+      <span class="ms">${icon}</span>
+      <span class="search-sug-name">${escHtml(name)}</span>
+      <span class="search-sug-chain">${escHtml(meta)}</span>
     </div>`;
   }).join('');
   el.classList.add('visible');
@@ -11272,10 +11745,10 @@ function hideSearchSuggestions() {
 function hideSearchSuggestionsDelayed() {
   _sugHideTimer = setTimeout(hideSearchSuggestions, 200);
 }
-function selectSearchSuggestion(name) {
+function selectSearchSuggestion(name, type) {
   clearTimeout(_sugHideTimer);
   _sugJustSelected = true;
-  _sugSelectedName = name; /* remember exact selection to pin to top */
+  _sugSelectedName = type === 'restaurant' ? null : name; /* remember exact food selection to pin to top */
   const si = document.getElementById('si');
   if (si) { si.value = name; }
   hideSearchSuggestions();
@@ -11319,7 +11792,7 @@ function clearMenuSearch() {
 }
 function doSearch() {
   const ALIASES = {
-    "maccas":"mcdonald's","macca's":"mcdonald's","mcdonalds":"mcdonald's","mcd":"mcdonald's",
+    "maccas":"mcdonald's","macca's":"mcdonald's","macdonalds":"mcdonald's","mac donalds":"mcdonald's","mcdonalds":"mcdonald's","mcdonlds":"mcdonald's","mcdonals":"mcdonald's","mcds":"mcdonald's","mcd":"mcdonald's",
     "the colonel":"kfc","colonel":"kfc",
     "hut":"pizza hut","pizzahut":"pizza hut",
     "nandos":"nando's",
@@ -11331,6 +11804,7 @@ function doSearch() {
     "stpierres":"st. pierre's","betterburger":"better burger",
     "ljs":"lj's","l j's":"lj's",
     "rolld":"roll'd","rolled":"roll'd",
+    "dunkin":"dunkin' donuts","dunkindonuts":"dunkin' donuts","dunkin donuts":"dunkin' donuts","dunking donuts":"dunkin' donuts",
     "fishandchips":"takeaways","fish and chips":"takeaways","fish & chips":"takeaways","fush and chups":"takeaways"
   };
   /* Tags: plain-English / diacritic-free terms → category or chain filter */
@@ -11354,8 +11828,8 @@ function doSearch() {
   renderSearchSuggestions(raw);
   const cb = document.getElementById('search-clear-btn');
   if (cb) cb.classList.toggle('hidden', !raw && catSel === 'all');
-  const rawNoSpace = raw.replace(/\s+/g, '');
-  const chainMatch = rests.find(r => !r.hidden && r.name.toLowerCase().replace(/\s+/g, '') === rawNoSpace);
+  const rawNoSpace = fuzzyCompact(raw);
+  const chainMatch = rests.find(r => !r.hidden && isRestaurantNameQuery(r, raw));
   const q = ALIASES[raw] || ALIASES[rawNoSpace] || (chainMatch ? chainMatch.name.toLowerCase() : raw);
   /* Check if raw query matches a tag — if so, override cat filter or chain filter */
   const tagHit = TAGS[raw] || TAGS[rawNoSpace];
@@ -11376,9 +11850,8 @@ function doSearch() {
     if (catSel === 'vietnamese') fx = fx.filter(f => f.chain === "Roll'd");
     else if (catSel !== 'all') fx = fx.filter(f => f.cat === catSel);
     if (q) fx = fx.filter(f => {
-      /* fuzzyNorm: diacritics + apostrophes + periods → tolerant matching */
-      const haystack = fuzzyNorm(f.name + ' ' + f.chain);
-      return tokens.every(t => haystack.includes(fuzzyNorm(t)));
+      /* fuzzyIncludes: diacritics + punctuation + typo-tolerant token matching */
+      return tokens.every(t => fuzzyIncludes(f.name + ' ' + f.chain, t));
     });
   }
   /* Nutrition filters */
@@ -11452,7 +11925,7 @@ function doSearch() {
   const _noResTitle = q ? `No kai for "${q}"` : 'Nothing matches';
   const _noResSub   = q ? 'Try a broader search, or clear everything and start again.' : 'Try clearing your search and filters.';
   const _noResHtml  = `<div class="pol-empty-inline"><div class="ico">🔍</div><div class="title">${_noResTitle}</div><div class="sub">${_noResSub}</div><button class="cta" onclick="clearSearch()"><span class="ms sz-20">close</span> Clear search</button></div>`;
-  document.getElementById('fl').innerHTML = restCards + (fx.map(f => makeCard(f, false)).join('') || (restCards ? '' : _noResHtml));
+  renderSearchFoodList(restCards, fx, _noResHtml);
 }
 function setMCat(cat, el) {
   mCatSel = cat;
@@ -11582,7 +12055,7 @@ function syncFilterSheetActions() {
   const presets = document.getElementById('fsh-presets');
   const footer = document.getElementById('fsh-footer');
   const showBtn = document.getElementById('fsh-show');
-  if (presets) presets.style.display = isSearch ? '' : 'none';
+  if (presets) presets.style.display = '';
   if (footer) footer.style.display = '';
   if (showBtn) {
     showBtn.style.display = isSearch ? '' : 'none';
@@ -11591,14 +12064,15 @@ function syncFilterSheetActions() {
       showBtn.textContent = 'Show ' + count + ' item' + (count === 1 ? '' : 's');
     }
   }
+  const activeFilters = isSearch ? srFilters : rmFilters;
   const presetState = {
-    lowcal: srFilters.sort === 'lo',
-    healthiest: srFilters.sort === 'grade',
-    lowsalt: srFilters.sodium
+    lowcal: activeFilters.sort === 'lo',
+    healthiest: activeFilters.sort === 'grade',
+    lowsalt: activeFilters.sodium
   };
   Object.keys(presetState).forEach(k => {
     const el = document.getElementById('fsh-preset-' + k);
-    if (el) el.classList.toggle('on', isSearch && presetState[k]);
+    if (el) el.classList.toggle('on', presetState[k]);
   });
 }
 
@@ -11627,10 +12101,8 @@ function updateFilterUI() {
   const srRefineCount = srCount + (srFilters.sort !== 'def' ? 1 : 0);
   if (sortLbl) sortLbl.textContent = srRefineCount ? 'Filters · ' + srRefineCount : 'Filters';
   if (sortChip) sortChip.classList.toggle('active', srRefineCount > 0);
-  const rmSortLbl = document.getElementById('rmenu-sort-chip-lbl');
-  const rmSortChip = document.getElementById('rmenu-sort-chip');
-  if (rmSortLbl) rmSortLbl.textContent = RM_SORT_LABELS[rmFilters.sort] || 'Menu order';
-  if (rmSortChip) rmSortChip.classList.toggle('active', rmFilters.sort !== 'def');
+  const rmFilterLbl = document.getElementById('rmenu-filter-chip-lbl');
+  const rmFilterChip = document.getElementById('rmenu-filter-chip');
   /* Sort sheet option rows — tick the active one */
   syncSortSheetToCtx();
   ['def','lo','protein','grade','sodium'].forEach(v => {
@@ -11645,9 +12117,12 @@ function updateFilterUI() {
   /* Rmenu badge */
   const rmCount = ['protein','sugar','fat','sodium','vegan','vegetarian','halal'].filter(k => rmFilters[k]).length;
   const rmBadge = document.getElementById('rmenu-filter-badge');
-  const rmBtn = document.getElementById('rmenu-filter-btn');
+  const rmBtn = document.getElementById('rmenu-filter-chip');
+  const rmRefineCount = rmCount + (rmFilters.sort !== 'def' ? 1 : 0);
+  if (rmFilterLbl) rmFilterLbl.textContent = rmRefineCount ? 'Filters · ' + rmRefineCount : 'Filters';
+  if (rmFilterChip) rmFilterChip.classList.toggle('active', rmRefineCount > 0);
   if (rmBadge) { rmBadge.textContent = rmCount; rmBadge.classList.toggle('visible', rmCount > 0); }
-  if (rmBtn) rmBtn.classList.toggle('active', rmCount > 0);
+  if (rmBtn) rmBtn.classList.toggle('active', rmRefineCount > 0);
   /* Sync sheet chips to current context */
   syncFilterSheetToCtx();
   /* Sync floating clear pill */
@@ -11860,18 +12335,19 @@ function toggleFilter(key) {
 }
 
 function applyFilterPreset(preset) {
-  filterCtx = 'search';
-  searchInteracted = true;
+  const isRmenu = filterCtx === 'rmenu';
+  const target = isRmenu ? rmFilters : srFilters;
+  if (!isRmenu) searchInteracted = true;
   if (preset === 'lowcal') {
-    srFilters.sort = 'lo';
+    target.sort = 'lo';
   } else if (preset === 'healthiest') {
-    srFilters.sort = 'grade';
+    target.sort = 'grade';
   } else if (preset === 'lowsalt') {
-    srFilters.sodium = true;
+    target.sodium = true;
   }
   updateFilterUI();
-  doSearch();
-  scrollSearchResultsTop();
+  if (isRmenu) renderMenu();
+  else { doSearch(); scrollSearchResultsTop(); }
 }
 
 function clearFilters() {
@@ -12064,7 +12540,7 @@ function renderHomeFaves() {
       <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
       <div class="ho-name">${x.name}</div>
       <div class="ho-chain">${x.chain}</div>
-      <div class="ho-kj">${kc(x.kj)}<span>cal / ${x.kj}kJ</span></div>
+      <div class="ho-kj">${kc(x.kj)}<span>cal</span></div>
     </div>`;
   }).join('');
 
@@ -12152,7 +12628,7 @@ function renderHome() {
         <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
         <div class="ho-name">${x.name}</div>
         <div class="ho-chain">${x.chain}</div>
-        <div class="ho-kj">${kc(x.kj)}<span>cal / ${x.kj}kJ</span></div>
+        <div class="ho-kj">${kc(x.kj)}<span>cal</span></div>
       </div>`;
     }).join('');
   }, 700);
@@ -12284,7 +12760,7 @@ function goSearchHighProtein() {
 
 /* ── Restaurants page ── */
 function restSearchText(r) {
-  return [r.name, r.desc || '', ...(r.aliases || [])].join(' ');
+  return [r.name, r.desc || '', ...(r.aliases || []), ...restaurantAliases(r.name)].join(' ');
 }
 
 function renderRests() {
@@ -12673,6 +13149,7 @@ function openDetail(id, fromRest, overridePrevPage) {
     const ref = RDI[gender];
     return nutDefs.map(n => {
       const hl = _rowHL(n.key);
+      const hasAlert = !!(curNutWarnings && curNutWarnings[n.key]);
       const valStr = n.display ? n.display : (n.v == null ? 'N/A' : n.v + n.unit);
       let barHTML = '', pctHTML = '';
       if (!n.noBar && n.refKey && n.v != null) {
@@ -12685,8 +13162,7 @@ function openDetail(id, fromRest, overridePrevPage) {
         barHTML = `<div class="nut-rdi-bar-track"><div class="nut-rdi-bar-fill" style="width:${fill}%;background:${col}"></div>${over?'<div class="nut-rdi-bar-over" style="background:'+col+'"></div>':''}</div>`;
       }
       const tappable = !n.noBar && n.refKey;
-      const warnIco = curNutWarnings && curNutWarnings[n.key] ? '<span class="ms nut-warn-ico">error</span>' : '';
-      return `<div class="nut-row ${hl}${tappable?' nut-tappable':''}" ${tappable?`data-nut="${n.key}" data-gender="${gender}" onclick="openNutSheet(this)"`:''}><div class="nut-row-inner"><div class="nut-row-top"><div style="display:flex;align-items:center;gap:6px"><span class="nut-l">${n.l}</span><span class="nut-v-sub">${valStr}</span>${warnIco}</div>${pctHTML}</div>${barHTML}</div>${tappable?'<span class="ms nut-row-chevron sz-16">chevron_right</span>':''}</div>`;
+      return `<div class="nut-row ${hl}${hasAlert?' nut-alert':''}${tappable?' nut-tappable':''}" ${tappable?`role="button" tabindex="0" aria-label="${n.l} daily intake details" data-nut="${n.key}" data-gender="${gender}" onclick="openNutSheet(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openNutSheet(this);}"`:''}><div class="nut-row-inner"><div class="nut-row-top"><div style="display:flex;align-items:center;gap:6px"><span class="nut-l">${n.l}</span><span class="nut-v-sub">${valStr}</span></div>${pctHTML}</div>${barHTML}</div>${tappable?'<span class="ms nut-row-chevron sz-16">chevron_right</span>':''}</div>`;
     }).join('');
   };
   document.getElementById('tab-f').innerHTML = _buildTab('f');
@@ -13107,7 +13583,7 @@ function renderHealthierOptions(f) {
       <span class="ho-emoji">${emojiImg(x.emoji,EMO.sm)}</span>
       <div class="ho-name">${x.name}</div>
       <div class="ho-chain">${x.chain}</div>
-      <div class="ho-kj">${kc(x.kj)}<span>cal / ${x.kj}kJ</span></div>
+      <div class="ho-kj">${kc(x.kj)}<span>cal</span></div>
     </div>`;
   }).join('');
 
@@ -13118,6 +13594,47 @@ function renderHealthierOptions(f) {
     </div>
     <div class="ho-scroll">${cards}</div>
   </div>`;
+}
+
+const LEARN_TOPIC_LABELS = [
+  'NZ reality',
+  'Portions',
+  'Protein',
+  'Sugar',
+  'Heart',
+  'Move more',
+  'Fakeaway'
+];
+
+function jumpLearnTopic(n) {
+  var target = document.getElementById('cs' + n);
+  var scroll = document.querySelector('#pg-insights .page-scroll');
+  if (!target || !scroll) return;
+  var top = 0, el = target;
+  while (el && el !== scroll) { top += el.offsetTop; el = el.offsetParent; }
+  var chipsH = (document.getElementById('ins-chips-wrap') || {offsetHeight: 54}).offsetHeight;
+  scroll.scrollTo({ top: Math.max(0, top - chipsH - 112), behavior: 'smooth' });
+}
+
+function addLearnTopicNav(slotNum, dotsEl) {
+  if (!slotNum || !dotsEl || dotsEl.nextElementSibling?.classList?.contains('learn-topic-nav')) return;
+  var navEl = document.createElement('div');
+  navEl.className = 'learn-topic-nav';
+  if (slotNum > 1) {
+    var prev = document.createElement('button');
+    prev.type = 'button';
+    prev.textContent = '‹ ' + LEARN_TOPIC_LABELS[slotNum - 2];
+    prev.onclick = function() { jumpLearnTopic(slotNum - 1); };
+    navEl.appendChild(prev);
+  }
+  if (slotNum < LEARN_TOPIC_LABELS.length) {
+    var next = document.createElement('button');
+    next.type = 'button';
+    next.textContent = LEARN_TOPIC_LABELS[slotNum] + ' ›';
+    next.onclick = function() { jumpLearnTopic(slotNum + 1); };
+    navEl.appendChild(next);
+  }
+  dotsEl.insertAdjacentElement('afterend', navEl);
 }
 
 /* ── Carousel initialiser ── */
@@ -13137,6 +13654,8 @@ function initCar(tot, cntId, dotsId, wrapId, trackId) {
     (function(x) { d.onclick = function() { idx = x; upd(); }; }(i));
     dotsEl.appendChild(d);
   }
+  const topicMatch = dotsId.match(/^c(\d+)d$/);
+  addLearnTopicNav(topicMatch ? parseInt(topicMatch[1], 10) : 0, dotsEl);
   function upd() {
     document.getElementById(trackId).style.transform = 'translateX(-' + (idx * 100) + '%)';
     document.querySelectorAll('#' + dotsId + ' .dot').forEach(function(d, i) { d.className = 'dot' + (i === idx ? ' on' : ''); });
@@ -14836,9 +15355,9 @@ function insChip(el) {
     /* offsetTop of target relative to scroll container */
     var el2 = target, top2 = 0;
     while (el2 && el2 !== scroll) { top2 += el2.offsetTop; el2 = el2.offsetParent; }
-    /* Subtract chips strip height (~88px) so section title sits just below it */
+    /* Subtract chips strip height plus breathing room so the chapter title is visible. */
     var chipsH = (document.getElementById('ins-chips-wrap') || {offsetHeight: 88}).offsetHeight;
-    scroll.scrollTo({top: top2 - chipsH - 8, behavior: 'smooth'});
+    scroll.scrollTo({top: top2 - chipsH - 112, behavior: 'smooth'});
   }
 }
 
@@ -15133,13 +15652,6 @@ function renderMealBuilder() {
   if (!body || !footer) return;
 
   const filledIds = mealSlots.filter(s => s.foodId).map(s => s.foodId);
-  const totalKj   = filledIds.reduce((sum, id) => {
-    const f = foods.find(x => x.id === id);
-    return sum + (f ? (f.kj || 0) : 0);
-  }, 0);
-  const kjPct = (totalKj / 8000) * 100;
-  const kjCls = totalKj === 0 ? 'kj-zero' : kjPct < 40 ? 'kj-green' : kjPct < 65 ? 'kj-amber' : 'kj-red';
-  const calDisp = totalKj > 0 ? kc(totalKj).toLocaleString() + ' cal' : '—';
 
   body.innerHTML = `<div style="height:8px"></div>` + mealSlots.map((slot, i) => {
     if (i === activeMealSlot) {
@@ -15185,10 +15697,6 @@ function renderMealBuilder() {
     </button>`;
 
   footer.innerHTML = `
-    <div class="mb-kj-row">
-      <span class="mb-kj-label">Total</span>
-      <span class="mb-kj-val ${kjCls}">${calDisp}</span>
-    </div>
     <button class="mb-cta" ${filledIds.length === 0 ? 'disabled' : ''} onclick="mbConfirm()">
       See meal total
     </button>`;
