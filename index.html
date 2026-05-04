@@ -4235,7 +4235,6 @@ body.native #filter-float-pill {
 #cs4 { border-radius: var(--shape-lg); margin: 4px 8px; padding: 16px 8px 8px; }
 #cs5 { border-radius: var(--shape-lg); margin: 4px 8px; padding: 16px 8px 8px; }
 #cs6 { border-radius: var(--shape-lg); margin: 4px 8px; padding: 16px 8px 8px; }
-#cs7 { border-radius: var(--shape-lg); margin: 4px 8px 8px; padding: 16px 8px 8px; }
 .car-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
 .car-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--md-on-surface); letter-spacing: 0px; }
 .car-sub-title { font-size: 12px; color: var(--md-on-surface-variant); margin-bottom: 12px; line-height: 1.4; }
@@ -4594,6 +4593,7 @@ body.native #filter-float-pill {
   min-height: 610px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   scroll-snap-align: start;
   margin: 0 0 18px;
   padding: 18px 16px 10px;
@@ -4609,7 +4609,7 @@ body.native #pg-insights .car-slot {
 #pg-insights .car-hdr-rich {
   justify-content: center;
   padding: 0;
-  margin-bottom: 0;
+  margin-bottom: 18px;
   text-align: center;
 }
 #pg-insights .car-hdr-ico {
@@ -4637,12 +4637,13 @@ body.native #pg-insights .car-slot {
 }
 #pg-insights .car-wrap,
 #pg-insights .car-track {
-  flex: 1;
+  flex: 0 0 auto;
   min-height: 0;
 }
 #pg-insights .car-wrap {
   display: flex;
   border-radius: 0;
+  height: auto;
 }
 #pg-insights .car-track {
   align-items: stretch;
@@ -4670,7 +4671,7 @@ body.native #pg-insights .car-slot {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 #pg-insights .sl-topbar {
   display: none;
@@ -4687,7 +4688,7 @@ body.native #pg-insights .car-slot {
   flex-direction: column;
   justify-content: center;
   gap: 12px;
-  margin: 0 0 22px;
+  margin: 0 0 24px;
   padding: 0;
   background: transparent;
   border: none;
@@ -4701,8 +4702,8 @@ body.native #pg-insights .car-slot {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 8px auto 0;
-  background-color: #F4F7EF;
+  margin: 6px auto 0;
+  background-color: rgba(244,247,239,0.82);
   background-image: var(--learn-art);
   background-repeat: no-repeat;
   background-position: center var(--learn-art-y, center);
@@ -4753,7 +4754,7 @@ body.native #pg-insights .car-slot {
   color: transparent;
   font-size: 0;
   line-height: 1;
-  margin: 0 auto 22px;
+  margin: 0 auto 20px;
 }
 #pg-insights .sl-viz-meta {
   max-width: 260px;
@@ -4801,12 +4802,7 @@ body.native #pg-insights .car-slot {
 #pg-insights #cs4 { --learn-art: url("assets/learn-illustrations/learn-sugar.svg"); --learn-art-size: 62%; --learn-art-y: 52%; }
 #pg-insights #cs5 { --learn-art: url("assets/learn-illustrations/learn-heart.svg"); --learn-art-size: 68%; --learn-art-y: 54%; }
 #pg-insights #cs6 { --learn-art: url("assets/learn-illustrations/learn-move.svg"); --learn-art-size: 76%; }
-#pg-insights #cs7 { --learn-art: url("assets/learn-illustrations/learn-fakeaway.svg"); --learn-art-size: 78%; }
 #pg-insights .swipe-hint {
-  display: none;
-}
-#pg-insights #cs7 .r-pills,
-#pg-insights #cs7 .r-vs {
   display: none;
 }
 #pg-insights .dots {
@@ -4859,6 +4855,71 @@ body.native #pg-insights .car-slot {
 .learn-topic-nav button:active {
   transform: scale(0.98);
 }
+.learn-end {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 48px 22px 104px;
+  text-align: center;
+}
+.learn-end-ico {
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(184,240,117,0.14);
+  color: #B8F075;
+}
+.learn-end-ico .ms { font-size: 26px; }
+.learn-end-title {
+  max-width: 290px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.18;
+  color: var(--md-on-surface);
+}
+.learn-end-body {
+  max-width: 302px;
+  color: var(--md-on-surface-variant);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.learn-end-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 316px;
+  margin-top: 4px;
+}
+.learn-end-btn {
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--md-outline-variant);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: transparent;
+  color: var(--md-on-surface);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.learn-end-btn.primary {
+  border-color: rgba(184,240,117,0.28);
+  background: rgba(184,240,117,0.16);
+  color: #B8F075;
+}
+.learn-end-btn .ms { font-size: 18px; }
 
 /* ── Utility classes extracted from inline styles ── */
 .ms-34 { font-size:34px; line-height:1; display:inline-block; vertical-align:middle; flex-shrink:0; }
@@ -6730,7 +6791,6 @@ body.native #pg-insights .car-slot {
             <div class="ins-chip"    data-target="cs4" onclick="insChip(this)"><span class="ins-chip-ico ms">water_drop</span>Sugar</div>
             <div class="ins-chip"    data-target="cs5" onclick="insChip(this)"><span class="ins-chip-ico ms">favorite</span>Heart</div>
             <div class="ins-chip"    data-target="cs6" onclick="insChip(this)"><span class="ins-chip-ico ms">directions_run</span>Move more</div>
-            <div class="ins-chip"    data-target="cs7" onclick="insChip(this)"><span class="ins-chip-ico ms">skillet</span>Fakeaway</div>
           </div>
         </div>
 
@@ -7512,22 +7572,14 @@ body.native #pg-insights .car-slot {
           <div class="dots" id="c6d"></div>
         </div>
 
-        <!-- ─── CAROUSEL 7: FAKEAWAY RECIPES ─── -->
-        <div class="car-slot" id="cs7">
-          <div class="car-hdr-rich">
-            <div class="car-hdr-ico ch-ico-pu"><span class="ms">skillet</span></div>
-            <div class="car-hdr-text"><div class="car-hdr-title">Fakeaway Recipes</div></div>
-            <div class="car-count-pill" id="c7pill"><span class="ms">swipe</span><span id="c7cnt">1 / 5</span></div>
+        <div class="learn-end">
+          <div class="learn-end-ico"><span class="ms">auto_awesome</span></div>
+          <div class="learn-end-title">Ka Pai! You're all done</div>
+          <div class="learn-end-body">Pop back tomorrow for fresh tips, or head home and put today's learnings to work.</div>
+          <div class="learn-end-actions">
+            <button class="learn-end-btn primary" onclick="nav('home')"><span class="ms">home</span>Home</button>
+            <button class="learn-end-btn" onclick="nav('search')"><span class="ms">search</span>Search food</button>
           </div>
-          <div class="car-sub-title">Recreate your favourites at home — healthier, cheaper, just as good</div>
-          <div class="car-wrap car-wrap-peek" id="c7w"><div class="car-track" id="c7t">
-            <div class="car-slide sl-g"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY BURGER</div><div class="sl-read"><span class="ms">schedule</span>25 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-1')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🍔</span><div class="sl-head">Lean Beef &amp; Beetroot Burger</div><div class="sl-body">Lean beef, wholegrain bun, beetroot, lettuce and avocado — burger night with a lighter feel.</div><div class="r-pills"><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">⏱ 25 min</div><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">Serves 4</div><div class="r-pill" style="background:rgba(13,40,16,.5);color:#B8F075;border-color:#2D5A12">~347 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~143 cal &amp; 10g sat. fat vs a Big Mac.</div></div><div class="sl-src">Heart Foundation NZ</div></div>
-            <div class="car-slide sl-bl"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY NANDO'S</div><div class="sl-read"><span class="ms">schedule</span>30 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-2')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🌿</span><div class="sl-head">Peri Peri Oven Chicken</div><div class="sl-body">Oven-roast peri peri chicken with baked kumara and salad for the spicy takeaway feel.</div><div class="r-pills"><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">⏱ 30 min</div><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">Serves 4</div><div class="r-pill" style="background:rgba(6,15,26,.6);color:#90C8F5;border-color:#183050">~215 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~330 cal vs a Zinger Burger.</div></div><div class="sl-src">Healthy Food Guide NZ</div></div>
-            <div class="car-slide sl-te"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY FISH</div><div class="sl-read"><span class="ms">schedule</span>20 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-3')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🐟</span><div class="sl-head">Crumbed Fish Burgers</div><div class="sl-body">Pan-fried crumbed fish with Greek yoghurt tartare — crisp, lighter, and quick.</div><div class="r-pills"><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">⏱ 20 min</div><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">Serves 4</div><div class="r-pill" style="background:rgba(8,30,26,.5);color:#5DCAA5;border-color:#1A4A40">~263 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~186 cal vs battered fish &amp; chips.</div></div><div class="sl-src">Heart Foundation NZ</div></div>
-            <div class="car-slide sl-pu"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY PITA</div><div class="sl-read"><span class="ms">schedule</span>25 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-4')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🥙</span><div class="sl-head">Chicken Souvlaki Pita</div><div class="sl-body">Lemon, garlic and oregano chicken tucked into pita with tzatziki and crunchy salad.</div><div class="r-pills"><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">⏱ 25 min</div><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">Serves 2</div><div class="r-pill" style="background:rgba(16,12,30,.5);color:#B8A0F0;border-color:#2A1E4A">~335 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Similar kJ to Pita Pit — fresher, lower sodium.</div></div><div class="sl-src">Healthy Food Guide NZ</div></div>
-            <div class="car-slide sl-am"><div class="sl-topbar"><div class="sl-tag-row"><div class="sl-tag">FAKEAWAY CHIPS</div><div class="sl-read"><span class="ms">schedule</span>40 MIN</div></div><button class="sl-save" onclick="toggleSave(this,'l-c7-5')" aria-label="Save"><span class="ms">bookmark</span></button></div><span class="sl-ico">🍟</span><div class="sl-head">Peri Peri Baked Wedges</div><div class="sl-body">Baked agria wedges with peri peri seasoning — crisp comfort without the deep fryer.</div><div class="r-pills"><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">⏱ 40 min</div><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">Serves 4</div><div class="r-pill" style="background:rgba(26,18,0,.5);color:#FFD966;border-color:#3A2800">~167 cal</div></div><div class="r-vs"><div class="r-vs-lbl">VS TAKEAWAY</div><div class="r-vs-txt">Saves ~282 cal vs large fish &amp; chip chips.</div></div><div class="sl-src">NZ Nutrition Foundation</div></div>
-          </div></div>
-          <div class="dots" id="c7d"></div>
         </div>
         </div><!-- /page-scroll -->
         <div class="page-footer">
@@ -13602,8 +13654,7 @@ const LEARN_TOPIC_LABELS = [
   'Protein',
   'Sugar',
   'Heart',
-  'Move more',
-  'Fakeaway'
+  'Move more'
 ];
 
 function jumpLearnTopic(n) {
@@ -15336,64 +15387,85 @@ function buildCompareShareText() {
 
 
 /* ── Insights topic chip navigation ── */
+function insSectionTop(target, scroll) {
+  if (!target || !scroll) return 0;
+  var targetRect = target.getBoundingClientRect();
+  var scrollRect = scroll.getBoundingClientRect();
+  return scroll.scrollTop + targetRect.top - scrollRect.top;
+}
+
+function insCenteredScrollTop(target, scroll) {
+  var top = insSectionTop(target, scroll);
+  var sectionH = target.offsetHeight || target.getBoundingClientRect().height || 0;
+  var viewH = scroll.clientHeight || 0;
+  return Math.max(0, top - Math.max(0, (viewH - sectionH) / 2));
+}
+
+function insCenterChip(strip, chip, behavior) {
+  if (!strip || !chip) return;
+  var left = chip.offsetLeft - ((strip.offsetWidth - chip.offsetWidth) / 2);
+  var maxLeft = Math.max(0, strip.scrollWidth - strip.offsetWidth);
+  left = Math.max(0, Math.min(left, maxLeft));
+  if (Math.abs(strip.scrollLeft - left) < 2) return;
+  strip.scrollTo({left: left, behavior: behavior || 'smooth'});
+}
+
 function insChip(el) {
   document.querySelectorAll('.ins-chip').forEach(function(c) { c.classList.remove('on'); });
   el.classList.add('on');
   /* Scroll the chips strip horizontally only — use scrollLeft, not scrollIntoView
      which can trigger unwanted vertical/horizontal page scroll */
   var strip = document.getElementById('ins-chips');
-  if (strip) {
-    var elLeft = el.offsetLeft;
-    var elW = el.offsetWidth;
-    var stripW = strip.offsetWidth;
-    strip.scrollLeft = elLeft - (stripW / 2) + (elW / 2);
-  }
+  insCenterChip(strip, el, 'smooth');
   var target = document.getElementById(el.getAttribute('data-target'));
   if (target) {
     var scroll = document.querySelector('#pg-insights .page-scroll');
     if (!scroll) return;
-    /* offsetTop of target relative to scroll container */
-    var el2 = target, top2 = 0;
-    while (el2 && el2 !== scroll) { top2 += el2.offsetTop; el2 = el2.offsetParent; }
-    /* Subtract chips strip height plus breathing room so the chapter title is visible. */
-    var chipsH = (document.getElementById('ins-chips-wrap') || {offsetHeight: 88}).offsetHeight;
-    scroll.scrollTo({top: top2 - chipsH - 112, behavior: 'smooth'});
+    scroll.scrollTo({top: insCenteredScrollTop(target, scroll), behavior: 'smooth'});
   }
 }
 
 /* ── Insights scroll → active chip sync ── */
 (function() {
-  var _syncTimeout = null;
+  var _syncRaf = null;
+  var _activeChipIdx = -1;
   function initInsChipSync() {
     var scroll = document.querySelector('#pg-insights .page-scroll');
     var wrap = document.getElementById('ins-chips-wrap');
     if (!scroll || !wrap) return;
-    scroll.addEventListener('scroll', function() {
+    if (scroll.dataset.insChipSync === 'true') return;
+    scroll.dataset.insChipSync = 'true';
+    var syncActiveChip = function() {
       wrap.classList.toggle('scrolled', scroll.scrollTop > 4);
-      /* Throttle chip highlighting to avoid fighting scroll */
-      clearTimeout(_syncTimeout);
-      _syncTimeout = setTimeout(function() {
-        var slots = [1,2,3,4,5,6,7].map(function(n) { return document.getElementById('cs'+n); });
-        var chips = document.querySelectorAll('.ins-chip');
-        var active = 0;
-        slots.forEach(function(s, i) {
-          if (!s) return;
-          var el2 = s, top2 = 0;
-          while (el2 && el2 !== scroll) { top2 += el2.offsetTop; el2 = el2.offsetParent; }
-          if (top2 - 60 <= scroll.scrollTop) active = i;
-        });
-        chips.forEach(function(c, i) { c.classList.toggle('on', i === active); });
-        /* Scroll chips strip to keep active chip visible */
-        var strip = document.getElementById('ins-chips');
-        var activeChip = chips[active];
-        if (strip && activeChip) {
-          var elLeft = activeChip.offsetLeft;
-          var elW = activeChip.offsetWidth;
-          var stripW = strip.offsetWidth;
-          strip.scrollLeft = elLeft - (stripW / 2) + (elW / 2);
+      var slots = [1,2,3,4,5,6].map(function(n) { return document.getElementById('cs'+n); });
+      var chips = document.querySelectorAll('.ins-chip');
+      var active = 0;
+      var viewCenter = scroll.scrollTop + (scroll.clientHeight / 2);
+      var bestDistance = Infinity;
+      slots.forEach(function(s, i) {
+        if (!s) return;
+        var sectionCenter = insSectionTop(s, scroll) + ((s.offsetHeight || 0) / 2);
+        var distance = Math.abs(sectionCenter - viewCenter);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          active = i;
         }
-      }, 80);
+      });
+      var changed = active !== _activeChipIdx;
+      _activeChipIdx = active;
+      chips.forEach(function(c, i) { c.classList.toggle('on', i === active); });
+      var strip = document.getElementById('ins-chips');
+      var activeChip = chips[active];
+      if (changed) insCenterChip(strip, activeChip, 'smooth');
+    };
+    scroll.addEventListener('scroll', function() {
+      if (_syncRaf) return;
+      _syncRaf = requestAnimationFrame(function() {
+        _syncRaf = null;
+        syncActiveChip();
+      });
     }, {passive: true});
+    syncActiveChip();
   }
   document.addEventListener('DOMContentLoaded', initInsChipSync);
   setTimeout(initInsChipSync, 200);
@@ -15410,7 +15482,6 @@ initCar(5, 'c3cnt', 'c3d', 'c3w', 'c3t');
 initCar(5, 'c4cnt', 'c4d', 'c4w', 'c4t');
 initCar(5, 'c5cnt', 'c5d', 'c5w', 'c5t');
 initCar(5, 'c6cnt', 'c6d', 'c6w', 'c6t');
-initCar(5, 'c7cnt', 'c7d', 'c7w', 'c7t');
 </script>
 
 <script>
