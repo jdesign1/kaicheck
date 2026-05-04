@@ -1616,11 +1616,13 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .sort-controls {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 8px;
   padding: 4px 16px 6px;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
+  scroll-padding-inline: 16px;
 }
 .sort-controls::-webkit-scrollbar { display: none; }
 .sort-chip {
@@ -1654,9 +1656,11 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
   display: none;
   flex: 1;
   min-width: 0;
+  margin-left: auto;
   color: var(--md-on-surface-variant);
   font-size: 12px;
   line-height: 1.35;
+  text-align: right;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1670,15 +1674,12 @@ body.native .page-footer { padding-bottom: env(safe-area-inset-bottom, 0px); }
 }
 .active-refinements {
   display: none;
-  gap: 8px;
+  gap: 0;
   padding: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
   min-width: 0;
 }
 .active-refinements::-webkit-scrollbar { display: none; }
-.active-refinements.visible { display: flex; }
+.active-refinements.visible { display: contents; }
 .active-refinement-chip {
   display: inline-flex;
   align-items: center;
@@ -3253,6 +3254,7 @@ body.native #filter-float-pill {
 .nut-warn-block p {
   font-size: 13px; color: var(--md-on-error-container); line-height: 1.5; margin-bottom: 0;
 }
+.det-score-card {
   margin: 10px 16px 0;
   background: var(--md-surface-container);
   border-radius: var(--shape-lg);
@@ -5306,6 +5308,9 @@ body.native #filter-float-pill {
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;burritos&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌯</span></span>
       <span class="home-cat-label">Burritos</span>
+    </div><div class="home-cat-chip" onclick="goSearchCat(&#39;donuts&#39;)">
+      <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍩</span></span>
+      <span class="home-cat-label">Donuts</span>
     </div><div class="home-cat-chip" onclick="goSearchCat(&#39;desserts&#39;)">
       <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍨</span></span>
       <span class="home-cat-label">Desserts</span>
@@ -5570,6 +5575,10 @@ body.native #filter-float-pill {
               <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🌯</span></span>
               <span class="home-cat-label">Burritos</span>
             </div>
+            <div class="home-cat-chip" onclick="goSearchCat('donuts')">
+              <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍩</span></span>
+              <span class="home-cat-label">Donuts</span>
+            </div>
             <div class="home-cat-chip" onclick="goSearchCat('desserts')">
               <span class="home-cat-emoji"><span class="ms-40" aria-hidden="true">🍨</span></span>
               <span class="home-cat-label">Desserts</span>
@@ -5689,6 +5698,7 @@ body.native #filter-float-pill {
             <div class="pill" onclick="setCat(&#39;pizza&#39;,this)">Pizza</div>
             <div class="pill" onclick="setCat(&#39;wraps&#39;,this)">Wraps</div>
             <div class="pill" onclick="setCat(&#39;pies&#39;,this)">Pies</div>
+            <div class="pill" onclick="setCat(&#39;donuts&#39;,this)">Donuts</div>
             <div class="pill" onclick="setCat(&#39;sushi&#39;,this)">Sushi</div>
             <div class="pill" onclick="setCat(&#39;subs&#39;,this)">Subs</div>
             <div class="pill" onclick="setCat(&#39;sides&#39;,this)">Sides</div>
@@ -10027,6 +10037,38 @@ const foods = [
   {id:1389, name:"EIPA", chain:"Tui NZ", cat:"beer", emoji:"🍺", kj:446, protein:1.7, fat:0.0, carbs:7.6, sugar:3.0, sodium:8, sat_fat:0.0, fibre:0.0, score:"C", abv:4.0, std_drinks:1.0},
   {id:1390, name:"Strong Lager", chain:"Tui NZ", cat:"beer", emoji:"🍺", kj:1055, protein:2.5, fat:0.0, carbs:11.5, sugar:4.5, sodium:13, sat_fat:0.0, fibre:0.0, score:"D", abv:7.2, std_drinks:2.8},
 
+  /* ── Breadtop — verified FatSecret Australia Breadtop nutrition pages; Breadtop official site used to verify current menu energy-only pages
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1391, name:"BBQ Pork Bun", chain:"Breadtop", cat:"sides", emoji:"🥖", kj:1190, protein:9.2, fat:8.1, carbs:42.4, sugar:12.9, sodium:263, sat_fat:2.9, fibre:0.0, score:"B"},
+  {id:1392, name:"Coconut Bun", chain:"Breadtop", cat:"desserts", emoji:"🥖", kj:1255, protein:1.0, fat:7.0, carbs:20.0, sugar:10.0, sodium:120, sat_fat:2.0, fibre:1.0, score:"A"},
+  {id:1393, name:"Curry Beef Bun", chain:"Breadtop", cat:"sides", emoji:"🥖", kj:1390, protein:8.3, fat:14.8, carbs:40.2, sugar:9.4, sodium:258, sat_fat:5.9, fibre:0.0, score:"B"},
+  {id:1394, name:"Swiss Roll Matcha", chain:"Breadtop", cat:"desserts", emoji:"🍰", kj:794, protein:4.9, fat:12.6, carbs:15.0, sugar:9.6, sodium:48, sat_fat:4.3, fibre:0.0, score:"C"},
+  {id:1395, name:"Rainbow Cake", chain:"Breadtop", cat:"desserts", emoji:"🍰", kj:1850, protein:9.6, fat:23.6, carbs:30.6, sugar:21.4, sodium:97, sat_fat:6.3, fibre:0.0, score:"C"},
+  {id:1396, name:"Chocolate Marble", chain:"Breadtop", cat:"desserts", emoji:"🍫", kj:359, protein:1.9, fat:3.2, carbs:11.9, sugar:3.7, sodium:44, sat_fat:1.5, fibre:0.0, score:"C"},
+  {id:1397, name:"Custard Marble", chain:"Breadtop", cat:"desserts", emoji:"🥖", kj:350, protein:1.7, fat:3.2, carbs:11.7, sugar:3.3, sodium:40, sat_fat:1.5, fibre:0.0, score:"C"},
+
+  /* ── Dunkin' Donuts — verified Dunkin NZ menu names + FatSecret Dunkin nutrition panels
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1398, name:"Apple n Spice Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:962, protein:4.0, fat:10.0, carbs:31.0, sugar:10.0, sodium:300, sat_fat:4.0, fibre:1.0, score:"C"},
+  {id:1399, name:"Bavarian Kreme Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1004, protein:4.0, fat:11.0, carbs:31.0, sugar:11.0, sodium:310, sat_fat:4.0, fibre:1.0, score:"C"},
+  {id:1400, name:"Boston Kreme Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:5.0, fat:11.0, carbs:39.0, sugar:18.0, sodium:320, sat_fat:4.5, fibre:1.0, score:"C"},
+  {id:1401, name:"Chocolate Buttercreme Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1213, protein:5.0, fat:14.0, carbs:36.0, sugar:14.0, sodium:300, sat_fat:6.0, fibre:1.0, score:"C"},
+  {id:1402, name:"Chocolate Frosted with Chocolate Sprinkles Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:5.0, fat:12.0, carbs:36.0, sugar:15.0, sodium:290, sat_fat:5.0, fibre:1.0, score:"C"},
+  {id:1403, name:"Chocolate Frosted with Coloured Sprinkles Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:4.0, fat:12.0, carbs:36.0, sugar:15.0, sodium:290, sat_fat:5.0, fibre:1.0, score:"C"},
+  {id:1404, name:"Cinnamon Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1381, protein:4.0, fat:20.0, carbs:34.0, sugar:13.0, sodium:320, sat_fat:9.0, fibre:1.0, score:"D"},
+  {id:1405, name:"Double Chocolate Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1590, protein:4.0, fat:23.0, carbs:41.0, sugar:22.0, sodium:430, sat_fat:11.0, fibre:1.0, score:"D"},
+  {id:1406, name:"French Cruller", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:962, protein:3.0, fat:14.0, carbs:21.0, sugar:10.0, sodium:135, sat_fat:7.0, fibre:0.0, score:"C"},
+  {id:1407, name:"Glazed Chocolate Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1548, protein:4.0, fat:23.0, carbs:41.0, sugar:21.0, sodium:420, sat_fat:10.0, fibre:1.0, score:"D"},
+  {id:1408, name:"Glazed Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1004, protein:4.0, fat:11.0, carbs:33.0, sugar:13.0, sodium:270, sat_fat:4.5, fibre:1.0, score:"C"},
+  {id:1409, name:"Jelly Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1046, protein:4.0, fat:10.0, carbs:36.0, sugar:13.0, sodium:290, sat_fat:4.0, fibre:1.0, score:"C"},
+  {id:1410, name:"Lemon Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:4.0, fat:10.0, carbs:40.0, sugar:19.0, sodium:310, sat_fat:4.0, fibre:1.0, score:"C"},
+  {id:1411, name:"Maple Frosted Coloured Sprinkles Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:5.0, fat:12.0, carbs:37.0, sugar:16.0, sodium:290, sat_fat:4.5, fibre:1.0, score:"C"},
+  {id:1412, name:"Strawberry Frosted Chocolate Sprinkles Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:4.0, fat:12.0, carbs:36.0, sugar:15.0, sodium:290, sat_fat:5.0, fibre:1.0, score:"C"},
+  {id:1413, name:"Strawberry Frosted Coloured Sprinkles Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:4.0, fat:12.0, carbs:37.0, sugar:15.0, sodium:290, sat_fat:5.0, fibre:1.0, score:"C"},
+  {id:1414, name:"Sugared Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:879, protein:4.0, fat:11.0, carbs:24.0, sugar:5.0, sodium:270, sat_fat:4.5, fibre:1.0, score:"C"},
+  {id:1415, name:"Vanilla Buttercreme Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1255, protein:4.0, fat:15.0, carbs:37.0, sugar:18.0, sodium:290, sat_fat:6.0, fibre:1.0, score:"C"},
+  {id:1416, name:"Vanilla Frosted Coloured Sprinkles Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:4.0, fat:11.0, carbs:37.0, sugar:16.0, sodium:280, sat_fat:4.5, fibre:1.0, score:"C"},
+
 ];
 
 const DIET_FLAGS_DATA = {
@@ -10308,6 +10350,8 @@ const rests = [
   {name:"Steinlager NZ",     emoji:"🍺", score:"C", avg_kj:424,  brand:"#005E2F", hidden:true, desc:"New Zealand's finest since 1958. Alcoholic beers are capped at C; Alcohol Free scores B due to higher residual sugars."},
   {name:"Tui NZ",           emoji:"🍺", score:"C", avg_kj:750,  brand:"#C1002A", hidden:true, desc:"Tui has been brewed on the banks of the Mangatainoka River since 1889. EIPA is capped at C for alcohol; Strong Lager scores D because it is a high-standard-drink serve."},
   {name:"Export NZ",         emoji:"🍺", score:"C", avg_kj:427,  brand:"#F5C400", hidden:true, desc:"DB Breweries' flagship lager brand, flowing non-stop since 1987. Alcoholic beers are capped at C; Gold 0% scores D from very high sugar density per kJ."},
+  {name:"Breadtop",           emoji:"🥖", score:"B", avg_kj:1027, brand:"#D71920", desc:"Asian bakery chain known for sweet and savoury buns, rolls and cakes. Nutrition info sourced from FatSecret Australia, with Breadtop's official site used to verify current menu energy listings."},
+  {name:"Dunkin' Donuts",      emoji:"🍩", score:"C", avg_kj:1152, brand:"#FF671F", desc:"Donuts from the NZ menu. Nutrition info uses matching Dunkin FatSecret panels where official NZ nutrition data is not published."},
   {name:"Popeyes",           emoji:"🍗", score:"C", avg_kj:1710, brand:"#F26522", desc:"Louisiana-style fried chicken from the US, now in NZ. Famous for crispy chicken sandwiches, tenders and hot wings. Nutrition info sourced from Popeyes UK — NZ figures not yet published."}
 ];
 
@@ -11347,7 +11391,7 @@ function doSearch() {
   if (srFilters.vegetarian)  fx = fx.filter(f => getFoodFlags(f).includes('vegetarian'));
   if (srFilters.halal)       fx = fx.filter(f => getFoodFlags(f).includes('halal'));
   /* Sort */
-  const CAT_ORDER_S = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','ice cream','drinks','other'];
+  const CAT_ORDER_S = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','donuts','desserts','ice cream','drinks','other'];
   const GRADE_ORDER = { A:0, B:1, C:2, D:3 };
   if (srFilters.sort === 'lo') fx.sort((a, b) => a.kj - b.kj);
   else if (srFilters.sort === 'hi') fx.sort((a, b) => b.kj - a.kj);
@@ -11421,10 +11465,8 @@ function setMCat(cat, el) {
 function renderSearchResultsMeta(count, q) {
   const copy = document.getElementById('search-results-copy');
   if (!copy) return;
-  const cat = searchCatLabel();
   const countText = count + ' ' + (count === 1 ? 'item' : 'items');
-  const context = q ? ' for "' + escHtml(q) + '"' : (cat ? ' in ' + escHtml(cat) : '');
-  copy.innerHTML = '<strong>' + countText + '</strong>' + context;
+  copy.innerHTML = '<strong>' + countText + '</strong>';
   copy.classList.toggle('visible', activeSearchRefinements().length === 0);
 }
 
@@ -12066,6 +12108,7 @@ function renderHome() {
     {id:'salads', label:'Salads', emoji:'🥗'},
     {id:'tacos', label:'Tacos', emoji:'🌮'},
     {id:'burritos', label:'Burritos', emoji:'🌯'},
+    {id:'donuts', label:'Donuts', emoji:'🍩'},
     {id:'desserts', label:'Desserts', emoji:'🍨'},
     {id:'ice cream', label:'Ice Cream', emoji:'🍦'},
     {id:'kids', label:'Kids', emoji:'👶'},
@@ -12197,7 +12240,7 @@ function goSearchCat(cat) {
     sides:'Sides', sushi:'Sushi', subs:'Subs', drinks:'Drinks', pies:'Pies',
     smoothies:'Smoothies', juices:'Juices', breakfast:'Breakfast', mains:'Mains',
     salads:'Salads', fishnchips:'Fish & Chips',
-    tacos:'Tacos', burritos:'Burritos', desserts:'Desserts', 'ice cream':'Ice Cream', kids:'Kids',
+    tacos:'Tacos', burritos:'Burritos', donuts:'Donuts', desserts:'Desserts', 'ice cream':'Ice Cream', kids:'Kids',
     platters:'Platters', bowls:'Bowls', rice:'Rice', vietnamese:'Vietnamese' };
   if (cat !== 'all') {
     lastSearch = { q: '', cat, label: catLabels[cat] || cat };
@@ -12383,7 +12426,7 @@ function openRest(name) {
       : ['all', ...new Set(it.map(f => f.cat))];
   const catLabels = {all:'All', burgers:'Burgers', chicken:'Chicken', pizza:'Pizza',
     wraps:'Wraps', sides:'Sides', drinks:'Drinks', sushi:'Sushi', pies:'Pies',
-    smoothies:'Smoothies', juices:'Juices', salads:'Salads', desserts:'Desserts', 'ice cream':'Ice Cream',
+    smoothies:'Smoothies', juices:'Juices', salads:'Salads', donuts:'Donuts', desserts:'Desserts', 'ice cream':'Ice Cream',
     tacos:'Tacos', burritos:'Burritos', subs:'Subs', rice:'Rice', pho:'Pho',
     platters:'Platters', fishnchips:'Fish & Chips', freshrolls:'Fresh Rolls',
     kids:'Kids', bowls:'Bowls', bao:'Bao', bun:'Bun', goi:'Goi', banhmi:'Bánh Mì', com:'Cơm',
@@ -12415,7 +12458,7 @@ function renderMenu() {
   if (rmFilters.vegan)       it = it.filter(f => getFoodFlags(f).includes('vegan'));
   if (rmFilters.vegetarian)  it = it.filter(f => getFoodFlags(f).includes('vegetarian'));
   if (rmFilters.halal)       it = it.filter(f => getFoodFlags(f).includes('halal'));
-  const CAT_ORDER = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','desserts','ice cream','drinks','other'];
+  const CAT_ORDER = ['burgers','chicken','pizza','wraps','pies','mains','sushi','sides','salads','donuts','desserts','ice cream','drinks','other'];
   if (rmFilters.sort === 'lo') it.sort((a, b) => a.kj - b.kj);
   else if (rmFilters.sort === 'hi') it.sort((a, b) => b.kj - a.kj);
   else if (rmFilters.sort === 'protein') it.sort((a, b) => b.protein - a.protein);
