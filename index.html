@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" rel="stylesheet">
 <style>
 @font-face {
   font-family: 'Material Symbols Outlined';
@@ -654,7 +655,7 @@ body.pol-empty .pol-empty-inline .cta:active { transform: scale(0.96); }
 
 /* ── Icon styles ── */
 .ms {
-  font-family: 'Material Symbols Outlined', sans-serif;
+  font-family: 'Material Symbols Rounded', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
@@ -674,6 +675,9 @@ body.pol-empty .pol-empty-inline .cta:active { transform: scale(0.96); }
 }
 /* Filled variant — used for active nav, primary actions */
 .ms.filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.ms.fill {
   font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 /* Sizes */
@@ -1843,7 +1847,7 @@ body.native #filter-float-pill {
   margin-left: auto;
   font-size: 18px; color: var(--md-primary);
   opacity: 0;
-  font-family: 'Material Symbols Outlined';
+  font-family: 'Material Symbols Rounded';
 }
 .sort-opt.on .sort-check { opacity: 1; }
 .sort-sheet-gap { height: 8px; }
@@ -4644,10 +4648,6 @@ body.native #pg-insights .car-slot {
   display: flex;
   border-radius: 0;
   height: auto;
-  overscroll-behavior: contain;
-  touch-action: pan-y;
-  -webkit-user-select: none;
-  user-select: none;
 }
 #pg-insights .car-track {
   align-items: stretch;
@@ -5500,6 +5500,539 @@ body.native #pg-insights .car-slot {
 }
 .mb-cta:disabled { opacity: 0.38; cursor: not-allowed; }
 
+/* ── Design system 04: Controls
+   Buttons, chips, and fields aligned to the dark M3 role taxonomy. ── */
+:root {
+  --control-secondary-container: #0E3D38;
+  --control-on-secondary-container: #7DECC8;
+  --control-surface-bright: var(--md-surface-bright, var(--md-surface-container-high));
+}
+
+.btn,
+.btn-p,
+.btn-g,
+.mb-cta,
+.meal-breakdown-btn,
+.burn-btn,
+.faves-empty-cta,
+.faves-meal-empty-cta,
+.pol-empty-inline .cta {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: var(--shape-full);
+  white-space: nowrap;
+  transition:
+    background var(--motion-fast) var(--ease-std),
+    transform var(--motion-fast) var(--ease-emph),
+    border-color var(--motion-fast) var(--ease-std),
+    color var(--motion-fast) var(--ease-std),
+    opacity var(--motion-fast) var(--ease-std),
+    filter var(--motion-fast) var(--ease-std);
+}
+.btn:active,
+.btn-p:active,
+.btn-g:active,
+.mb-cta:active,
+.meal-breakdown-btn:active,
+.burn-btn:active,
+.faves-empty-cta:active,
+.faves-meal-empty-cta:active,
+.pol-empty-inline .cta:active { transform: scale(0.96); }
+.btn:disabled,
+.btn-p:disabled,
+.btn-g:disabled,
+.mb-cta:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn .ms,
+.btn-p .ms,
+.btn-g .ms,
+.mb-cta .ms,
+.meal-breakdown-btn .ms,
+.burn-btn .ms,
+.faves-empty-cta .ms,
+.faves-meal-empty-cta .ms,
+.pol-empty-inline .cta .ms {
+  color: inherit;
+  font-size: 18px;
+}
+
+.btn-filled,
+.btn-p,
+.mb-cta,
+.faves-empty-cta,
+.faves-meal-empty-cta,
+.pol-empty-inline .cta,
+body.pol-empty .pol-empty-inline .cta {
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+}
+.btn-filled:hover,
+.btn-p:hover,
+.mb-cta:hover,
+.faves-empty-cta:hover,
+.faves-meal-empty-cta:hover,
+.pol-empty-inline .cta:hover,
+body.pol-empty .pol-empty-inline .cta:hover { filter: brightness(1.05); }
+
+.btn-tonal,
+.btn-g,
+.meal-breakdown-btn,
+.burn-btn {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-color: transparent;
+}
+.btn-outlined,
+.filter-btn {
+  background: transparent;
+  color: var(--md-primary);
+  border: 1px solid var(--md-outline);
+}
+.btn-outlined:hover,
+.filter-btn:hover { background: color-mix(in srgb, var(--md-primary) 8%, transparent); }
+.btn-text,
+.mb-add-slot-btn {
+  background: transparent;
+  color: var(--md-primary);
+  height: 36px;
+  padding: 0 12px;
+}
+.btn-text:hover,
+.mb-add-slot-btn:hover { background: color-mix(in srgb, var(--md-primary) 8%, transparent); }
+.btn-error {
+  background: var(--md-error);
+  color: var(--md-on-error);
+}
+.btn-sm { height: 32px; padding: 0 14px; font-size: 12.5px; }
+.btn-lg { height: 48px; padding: 0 24px; font-size: 15px; }
+.btn-icon,
+.det-appbar-action,
+.det-appbar-back,
+.meal-save-btn,
+.fv-unfave-btn,
+.mb-slot-rm,
+.search-clear-btn {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--md-surface-container-high);
+  color: var(--md-on-surface);
+  border: 0;
+}
+.btn-fab {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: 18px;
+  background: var(--md-primary);
+  color: var(--md-on-primary);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.32);
+}
+.btn-fab .ms { font-size: 24px; }
+
+.chip,
+.pill,
+.fsh-chip,
+.sort-chip,
+.recent-chip,
+.active-refinement-chip,
+.ins-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: var(--shape-full);
+  border: 1px solid var(--md-outline);
+  background: transparent;
+  color: var(--md-on-surface-variant);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background var(--motion-fast) var(--ease-std),
+    border-color var(--motion-fast) var(--ease-std),
+    color var(--motion-fast) var(--ease-std),
+    transform var(--motion-fast) var(--ease-emph);
+}
+.chip .ms,
+.pill .ms,
+.fsh-chip .ms,
+.sort-chip .ms,
+.recent-chip .ms,
+.active-refinement-chip .ms,
+.ins-chip .ms { font-size: 16px; }
+.chip:hover,
+.pill:hover,
+.fsh-chip:hover,
+.sort-chip:hover,
+.recent-chip:hover,
+.active-refinement-chip:hover,
+.ins-chip:hover {
+  color: var(--md-on-surface);
+  border-color: var(--md-on-surface-variant);
+  background: color-mix(in srgb, var(--md-primary) 8%, transparent);
+}
+.chip:active,
+.pill:active,
+.fsh-chip:active,
+.sort-chip:active,
+.recent-chip:active,
+.active-refinement-chip:active,
+.ins-chip:active { transform: scale(0.96); }
+.chip.on,
+.pill.on,
+.fsh-chip.on,
+.sort-chip.active,
+.filter-btn.active,
+.ins-chip.on {
+  background: var(--control-secondary-container);
+  color: var(--control-on-secondary-container);
+  border-color: transparent;
+}
+.chip-input,
+.active-refinement-chip {
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border-color: transparent;
+}
+.active-refinement-chip.clear-all {
+  background: transparent;
+  border-color: var(--md-outline);
+  color: var(--md-on-surface-variant);
+}
+.recent-chip {
+  background: var(--md-surface-container-high);
+  border-color: var(--md-outline-variant);
+  padding-left: 8px;
+}
+
+.input,
+.search-box,
+.mb-slot-search,
+#meal-save-input {
+  background: var(--md-surface-container);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--shape-full);
+  color: var(--md-on-surface);
+  transition:
+    border-color var(--motion-fast) var(--ease-std),
+    background var(--motion-fast) var(--ease-std);
+}
+.input,
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 16px;
+}
+.search-box { height: 52px; }
+.input:focus-within,
+.search-box:focus-within,
+.mb-slot-search:focus-within,
+#meal-save-input:focus {
+  border-color: var(--md-primary);
+  background: var(--control-surface-bright);
+}
+.input .ms,
+.search-box .ms,
+.mb-search-row > .ms {
+  color: var(--md-on-surface-variant);
+  font-size: 20px;
+}
+.input input,
+.search-box input,
+.mb-search-input,
+#meal-save-input {
+  appearance: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  color: var(--md-on-surface);
+  flex: 1;
+  min-width: 0;
+}
+.input input::placeholder,
+.search-box input::placeholder,
+.mb-search-input::placeholder,
+#meal-save-input::placeholder { color: var(--color-text-muted, var(--md-on-surface-variant)); }
+.mb-slot-search {
+  border-radius: var(--shape-md);
+  overflow: hidden;
+}
+
+/* ── Design system 07-08: Navigation + Icons
+   Bottom nav active pill, quiet app bars, product wordmark, Rounded icons. ── */
+.ms {
+  font-family: 'Material Symbols Rounded', sans-serif;
+  font-size: 24px;
+  font-weight: normal;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+  font-feature-settings: 'liga';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.ms.filled,
+.ms.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.ms.sz-16 { font-size: 16px; font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.ms.sz-20 { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.ms.sz-20.filled,
+.ms.sz-20.fill { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.ms.sz-40 { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 40; }
+
+.product-wordmark,
+.home-wordmark {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--md-on-surface);
+}
+.product-wordmark .accent,
+.home-wordmark-accent {
+  color: var(--md-primary);
+  font-style: italic;
+  font-weight: 500;
+}
+.home-topbar {
+  min-height: 56px;
+  padding: 0 16px;
+  background: var(--md-surface);
+}
+
+.topbar,
+.det-topbar,
+.det-appbar,
+.rmenu-topbar,
+.faves-topbar {
+  background: var(--md-surface);
+  border-bottom: 1px solid var(--md-outline-variant);
+  box-shadow: none;
+}
+.det-topbar,
+.det-appbar,
+.rmenu-topbar,
+.faves-topbar {
+  height: 56px;
+  padding: 0 8px;
+}
+.det-topbar.scrolled,
+.det-appbar.scrolled,
+#rmenu-sticky-hdr.scrolled,
+#rmenu-sticky-hdr.scrolled .rmenu-appbar {
+  box-shadow: none;
+}
+.det-appbar-back,
+.det-appbar-action,
+.rmenu-appbar-back,
+.det-fave-btn,
+.meal-save-btn {
+  width: 40px;
+  height: 40px;
+  color: var(--md-on-surface);
+  background: transparent;
+}
+.det-appbar-back:hover,
+.det-appbar-action:hover,
+.rmenu-appbar-back:hover,
+.det-fave-btn:hover,
+.meal-save-btn:hover {
+  background: var(--md-surface-container);
+}
+.det-topbar-titles,
+.det-appbar-titles {
+  text-align: left;
+  align-items: flex-start;
+}
+.det-appbar-sub,
+.det-appbar-title,
+.rmenu-topbar-title,
+.rmenu-appbar-title,
+.faves-title {
+  text-align: left;
+}
+.det-appbar-title,
+.rmenu-topbar-title,
+.rmenu-appbar-title,
+.faves-title {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.faves-topbar::before {
+  content: none;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+.faves-title {
+  font-family: var(--font-display);
+  flex: 1;
+}
+
+.bnav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 72px;
+  padding: 8px 4px;
+  margin: 0 10px 8px;
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
+  border-radius: var(--shape-2xl, 28px);
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px 8px;
+  color: var(--md-on-surface-variant);
+  cursor: pointer;
+  transition: color var(--motion-fast) var(--ease-std);
+}
+.nav-ico {
+  width: 56px;
+  height: 32px;
+  border-radius: var(--shape-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--motion-fast) var(--ease-std);
+}
+.nav-ico .ms,
+.nav-item .nav-ico .ms {
+  color: inherit;
+  font-size: 24px;
+}
+.nav-lbl {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: currentColor;
+}
+.nav-item.on {
+  color: var(--md-on-surface);
+}
+.nav-item.on .nav-ico {
+  background: var(--md-primary-container);
+}
+.nav-item.on .nav-ico .ms {
+  color: var(--md-on-primary-container);
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+.nav-item.on .nav-lbl {
+  color: var(--md-on-surface);
+  font-weight: 500;
+}
+
+.page-footer { background: transparent; }
+.hi { padding-top: 0; }
+
+.search-box {
+  padding: 0 6px 0 16px;
+}
+.search-box input {
+  min-width: 0;
+}
+.search-clear-btn {
+  width: 40px;
+  height: 40px;
+  margin-left: auto;
+  margin-right: -2px;
+}
+
+.nut-row-chevron {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
+}
+.nut-row-chevron.ms,
+.nut-row-chevron.ms.sz-16 {
+  font-size: 22px;
+}
+
+.rdi-freq-ico.ms,
+.nut-warn-block-lbl .ms,
+.best-pick-reason .ms {
+  font-family: 'Material Symbols Rounded', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.rdi-freq-ico.ms {
+  width: 28px;
+  height: 28px;
+  color: var(--md-primary);
+  font-size: 20px;
+}
+.nut-warn-block-lbl .ms {
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+}
+
+.meal-breakdown-btn {
+  height: 40px;
+  padding: 0 20px;
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  border: 0;
+}
+.meal-breakdown-btn .ms {
+  font-size: 20px;
+}
+
+.mb-slot-empty > .ms:last-child,
+.mb-slot-rm {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+.mb-slot-rm .ms {
+  font-size: 22px !important;
+}
+.mb-slot-filled > div:last-child {
+  min-width: 102px;
+  justify-content: flex-end;
+}
+
 </style>
 </head>
 <body>
@@ -5579,7 +6112,7 @@ body.native #pg-insights .car-slot {
 
           <!-- M3 top bar — wordmark + avatar -->
           <div class="home-topbar">
-            <span class="home-wordmark">Kāi<span class="home-wordmark-accent"> Check</span></span>
+            <span class="home-wordmark">Kāi<span class="home-wordmark-accent">Check</span></span>
           </div>
 
           <!-- Welcome card -->
@@ -6086,7 +6619,7 @@ body.native #pg-insights .car-slot {
           <div style="padding:16px 16px 0">
             <div class="search-box">
               <span class="ms sz-20 txt-var">search</span>
-              <input id="si" type="text" placeholder="Search burgers, pies, pizza…" autocomplete="off" oninput="doSearch()" onfocus="showRecentChips()" onblur="hideRecentChipsDelayed(); hideSearchSuggestionsDelayed()" onkeydown="onSearchKeyDown(event)">
+              <input id="si" type="text" placeholder="Search 1,200+ items from NZ chains…" autocomplete="off" oninput="doSearch()" onfocus="showRecentChips()" onblur="hideRecentChipsDelayed(); hideSearchSuggestionsDelayed()" onkeydown="onSearchKeyDown(event)">
               <button class="search-clear-btn hidden" id="search-clear-btn" onclick="clearSearch()" aria-label="Clear search"><span class="ms sz-20">close</span></button>
             </div>
             <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Suggestions"></div>
@@ -10453,6 +10986,47 @@ const foods = [
   {id:1415, name:"Vanilla Buttercreme Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1255, protein:4.0, fat:15.0, carbs:37.0, sugar:18.0, sodium:290, sat_fat:6.0, fibre:1.0, score:"C"},
   {id:1416, name:"Vanilla Frosted Coloured Sprinkles Donut", chain:"Dunkin' Donuts", cat:"donuts", emoji:"🍩", kj:1130, protein:4.0, fat:11.0, carbs:37.0, sugar:16.0, sodium:280, sat_fat:4.5, fibre:1.0, score:"C"},
 
+  /* ── Krispy Kreme NZ — verified official Krispy Kreme NZ product nutrition pages, verified May 2026
+     Scores auto-calculated by pipeline.py v2.2 — FSANZ daily reference values. ── */
+  {id:1417, name:"White Hazelnut Dream Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1640, protein:6.0, fat:22.6, carbs:40.8, sugar:22.3, sodium:189, sat_fat:7.2, fibre:0.0, score:"C"},
+  {id:1418, name:"Choc Hazelnut Dream Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1630, protein:5.6, fat:22.2, carbs:41.2, sugar:22.4, sodium:171, sat_fat:9.3, fibre:0.0, score:"C"},
+  {id:1419, name:"Original Glazed Cinnamon Scroll", chain:"Krispy Kreme NZ", cat:"desserts", emoji:"🍩", kj:1610, protein:4.2, fat:15.2, carbs:57.1, sugar:36.0, sodium:169, sat_fat:5.6, fibre:0.0, score:"C"},
+  {id:1420, name:"Strawberry Matcha Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1250, protein:4.3, fat:15.7, carbs:34.4, sugar:15.2, sodium:161, sat_fat:7.7, fibre:0.0, score:"C"},
+  {id:1421, name:"Original Glazed Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:764, protein:2.4, fat:8.8, carbs:23.3, sugar:11.6, sodium:94, sat_fat:3.2, fibre:0.0, score:"C"},
+  {id:1422, name:"Pistachio Overload Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1560, protein:5.9, fat:21.5, carbs:37.7, sugar:18.5, sodium:157, sat_fat:8.7, fibre:0.0, score:"C"},
+  {id:1423, name:"Kookies 'n' Kreme Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1680, protein:4.5, fat:18.1, carbs:54.6, sugar:30.4, sodium:262, sat_fat:8.0, fibre:0.0, score:"C"},
+  {id:1424, name:"Strawberry Sprinkles Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:989, protein:2.8, fat:12.6, carbs:28.0, sugar:16.1, sodium:99, sat_fat:5.3, fibre:0.0, score:"D"},
+  {id:1425, name:"Biscoff Creme Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1470, protein:3.0, fat:19.4, carbs:40.7, sugar:24.4, sodium:113, sat_fat:6.2, fibre:0.0, score:"C"},
+  {id:1426, name:"Strawberry Jam Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:922, protein:3.7, fat:9.7, carbs:29.1, sugar:9.8, sodium:155, sat_fat:3.7, fibre:0.0, score:"C"},
+  {id:1427, name:"Caramel Delight Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1470, protein:4.9, fat:18.9, carbs:40.3, sugar:18.4, sodium:194, sat_fat:9.3, fibre:0.0, score:"C"},
+  {id:1428, name:"Choc Iced Custard Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1180, protein:4.2, fat:13.8, carbs:35.0, sugar:14.3, sodium:173, sat_fat:7.4, fibre:0.0, score:"C"},
+  {id:1429, name:"Apple Custard Crumble Doughnut (VG)", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1300, protein:4.1, fat:11.6, carbs:46.8, sugar:23.9, sodium:167, sat_fat:4.4, fibre:0.0, score:"C"},
+  {id:1430, name:"Choc Hazelnut Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1110, protein:3.9, fat:16.2, carbs:25.8, sugar:13.9, sodium:114, sat_fat:5.2, fibre:0.0, score:"C"},
+  {id:1431, name:"Choc Iced Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:964, protein:2.7, fat:11.7, carbs:28.5, sugar:16.5, sodium:98, sat_fat:5.9, fibre:0.0, score:"D"},
+  {id:1432, name:"Traditional Cinnamon Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:671, protein:2.4, fat:8.7, carbs:18.1, sugar:6.4, sodium:94, sat_fat:3.2, fibre:0.0, score:"C"},
+  {id:1433, name:"Vanilla Slice Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1300, protein:4.5, fat:16.8, carbs:34.9, sugar:14.6, sodium:177, sat_fat:7.3, fibre:0.0, score:"C"},
+  {id:1434, name:"Choc Iced Sprinkles Doughnut", chain:"Krispy Kreme NZ", cat:"donuts", emoji:"🍩", kj:1130, protein:2.7, fat:12.5, carbs:36.4, sugar:23.6, sodium:99, sat_fat:6.7, fibre:0.0, score:"C"},
+  {id:1435, name:"Original Glazed Bites", chain:"Krispy Kreme NZ", cat:"desserts", emoji:"🍩", kj:585, protein:1.8, fat:5.2, carbs:21.2, sugar:12.1, sodium:73, sat_fat:2.0, fibre:0.0, score:"C"},
+  {id:1436, name:"Bagel with Spreads", chain:"Krispy Kreme NZ", cat:"breakfast", emoji:"🥯", kj:1580, protein:10.9, fat:7.5, carbs:64.4, sugar:3.1, sodium:594, sat_fat:4.5, fibre:2.0, score:"B"},
+  {id:1437, name:"Cream Cheese Bagel", chain:"Krispy Kreme NZ", cat:"breakfast", emoji:"🥯", kj:1800, protein:13.2, fat:10.9, carbs:66.3, sugar:4.1, sodium:1410, sat_fat:7.0, fibre:2.0, score:"C"},
+  {id:1438, name:"Smashed Avocado Bagel", chain:"Krispy Kreme NZ", cat:"breakfast", emoji:"🥯", kj:1720, protein:11.8, fat:10.2, carbs:65.3, sugar:3.2, sodium:1280, sat_fat:2.2, fibre:2.0, score:"B"},
+  {id:1439, name:"Ham & Cheese Bagel", chain:"Krispy Kreme NZ", cat:"breakfast", emoji:"🥯", kj:1530, protein:19.3, fat:7.3, carbs:66.2, sugar:3.4, sodium:1700, sat_fat:4.1, fibre:2.0, score:"B"},
+  {id:1440, name:"Chicken & Avocado Bagel", chain:"Krispy Kreme NZ", cat:"breakfast", emoji:"🥯", kj:2730, protein:20.3, fat:32.6, carbs:67.0, sugar:3.6, sodium:1640, sat_fat:4.9, fibre:2.0, score:"B"},
+  {id:1441, name:"Smoked Salmon Bagel", chain:"Krispy Kreme NZ", cat:"breakfast", emoji:"🥯", kj:2070, protein:20.5, fat:14.7, carbs:66.8, sugar:4.6, sodium:1870, sat_fat:7.7, fibre:2.0, score:"C"},
+  {id:1442, name:"Iced Strawberry Matcha Latte", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:847, protein:7.5, fat:6.8, carbs:25.3, sugar:23.4, sodium:73, sat_fat:4.3, fibre:0.0, score:"D"},
+  {id:1443, name:"Iced Matcha Latte", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:684, protein:7.4, fat:6.8, carbs:15.8, sugar:14.1, sodium:74, sat_fat:4.3, fibre:0.0, score:"C"},
+  {id:1444, name:"Matcha Latte", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:600, protein:7.0, fat:6.7, carbs:11.4, sugar:10.6, sodium:74, sat_fat:4.3, fibre:0.0, score:"C"},
+  {id:1445, name:"Biscoff Kreme Shake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:2490, protein:12.4, fat:25.6, carbs:59.7, sugar:41.2, sodium:152, sat_fat:10.2, fibre:0.0, score:"C"},
+  {id:1446, name:"Kookies & Kreme Shake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:5680, protein:19.8, fat:64.8, carbs:164.0, sugar:101.0, sodium:1270, sat_fat:38.7, fibre:0.0, score:"D"},
+  {id:1447, name:"Strawberries & Kreme Shake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:4490, protein:12.8, fat:46.7, carbs:142.0, sugar:139.0, sodium:225, sat_fat:32.3, fibre:0.0, score:"D"},
+  {id:1448, name:"Chocolate Milkshake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:1230, protein:9.1, fat:10.4, carbs:41.0, sugar:38.8, sodium:147, sat_fat:6.5, fibre:0.0, score:"D"},
+  {id:1449, name:"Vanilla Milkshake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:1060, protein:8.8, fat:10.1, carbs:31.7, sugar:30.7, sodium:126, sat_fat:6.2, fibre:0.0, score:"D"},
+  {id:1450, name:"Caramel Milkshake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:1220, protein:9.1, fat:10.1, carbs:41.1, sugar:39.2, sodium:131, sat_fat:6.2, fibre:0.0, score:"D"},
+  {id:1451, name:"Strawberry Milkshake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:1040, protein:8.9, fat:10.2, carbs:30.6, sugar:29.1, sodium:127, sat_fat:6.3, fibre:0.0, score:"D"},
+  {id:1452, name:"Banana Milkshake", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:1060, protein:8.9, fat:10.1, carbs:31.4, sugar:29.9, sodium:126, sat_fat:6.2, fibre:0.0, score:"D"},
+  {id:1453, name:"Ice Cream Coffee", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:1570, protein:13.4, fat:15.1, carbs:45.7, sugar:44.5, sodium:182, sat_fat:9.3, fibre:0.0, score:"D"},
+  {id:1454, name:"Iced Latte", chain:"Krispy Kreme NZ", cat:"drinks", emoji:"🥤", kj:785, protein:6.7, fat:6.8, carbs:24.4, sugar:24.4, sodium:83, sat_fat:4.3, fibre:0.0, score:"D"},
+
 ];
 
 const DIET_FLAGS_DATA = {
@@ -10736,6 +11310,7 @@ const rests = [
   {name:"Export NZ",         emoji:"🍺", score:"C", avg_kj:427,  brand:"#F5C400", hidden:true, desc:"DB Breweries' flagship lager brand, flowing non-stop since 1987. Alcoholic beers are capped at C; Gold 0% scores D from very high sugar density per kJ."},
   {name:"Breadtop",           emoji:"🥖", score:"B", avg_kj:1027, brand:"#D71920", desc:"Asian bakery chain known for sweet and savoury buns, rolls and cakes. Nutrition info sourced from FatSecret Australia, with Breadtop's official site used to verify current menu energy listings."},
   {name:"Dunkin' Donuts",      emoji:"🍩", score:"C", avg_kj:1152, brand:"#FF671F", desc:"Donuts from the NZ menu. Nutrition info uses matching Dunkin FatSecret panels where official NZ nutrition data is not published."},
+  {name:"Krispy Kreme NZ",     emoji:"🍩", score:"C", avg_kj:1511, brand:"#00704A", aliases:["krispy kreme","krispykreme","krispy creams","krispy cream"], desc:"Fresh doughnuts, bagels, shakes and coffee from Krispy Kreme NZ. Nutrition info sourced from official NZ product nutrition panels."},
   {name:"Popeyes",           emoji:"🍗", score:"C", avg_kj:1710, brand:"#F26522", desc:"Louisiana-style fried chicken from the US, now in NZ. Famous for crispy chicken sandwiches, tenders and hot wings. Nutrition info sourced from Popeyes UK — NZ figures not yet published."}
 ];
 
@@ -11725,6 +12300,7 @@ const REST_SEARCH_ALIASES = {
   "St. Pierre's":["st pierres","stpierres","saint pierres"],
   "Wendy's":["wendys"],
   "Dunkin' Donuts":["dunkin","dunkin donuts","dunkindonuts","dunkin donut","dunking donuts","dunkin'"],
+  "Krispy Kreme NZ":["krispy kreme","krispykreme","krispy creams","krispy cream"],
   "Carl's Jr":["carls jr","carls","carl junior"],
   "LJ's":["ljs","lj","l j's"],
   "Roll'd":["rolld","rolled","roll d"],
@@ -13726,33 +14302,9 @@ function initCar(tot, cntId, dotsId, wrapId, trackId) {
     }
   }
   const w = document.getElementById(wrapId);
-  let sx = 0, sy = 0, dr = false, axis = null;
-  w.addEventListener('touchstart', function(e) {
-    sx = e.touches[0].clientX;
-    sy = e.touches[0].clientY;
-    dr = true;
-    axis = null;
-  }, {passive:true});
-  w.addEventListener('touchmove', function(e) {
-    if (!dr || !e.touches || !e.touches.length) return;
-    const dx = e.touches[0].clientX - sx;
-    const dy = e.touches[0].clientY - sy;
-    const ax = Math.abs(dx);
-    const ay = Math.abs(dy);
-    if (!axis && (ax > 10 || ay > 10)) axis = ax > ay * 1.15 ? 'x' : 'y';
-    if (axis === 'x') e.preventDefault();
-  }, {passive:false});
-  w.addEventListener('touchend', function(e) {
-    if (!dr) return;
-    dr = false;
-    const dx = e.changedTouches[0].clientX - sx;
-    const dy = e.changedTouches[0].clientY - sy;
-    const horizontal = axis === 'x' || Math.abs(dx) > Math.abs(dy) * 1.15;
-    axis = null;
-    if (!horizontal) return;
-    if (dx < -40 && idx < tot - 1) { idx++; upd(); }
-    else if (dx > 40 && idx > 0) { idx--; upd(); }
-  }, {passive:true});
+  let sx = 0, dr = false;
+  w.addEventListener('touchstart', function(e) { sx = e.touches[0].clientX; dr = true; }, {passive:true});
+  w.addEventListener('touchend',   function(e) { if(!dr)return; dr=false; const dx=e.changedTouches[0].clientX-sx; if(dx<-40&&idx<tot-1){idx++;upd();}else if(dx>40&&idx>0){idx--;upd();} }, {passive:true});
   w.addEventListener('mousedown',  function(e) { sx = e.clientX; dr = true; });
   w.addEventListener('mouseup',    function(e) { if(!dr)return; dr=false; const dx=e.clientX-sx; if(dx<-40&&idx<tot-1){idx++;upd();}else if(dx>40&&idx>0){idx--;upd();} });
 }
@@ -14254,9 +14806,9 @@ function openNutSheet(el) {
     '</div>' +
     donutHTML +
     '<div class="rdi-freq-card">' +
-      '<div class="rdi-freq-row"><span class="rdi-freq-ico">📅</span><div class="rdi-freq-text"><strong>' + freqLine + '</strong></div></div>' +
-      '<div class="rdi-freq-row"><span class="rdi-freq-ico">💡</span><div class="rdi-freq-text">' + ctxLine + '</div></div>' +
-      '<div class="rdi-freq-row"><span class="rdi-freq-ico">ℹ️</span><div class="rdi-freq-text">' + n.ctx + '</div></div>' +
+      '<div class="rdi-freq-row"><span class="ms rdi-freq-ico">calendar_month</span><div class="rdi-freq-text"><strong>' + freqLine + '</strong></div></div>' +
+      '<div class="rdi-freq-row"><span class="ms rdi-freq-ico">lightbulb</span><div class="rdi-freq-text">' + ctxLine + '</div></div>' +
+      '<div class="rdi-freq-row"><span class="ms rdi-freq-ico">info</span><div class="rdi-freq-text">' + n.ctx + '</div></div>' +
     '</div>' +
     (curNutWarnings[nutKey] ? (
       '<div class="nut-warn-block">' +
@@ -14598,7 +15150,7 @@ function renderCmpSheet() {
 
   const addAnotherHtml = csSlots.length < 3 ? `<div style="padding:0 16px 8px">
     <button class="mb-add-slot-btn" onclick="csAddSlot()">
-      <span class="ms" style="font-size:18px">add</span> Add another item
+      <span class="ms" style="font-size:18px">add</span> Add item
     </button></div>` : '';
 
   body.innerHTML = `<div style="height:8px"></div>${slotsHtml}${addAnotherHtml}${carouselHtml}<div style="height:16px"></div>`;
@@ -15792,7 +16344,7 @@ function renderMealBuilder() {
     </div>`;
   }).join('') + `
     <button class="mb-add-slot-btn" onclick="mbAddSlot()">
-      <span class="ms" style="font-size:18px">add</span> Add another item
+      <span class="ms" style="font-size:18px">add</span> Add item
     </button>`;
 
   footer.innerHTML = `
@@ -16022,7 +16574,7 @@ function renderMeal() {
           <div class="meal-cal-total">${kc(totals.kj).toLocaleString()} <span class="det-cal-unit">cal<span class="det-kj-secondary"> / ${totals.kj.toLocaleString()} kJ</span></span></div>
         </div>
         <button class="meal-breakdown-btn" onclick="openMealBreakdown()">
-          Breakdown
+          <span class="ms">donut_small</span> Breakdown
         </button>
       </div>
     </div>
